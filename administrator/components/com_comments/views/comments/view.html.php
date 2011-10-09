@@ -31,6 +31,16 @@ class CommentsViewComments extends JView
 			return false;
 		}
 
+		$this->addToolbar();
 		parent::display($tpl);
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 */
+	protected function addToolbar()
+	{
+		JToolBarHelper::title(JText::_('COM_COMMENTS_COMMENTS'), 'comments');
+		JToolBarHelper::deleteList('', 'comments.delete', 'JTOOLBAR_DELETE');
 	}
 }

@@ -19,27 +19,27 @@ JHtml::_('script', 'comments/comments_form.min.js', true, true);
 		<ul class="comments_form_inputs">
 			<?php if ($user->guest): ?>
 			<li>
-				<label>Nome</label>
-				<input id="comments_form_name" type="text" placeholder="Nome" name="name"/>
+				<label><?php echo JText::_('COM_COMMENTS_LABEL_NAME'); ?></label>
+				<input id="comments_form_name" type="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_NAME'); ?>" name="name"/>
 			</li>
 			<li>
-				<label>E-Mail</label>
-				<input id="comments_form_email" type="text" placeholder="E-Mail" name="email"/>
+				<label><?php echo JText::_('COM_COMMENTS_LABEL_EMAIL'); ?></label>
+				<input id="comments_form_email" type="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_EMAIL'); ?>" name="email"/>
 			</li>
 			<?php else: ?>
 				<input id="comments_form_name" type="hidden" name="name" value="<?php echo $user->name; ?>"/>
 				<input id="comments_form_email" type="hidden" name="email" value="<?php echo $user->email; ?>"/>
 			<?php endif; ?>
 			<li>
-				<label for="comments_form_textarea">Digite seu comentário aqui...</label>
-				<textarea id="comments_form_textarea" name="text" placeholder="Digite seu comentário aqui..."></textarea>
+				<label for="comments_form_textarea"><?php echo JText::_('COM_COMMENTS_LABEL_TEXT'); ?></label>
+				<textarea id="comments_form_textarea" name="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_TEXT'); ?>"></textarea>
 			</li>
 		</ul>
 		<p class="comments-remaining">
-			<span id="comments-remaining-count">500</span> caracteres restantes
+			<?php echo JText::sprintf('COM_COMMENTS_CHARACTERS_REMAINING', '<span id="comments-remaining-count">500</span>'); ?>
 		</p>
 		<p class="comments-post-buttons">
-			<button type="submit" id="comments_form_send">Enviar</button>
+			<button type="submit" id="comments_form_send"><?php echo JText::_('COM_COMMENTS_SUBMIT'); ?></button>
 		</p>
 	</form>
 </div>

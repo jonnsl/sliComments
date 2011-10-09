@@ -9,7 +9,8 @@
 // no direct access
 defined('_JEXEC') or die;
 
-
+require_once JPATH_SITE.'/components/com_content/helpers/route.php';
+JHtml::_('core');
 $user		= JFactory::getUser();
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
@@ -21,11 +22,14 @@ $listDirn	= $this->state->get('list.direction');
 				<th width="1%">
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(this)" />
 				</th>
-				<th>
-					<?php echo JHtml::_('grid.sort', 'texto', 'a.text', $listDirn, $listOrder); ?>
-				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'nome', 'a.name', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'COM_COMMENTS_HEADING_NAME', 'a.name', $listDirn, $listOrder); ?>
+				</th>
+				<th>
+					<?php echo JHtml::_('grid.sort', 'COM_COMMENTS_HEADING_TEXT', 'a.text', $listDirn, $listOrder); ?>
+				</th>
+				<th width="15%" class="nowrap">
+					<?php echo JHtml::_('grid.sort', 'COM_COMMENTS_HEADING_ARTICLE', 'a.article_id', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
@@ -34,7 +38,7 @@ $listDirn	= $this->state->get('list.direction');
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="4">
+				<td colspan="5">
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
@@ -46,10 +50,15 @@ $listDirn	= $this->state->get('list.direction');
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
+					<?php echo $this->escape($item->name); ?>
+				</td>
+				<td>
 					<?php echo $this->escape($item->text); ?>
 				</td>
 				<td>
-					<?php echo $this->escape($item->name); ?>
+					<a href="../<?php echo ContentHelperRoute::getArticleRoute($item->alias ? ($item->article_id . ':' . $item->alias) : $item->article_id, $item->catid); ?>">
+						<?php echo $this->escape($item->title); ?>
+					</a>
 				</td>
 				<td class="center">
 					<?php echo (int) $item->id; ?>

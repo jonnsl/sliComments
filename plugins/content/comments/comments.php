@@ -34,6 +34,7 @@ class plgContentComments extends JPlugin
 		ob_start();
 		$config = array('base_path'=> JPATH_SITE.'/components/com_comments');
 		require_once $config['base_path'].'/controllers/comments.php';
+		JFactory::getLanguage()->load('com_comments', JPATH_BASE, null, false, false);
 		$controller = new CommentsControllerComments($config);
 		$controller->execute('display');
 		JRequest::setVar('view', $old_view);

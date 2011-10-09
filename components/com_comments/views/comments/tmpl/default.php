@@ -13,7 +13,7 @@ JHtml::_('stylesheet', 'comments/style.css', array(), true);
 if (JFactory::getUser()->authorise('core.admin')) JHtml::_('script', 'comments/comments_form_delete.js', true, true);
 ?>
 <div id="comments_section">
-	<h4>Comentários (<span id="comments_counter" ><?php echo $this->total; ?></span>)</h4>
+	<h4><?php echo JText::sprintf('COM_COMMENTS_COMMENTS_COUNT', '<span id="comments_counter" >'.$this->total.'</span>'); ?></h4>
 	<?php echo $this->loadTemplate('form'); ?>
 	<ul id="comments_list" class="comment-list">
 	<?php foreach ($this->items as $i => $item) : ?>
