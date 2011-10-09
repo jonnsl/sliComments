@@ -36,7 +36,7 @@
 	</media>
 	
 	<administration>
-		<menu>COM_COMMENTS</menu>
+		<menu img="../media/comments/img/icon16.png">COM_COMMENTS</menu>
 
 		<files folder="administrator/components/com_comments">
 			<folder>controllers</folder>

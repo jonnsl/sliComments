@@ -15,6 +15,15 @@ $user		= JFactory::getUser();
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
 ?>
+<style>
+	.icon-48-comments {
+		background-image: url(../media/comments/img/icon48.png)
+	}
+	#adminForm .copyright {
+		text-align: center;
+		margin: 15px 0 0 0
+	}
+</style>
 <form action="<?php echo JRoute::_('index.php?option=com_comments');?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
@@ -67,6 +76,8 @@ $listDirn	= $this->state->get('list.direction');
 			<?php endforeach; ?>
 		</tbody>
 	</table>
+
+	<p class="copyright">sliComments is free software released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT license</a>. Icons by <a href="http://dryicons.com">DryIcons</a>.</p>
 
 	<input type="hidden" name="controller" value="" />
 	<input type="hidden" name="task" value="" />
