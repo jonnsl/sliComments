@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="content">
+	<name>plg_content_slicomments</name>
+	<author>Jonnathan Soares Lima</author>
+	<license>GNU General Public License version 3 or later;</license>
+	<version>1.0</version>
+	<description>PLG_CONTENT_SLICOMMENTS_XML_DESCRIPTION</description>
+
+	<files>
+		<filename plugin="slicomments">slicomments.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>
