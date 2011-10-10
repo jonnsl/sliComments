@@ -11,6 +11,9 @@ defined('_JEXEC') or die;
 
 require_once JPATH_SITE.'/components/com_content/helpers/route.php';
 JHtml::_('core');
+JHtml::_('behavior.framework', true);
+JHtml::_('script', 'comments/comments_admin.js', true, true);
+JHtml::_('script', 'comments/DynamicTextarea.js', true, true);
 $user		= JFactory::getUser();
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
@@ -22,6 +25,36 @@ $listDirn	= $this->state->get('list.direction');
 	#adminForm .copyright {
 		text-align: center;
 		margin: 15px 0 0 0
+	}
+	.adminlist td {
+		position: relative
+	}
+	.edit-comment {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		float: right;
+		cursor: pointer;
+		display: none
+	}
+	td:hover .edit-comment {
+		display: block
+	}
+	.editing .edit-comment {
+		display: none !important
+	}
+	.edit {
+		width:100%;
+		box-sizing:border-box;
+		padding: 0
+	}
+	.actions {
+		float: right;
+		margin: 5px 5px 0 0
+	}
+	.actions .save-button {
+		cursor: pointer;
+		font-size: 1.1em
 	}
 </style>
 <form action="<?php echo JRoute::_('index.php?option=com_comments');?>" method="post" name="adminForm" id="adminForm">
@@ -62,7 +95,8 @@ $listDirn	= $this->state->get('list.direction');
 					<?php echo $this->escape($item->name); ?>
 				</td>
 				<td>
-					<?php echo $this->escape($item->text); ?>
+					<span><?php echo $this->escape($item->text); ?></span>
+					<img class="edit-comment" src="http://a.dryicons.com/images/icon_sets/minimalistica_icons/png/16x16/pencil.png" />
 				</td>
 				<td>
 					<a href="../<?php echo ContentHelperRoute::getArticleRoute($item->alias ? ($item->article_id . ':' . $item->alias) : $item->article_id, $item->catid); ?>">

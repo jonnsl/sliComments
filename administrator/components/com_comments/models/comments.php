@@ -97,4 +97,41 @@ class CommentsModelComments extends JModelList
 
 		return true;
 	}
+
+	public function filter($data)
+	{
+		$filter['text'] = preg_replace('/\n/', '<br />', htmlspecialchars($data['text'], ENT_COMPAT, 'UTF-8'), 10);
+		return $filter;
+	}
+
+	public function validate(&$data)
+	{
+		if (JString::strlen($data['text']) < 5) {
+			$this->setError('Comentário muito curto ou inexistente.');
+			return false;
+		}
+		if (JString::strlen($data['text']) > 500) {
+			$this->setError('Comentário muito grande.');
+			return false;
+		}
+		return true;
+	}
+
+	public function save($id, $data)
+	{
+		$table = $this->getTable();
+		if (!$table->load($id)) {
+			$this->setError($table->getError());
+			return false;
+		}
+		if (!$table->bind($data)) {
+			$this->setError($table->getError());
+			return false;
+		}
+		if (!$table->store($data)) {
+			$this->setError($table->getError());
+			return false;
+		}
+		return true;
+	}
 }
