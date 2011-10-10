@@ -104,7 +104,7 @@ $listDirn	= $this->state->get('list.direction');
 		</tbody>
 	</table>
 
-	<p class="copyright">sliComments is free software released under the <a href="http://www.opensource.org/licenses/mit-license.php">MIT license</a>. Icons by <a href="http://dryicons.com">DryIcons</a>.</p>
+	<p class="copyright">sliComments is free software released under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License</a>. Icons by <a href="http://dryicons.com">DryIcons</a>.</p>
 
 	<input type="hidden" name="controller" value="" />
 	<input type="hidden" name="task" value="" />
