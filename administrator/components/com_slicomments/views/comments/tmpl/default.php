@@ -51,7 +51,7 @@ $listDirn	= $this->state->get('list.direction');
 				</td>
 				<td>
 					<span><?php echo $this->escape($item->text); ?></span>
-					<img class="edit-comment" src="../media/slicomments/edit.png" />
+					<img class="edit-comment" src="../media/slicomments/img/edit.png" />
 				</td>
 				<td>
 					<a href="../<?php echo ContentHelperRoute::getArticleRoute($item->alias ? ($item->article_id . ':' . $item->alias) : $item->article_id, $item->catid); ?>">

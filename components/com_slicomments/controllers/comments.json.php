@@ -11,7 +11,7 @@ class sliCommentsControllerComments extends JController
 		// Check for request forgeries.
 		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 		
-		$model = $this->getModel();
+		$model = $this->getModel('comments');
 		$data = JRequest::get('post');
 		$data = $model->filter($data);
 		if (!$model->validate($data)){
@@ -50,7 +50,7 @@ class sliCommentsControllerComments extends JController
 			return;
 		}
 
-		$model = $this->getModel();
+		$model = $this->getModel('comments');
 		$id = JRequest::getInt('id', null, 'get');
 		if ($id) {
 			if (!$model->delete($id)) {

@@ -123,6 +123,6 @@ class sliCommentsModelComments extends JModelList
 
 	public function getTable()
 	{
-		return parent::getTable('comment', 'JTable');
+		return parent::getTable('sliComment', 'JTable');
 	}
 }

@@ -42,7 +42,7 @@ window.addEvent('domready', function(){
 		console.log(text);
 		console.log(token);
 		new Request.JSON({
-			url: 'index.php?option=com_comments&task=slicomments.edit&format=json',
+			url: 'index.php?option=com_slicomments&task=comments.edit&format=json',
 			data: 'text='+text+'&id='+id+'&'+token+'=1',
 			onSuccess: function(response){
 				if (response.success) {
