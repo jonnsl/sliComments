@@ -1,0 +1,40 @@
+.icon-48-comments {
+	background-image: url(../img/icon48.png)
+}
+.icon-32-delete {
+	background-image: url(../img/delete32.png) !important
+}
+#adminForm .copyright {
+	text-align: center;
+	margin: 15px 0 0 0
+}
+.adminlist td {
+	position: relative
+}
+.edit-comment {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	float: right;
+	cursor: pointer;
+	display: none
+}
+td:hover .edit-comment {
+	display: block
+}
+.editing .edit-comment {
+	display: none !important
+}
+.edit {
+	width:100%;
+	box-sizing:border-box;
+	padding: 0
+}
+.actions {
+	float: right;
+	margin: 5px 5px 0 0
+}
+.actions .save-button {
+	cursor: pointer;
+	font-size: 1.1em
+}

@@ -7,49 +7,11 @@ JHtml::_('core');
 JHtml::_('behavior.framework', true);
 JHtml::_('script', 'comments/comments_admin.js', true, true);
 JHtml::_('script', 'comments/DynamicTextarea.js', true, true);
+JHtml::_('stylesheet', 'comments/admin.css', array(), true);
 $user		= JFactory::getUser();
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
 ?>
-<style>
-	.icon-48-comments {
-		background-image: url(../media/comments/img/icon48.png)
-	}
-	#adminForm .copyright {
-		text-align: center;
-		margin: 15px 0 0 0
-	}
-	.adminlist td {
-		position: relative
-	}
-	.edit-comment {
-		position: absolute;
-		top: 5px;
-		right: 5px;
-		float: right;
-		cursor: pointer;
-		display: none
-	}
-	td:hover .edit-comment {
-		display: block
-	}
-	.editing .edit-comment {
-		display: none !important
-	}
-	.edit {
-		width:100%;
-		box-sizing:border-box;
-		padding: 0
-	}
-	.actions {
-		float: right;
-		margin: 5px 5px 0 0
-	}
-	.actions .save-button {
-		cursor: pointer;
-		font-size: 1.1em
-	}
-</style>
 <form action="<?php echo JRoute::_('index.php?option=com_comments');?>" method="post" name="adminForm" id="adminForm">
 	<table class="adminlist">
 		<thead>
