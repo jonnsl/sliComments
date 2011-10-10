@@ -1,11 +1,4 @@
 <?php
-/**
- * @version		$Id:$
- * @package		com_games
- * @subpackage	Administrator
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
-
 // no direct access
 defined('_JEXEC') or die;
 
