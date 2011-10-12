@@ -25,6 +25,10 @@
 	height: 40px;
 	width: 40px;
 }
+.profile-image {
+	height: 100%;
+	width: 100%;
+}
 .content-container, .comments_form form {
 	margin-left: 55px;
 }
