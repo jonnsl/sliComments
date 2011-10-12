@@ -107,3 +107,6 @@
 .comment:hover .comment-delete {
 	display: block;
 }
+#comments_section .pagination {
+	border-top: none !important
+}

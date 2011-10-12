@@ -35,4 +35,9 @@ if (JFactory::getUser()->authorise('core.admin')) JHtml::_('script', 'slicomment
 		</li>
 	<?php endforeach; ?>
 	</ul>
+	<div id="pagination">
+		<div class="pagination">
+			<?php echo $this->pagination->getPagesLinks(); ?>
+		</div>
+	</div>
 </div>

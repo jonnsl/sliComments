@@ -13,7 +13,7 @@ jimport('joomla.plugin.plugin');
  */
 class plgContentSlicomments extends JPlugin
 {
-	public function onContentAfterDisplay()
+	public function onContentAfterDisplay($context, &$row, &$params, $page = 0)
 	{
 		if (strtolower(JRequest::getWord('format', 'html')) !== 'html' ||
 		strtolower(JRequest::getCmd('view')) != 'article') return;
@@ -30,6 +30,10 @@ class plgContentSlicomments extends JPlugin
 		require_once $config['base_path'].'/controllers/comments.php';
 		JFactory::getLanguage()->load('com_slicomments', JPATH_BASE, null, false, false);
 		$controller = new sliCommentsControllerComments($config);
+		$model = $controller->getModel('comments');
+		$model->setState('article.id', $row->id);
+		$model->setState('article.slug', $row->slug);
+		$model->setState('article.catid', $row->catid);
 		$controller->execute('display');
 		JRequest::setVar('view', $old_view);
 		JRequest::setVar('task', $old_task);

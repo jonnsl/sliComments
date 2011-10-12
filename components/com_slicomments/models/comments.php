@@ -71,14 +71,14 @@ class sliCommentsModelComments extends JModelList
 	 */
 	protected function populateState()
 	{
-		// Initialise variables.
 		$app = JFactory::getApplication();
 
-		$article_id = JRequest::getInt('id');
-		$this->setState('filter.article_id', $article_id);
+		$limit = 20;
+		$this->setState('list.limit', $limit);
 
-		// List state information.
-		parent::populateState('a.created', 'desc');
+		$value = JRequest::getInt('slicommentslimitstart', 0, 'GET');
+		$limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
+		$this->setState('list.start', $limitstart);
 	}
 
 	/**
@@ -90,7 +90,7 @@ class sliCommentsModelComments extends JModelList
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id	.= ':'.$this->getState('filter.article_id');
+		$id	.= ':'.$this->getState('article.id');
 		return parent::getStoreId($id);
 	}
 
@@ -112,13 +112,34 @@ class sliCommentsModelComments extends JModelList
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
 
 		// Filter by article
-		$query->where('a.article_id = '.(int) $this->getState('filter.article_id'));
+		$query->where('a.article_id = '.(int) $this->getState('article.id'));
 
 		// Add the list ordering clause.
-		$query->order($db->getEscaped($this->getState('list.ordering', 'a.created')).' '.$db->getEscaped($this->getState('list.direction', 'DESC')));
+		$query->order('a.created DESC');
 
 		// echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
+	}
+
+	/**
+	 * Method to get a JPagination object for the data set.
+	 *
+	 * @return  JPagination  A JPagination object for the data set.
+	 *
+	 * @since   11.1
+	 */
+	public function getPagination()
+	{
+		$pagination = parent::getPagination();
+		$pagination->prefix = 'slicomments';
+		$url = ContentHelperRoute::getArticleRoute($this->getState('article.slug'), $this->getState('article.catid'));
+		$uri = new JUri($url);
+		$query = $uri->getQuery(true);
+		foreach ($query as $key => $value)
+		{
+			$pagination->setAdditionalUrlParam($key, $value);
+		}
+		return $pagination;
 	}
 
 	public function getTable()

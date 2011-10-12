@@ -51,4 +51,28 @@ class sliCommentsControllerComments extends JController
 
 		$this->setRedirect(base64_decode($return));
 	}
+
+	public function getModel()
+	{
+		static $model;
+		if ($model == null)
+		{
+			$model = JModel::getInstance('Comments', 'sliCommentsModel');
+			// Task is a reserved state
+			$model->setState('task', $this->task);
+
+			// Let's get the application object and set menu information if it's available
+			$app	= JFactory::getApplication();
+			$menu	= $app->getMenu();
+
+			if (is_object($menu)) {
+				if ($item = $menu->getActive()) {
+					$params	= $menu->getParams($item->id);
+					// Set default state data
+					$model->setState('parameters.menu', $params);
+				}
+			}
+		}
+		return $model;
+	}
 }
