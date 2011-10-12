@@ -96,12 +96,12 @@ class sliCommentsModelComments extends JModelList
 
 	public function validate(&$data)
 	{
-		if (JString::strlen($data['text']) < 5) {
-			$this->setError('Comentário muito curto ou inexistente.');
+		if (($n = JString::strlen($data['text'])) < 5) {
+			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MINLENGTH', $n));
 			return false;
 		}
-		if (JString::strlen($data['text']) > 500) {
-			$this->setError('Comentário muito grande.');
+		if (($n = JString::strlen($data['text'])) > 500) {
+			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MAXLENGTH', $n));
 			return false;
 		}
 		return true;

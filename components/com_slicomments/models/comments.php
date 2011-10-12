@@ -26,21 +26,21 @@ class sliCommentsModelComments extends JModelList
 		return $filter;
 	}
 
-	public function validate(&$data)
+	public function validate($data)
 	{
 		if ($data['user_id'] == 0)
 		{
 			if (!$data['name'] || !preg_match('/^[\w\s]*$/i', $data['name'])) {
-				$this->setError('Nome Inválido.');
+				$this->setError(JText::_('COM_COMMENTS_ERROR_NAME_REQUIRED'));
 				return false;
 			}
 		}
-		if (JString::strlen($data['text']) < 5) {
-			$this->setError('Comentário muito curto ou inexistente.');
+		if (($n = JString::strlen($data['text'])) < 5) {
+			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MINLENGTH', $n));
 			return false;
 		}
-		if (JString::strlen($data['text']) > 500) {
-			$this->setError('Comentário muito grande.');
+		if (($n = JString::strlen($data['text'])) > 500) {
+			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MAXLENGTH', $n));
 			return false;
 		}
 		return true;
@@ -62,8 +62,7 @@ class sliCommentsModelComments extends JModelList
 
 	public function delete($id)
 	{
-		$table = $this->getTable();
-		return $table->delete($id);
+		return $this->getTable()->delete($id);
 	}
 
 	/**

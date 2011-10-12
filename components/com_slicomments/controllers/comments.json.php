@@ -9,8 +9,13 @@ class sliCommentsControllerComments extends JController
 	public function post()
 	{
 		// Check for request forgeries.
-		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-		
+		if (!JRequest::checkToken()) {
+			$return['error'] = JText::_('JINVALID_TOKEN');
+			$return['success'] = false;
+			echo json_encode($return);
+			return;
+		}
+
 		$model = $this->getModel('comments');
 		$data = JRequest::get('post');
 		$data = $model->filter($data);
@@ -60,7 +65,7 @@ class sliCommentsControllerComments extends JController
 				$return['success'] = true;
 			}
 		} else {
-			$return['error'] = 'ID do comentário inválido.';
+			$return['error'] = JText::_('COM_COMMENTS_ERROR_INVALID_ID');
 			$return['success'] = false;
 		}
 		echo json_encode($return);

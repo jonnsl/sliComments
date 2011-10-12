@@ -9,7 +9,12 @@ class sliCommentsControllerComments extends JController
 	public function edit()
 	{
 		// Check for request forgeries.
-		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		if (!JRequest::checkToken()) {
+			$return['error'] = JText::_('JINVALID_TOKEN');
+			$return['success'] = false;
+			echo json_encode($return);
+			return;
+		}
 
 		$model = $this->getModel('comments');
 		$data = JRequest::get('post');

@@ -45,7 +45,7 @@ class sliCommentsControllerComments extends JController
 					$this->setMessage($model->getError(), 'error');
 				}
 			} else {
-				$this->setMessage('ID do comentário inválido.', 'error');
+				$this->setMessage(JText::_('COM_COMMENTS_ERROR_INVALID_ID'), 'error');
 			}
 		}
 

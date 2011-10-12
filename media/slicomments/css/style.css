@@ -114,3 +114,7 @@
 #comments_section .pagination {
 	border-top: none !important
 }
+.comments_form .validation-advice {
+	color: #F11;
+	font-style: italic
+}

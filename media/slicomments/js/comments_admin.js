@@ -53,6 +53,8 @@ window.addEvent('domready', function(){
 					textarea.destroy();
 					td.getElement('.actions').destroy();
 					td.getElement('div').destroy();
+				} else {
+					alert(response.error);
 				}
 			}
 		}).send();
