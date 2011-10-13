@@ -4,6 +4,8 @@ defined('_JEXEC') or die;
 
 class sliCommentsControllerComments extends JController
 {
+	public $default_view = 'comments';
+
 	/**
 	 * Removes a comment.
 	 *
@@ -23,7 +25,7 @@ class sliCommentsControllerComments extends JController
 			JError::raiseWarning(500, JText::_('COM_COMMENTS_NO_COMMENTS_SELECTED'));
 		} else {
 			// Get the model.
-			$model = $this->getModel();
+			$model = $this->getModel('comments');
 
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
