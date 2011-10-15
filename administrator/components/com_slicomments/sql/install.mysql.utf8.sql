@@ -6,5 +6,13 @@ CREATE TABLE IF NOT EXISTS `#__slicomments` (
   `text` varchar(500) NOT NULL default '',
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
   `article_id` integer unsigned NOT NULL,
+  `rating` integer NOT NULL default '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__slicomments_ratings` (
+  `comment_id` integer unsigned NOT NULL,
+  `user_id` integer unsigned NOT NULL,
+  `vote` integer NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;

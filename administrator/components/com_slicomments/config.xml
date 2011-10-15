@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset name="BASIC">
+		<field name="ratings" type="list"
+				label="COM_COMMENTS_ENABLE_RATINGS_LABEL"
+				description="COM_COMMENTS_ENABLE_RATINGS_DESC"
+				default="1">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+		</field>
+	</fieldset>
+</config>

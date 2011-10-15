@@ -75,4 +75,17 @@ class sliCommentsControllerComments extends JController
 		}
 		return $model;
 	}
+	public function vote()
+	{
+		$model = $this->getModel();
+		$vote = JRequest::getInt('v');
+		$comment_id = JRequest::getInt('id');
+		if ($model->vote($comment_id, $vote)) {
+			$this->setMessage(JText::_('COM_COMMENTS_SUCCESS_RATE'));
+		} else {
+			$this->setMessage($model->getError(), 'error');
+		}
+
+		$this->setRedirect(base64_decode(JRequest::getVar('return', null, 'GET', 'ALNUM')));
+	}
 }

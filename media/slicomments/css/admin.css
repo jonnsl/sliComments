@@ -4,6 +4,9 @@
 .icon-32-delete {
 	background-image: url(../img/delete32.png) !important
 }
+.icon-32-options {
+	background-image: url(../img/options32.png) !important
+}
 #adminForm .copyright {
 	text-align: center;
 	margin: 15px 0 0 0

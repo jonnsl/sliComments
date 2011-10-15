@@ -32,5 +32,6 @@ class sliCommentsViewComments extends JView
 	{
 		JToolBarHelper::title(JText::_('COM_COMMENTS_COMMENTS'), 'comments');
 		JToolBarHelper::deleteList('', 'comments.delete', 'JTOOLBAR_DELETE');
+		JToolBarHelper::preferences('com_slicomments');
 	}
 }

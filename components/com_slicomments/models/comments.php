@@ -62,7 +62,110 @@ class sliCommentsModelComments extends JModelList
 
 	public function delete($id)
 	{
-		return $this->getTable()->delete($id);
+		$table = $this->getTable();
+		if (!$table->delete($id)) {
+			$this->setError($table->getError());
+			return false;
+		}
+		return true;
+	}
+
+	public function vote($comment_id, $vote)
+	{
+		// Ratings enabled?
+		if (!$this->getState('component.params')->get('ratings', true)) {
+			$this->setError(JText::_('COM_COMMENTS_ERROR_RATINGS_DISABLED'));
+			return false;
+		}
+
+		// Valid vote?
+		if ($vote !== -1 && $vote !== 1) {
+			$this->setError(JText::_('COM_COMMENTS_ERROR_INVALID_VOTE'));
+			return false;
+		}
+
+		// Logged in user?
+		$user = JFactory::getUser();
+		if ($user->guest) {
+			$this->setError(JText::_('COM_COMMENTS_ERROR_NOT_LOGGED_IN'));
+			return false;
+		}
+
+		$db = $this->_db;
+
+		// Valid comment?
+		$query = $db->getQuery(true)
+			->select('count(*)')
+			->from('#__slicomments')
+			->where('id = '. (int) $comment_id);
+		$db->setQuery($query);
+		$exists = $db->loadResult();
+
+		if (!$exists) {
+			$this->setError(JText::_('COM_COMMENTS_ERROR_COMMENTS_DONT_EXISTS'));
+			return false;
+		}
+
+		// User already voted?
+		$user_id = $user->get('id');
+		$query = $db->getQuery(true)
+			->select('vote')
+			->from('#__slicomments_ratings')
+			->where('user_id = '. (int) $user_id)
+			->where('comment_id = '. (int) $comment_id);
+		$db->setQuery($query);
+		$voted = $db->loadResult();
+
+		if ($voted == $vote){
+			$this->setError(JText::_('COM_COMMENTS_ERROR_ALREADY_VOTED'));
+			return false;
+		}
+
+		// Vote!
+		if ($voted) {
+			$query = $db->getQuery(true)
+				->update('#__slicomments_ratings')
+				->set('vote = '.(int) $vote)
+				->where('user_id = '.(int) $user_id)
+				->where('comment_id = '.(int) $comment_id);
+			$db->setQuery($query);
+			$stored = $db->query();
+			$vote *= 2;
+		}
+		else {
+			$data = new stdClass;
+			$data->user_id = (int) $user_id;
+			$data->vote = (int) $vote;
+			$data->comment_id = (int) $comment_id;
+			$stored = $db->insertObject('#__slicomments_ratings', $data);
+		}
+		
+		if (!$stored){
+			if (JDEBUG) {
+				$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COULD_NOT_STORE_VOTE_DEBUG', $db->getErrorMsg()));
+			} else {
+				$this->setError(JText::_('COM_COMMENTS_ERROR_COULD_NOT_STORE_VOTE'));
+			}
+		}
+
+		// Update the cache
+		$query = $db->getQuery(true)
+			->update('#__slicomments')
+			->set('rating = rating + '.$vote)
+			->where('id = '.(int) $comment_id);
+		$db->setQuery($query);
+		$updated = $db->query();
+
+		if (!$updated){
+			if (JDEBUG) {
+				$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COULD_NOT_UPDATE_VOTE_CACHE', $db->getErrorMsg()));
+			} else {
+				$this->setError(JText::_('COM_COMMENTS_ERROR_COULD_NOT_STORE_VOTE'));
+			}
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
@@ -70,7 +173,8 @@ class sliCommentsModelComments extends JModelList
 	 */
 	protected function populateState()
 	{
-		$app = JFactory::getApplication();
+		$component = JComponentHelper::getComponent('com_slicomments');
+		$this->setState('component.params', $component->params);
 
 		$limit = 20;
 		$this->setState('list.limit', $limit);
@@ -105,7 +209,7 @@ class sliCommentsModelComments extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.id, a.user_id AS not_guest');
+		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.id, a.user_id AS not_guest, a.rating');
 		$query->from('#__slicomments AS a');
 		
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');

@@ -102,19 +102,19 @@
 .overTxtLabel {
 	color: #999
 }
-.comment-delete {
-	display: none;
-	position: absolute;
-	top: 10px;
-	right: 10px;
-}
-.comment:hover .comment-delete {
-	display: block;
-}
 #comments_section .pagination {
 	border-top: none !important
 }
 .comments_form .validation-advice {
 	color: #F11;
 	font-style: italic
+}
+.comments-actions {
+	float: right
+}
+.rating.positive {
+	color: green
+}
+.rating.negative {
+	color: red
 }
