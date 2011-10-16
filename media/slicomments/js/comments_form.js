@@ -5,6 +5,7 @@ window.addEvent('domready', function(){
 	var textarea = $('comments_form_textarea');
 	var counter = $('comments-remaining-count');
 	var form = $('comments_form');
+	var logged = form.get('data-logged') == 1 ? true : false;
 	var validator = new Form.Validator.Inline(form, {
 		scrollToErrorsOnSubmit: false,
 		evaluateFieldsOnChange: false,
@@ -87,8 +88,10 @@ window.addEvent('domready', function(){
 				}
 			}
 		});
-		new OverText($('comments_form_name'));
-		new OverText($('comments_form_email'));
+		if (!logged) {
+			new OverText($('comments_form_name'));
+			new OverText($('comments_form_email'));
+		}
 	}
 	
 	$('comments_form_send').addEvent('click', function(e){
@@ -97,7 +100,7 @@ window.addEvent('domready', function(){
 			new Request.JSON({
 				url: form.get('action')+'&format=json',
 				method: 'post',
-				data: 'article_id='+form.article_id.value+'&name='+form.name.value+'&email='+form.email.value+'&text='+form.text.value+'&'+form.getElement('input[type=hidden]').get('name')+'=1',
+				data: 'article_id='+form.article_id.value+(!logged ? '&name='+form.name.value+'&email='+form.email.value : '')+'&text='+form.text.value+'&'+form.getElement('input[type=hidden]').get('name')+'=1',
 				onSuccess: function(response){
 					if (response.success) {
 						var data = response.data;
