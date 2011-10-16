@@ -2,13 +2,23 @@
 <config>
 	<fieldset name="BASIC">
 		<field
+			name="guest"
+			type="radio"
+			label="COM_COMMENTS_ENABLE_GUEST_LABEL"
+			description="COM_COMMENTS_ENABLE_GUEST_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
 			name="ratings"
-			type="list"
+			type="radio"
 			label="COM_COMMENTS_ENABLE_RATINGS_LABEL"
 			description="COM_COMMENTS_ENABLE_RATINGS_DESC"
 			default="1">
-				<option value="0">JNO</option>
 				<option value="1">JYES</option>
+				<option value="0">JNO</option>
 		</field>
 
 		<field

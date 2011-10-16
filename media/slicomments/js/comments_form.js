@@ -40,7 +40,7 @@ window.addEvent('domready', function(){
 	})()
 	if (placeholder_support) {
 		// Hide the labels
-		$$('.comments_form_inputs li label').setStyle('display', 'none');
+		if (!textarea.get('disabled')) $$('.comments_form_inputs li label').setStyle('display', 'none');
 	}
 	else {
 		// Use OverText to simulate placeholders

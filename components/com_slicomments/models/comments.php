@@ -6,6 +6,12 @@ jimport('joomla.application.component.modellist');
 
 class sliCommentsModelComments extends JModelList
 {
+	public function __construct($config = array())
+	{
+		$this->params = JComponentHelper::getParams('com_slicomments');
+		return parent::__construct($config);
+	}
+
 	public function filter($data)
 	{
 		$user = JFactory::getUser();
@@ -28,6 +34,11 @@ class sliCommentsModelComments extends JModelList
 
 	public function validate($data)
 	{
+		if (!$this->params->get('guest', true) && $data['user_id'] == 0) {
+			$this->setError(JText::_('COM_COMMENTS_ERROR_LOGIN_TO_POST_COMMENT'));
+			return false;
+		}
+
 		$db = $this->_db;
 		$query = $db->getQuery(true)
 			->select('catid')
@@ -60,11 +71,10 @@ class sliCommentsModelComments extends JModelList
 
 	public function isCategoryEnabled($id)
 	{
-		$params = JComponentHelper::getParams('com_slicomments');
-		$catids = $params->get('catid');
+		$catids = $this->params->get('catid');
 		if ($catids[0])
 		{
-			if ($params->get('include_child'))
+			if ($this->params->get('include_child'))
 			{
 				jimport('joomla.application.categories');
 				JModel::addIncludePath(JPATH_SITE.'/components/com_content/models', 'ContentModel');

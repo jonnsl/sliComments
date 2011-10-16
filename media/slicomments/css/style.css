@@ -102,6 +102,14 @@
 .overTxtLabel {
 	color: #999
 }
+.login-to-post{
+	line-height: normal;
+	cursor: text;
+	position: absolute;
+	left: 6px;
+	top: 6px;
+	color: #333
+}
 #comments_section .pagination {
 	border-top: none !important
 }
