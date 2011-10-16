@@ -28,6 +28,18 @@ class sliCommentsModelComments extends JModelList
 
 	public function validate($data)
 	{
+		$db = $this->_db;
+		$query = $db->getQuery(true)
+			->select('catid')
+			->from('#__content')
+			->where('id = '. (int) $data['article_id']);
+		$db->setQuery($query);
+		$catid = $db->loadResult();
+
+		if (!$this->isCategoryEnabled($catid)) {
+			$this->setError(JText::_('COM_COMMENTS_ERROR_CATEGORY_DISABLED'));
+			return false;
+		}
 		if ($data['user_id'] == 0)
 		{
 			if (!$data['name'] || !preg_match('/^[\w\s]*$/i', $data['name'])) {
@@ -42,6 +54,47 @@ class sliCommentsModelComments extends JModelList
 		if (($n = JString::strlen($data['text'])) > 500) {
 			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MAXLENGTH', $n));
 			return false;
+		}
+		return true;
+	}
+
+	public function isCategoryEnabled($id)
+	{
+		$params = JComponentHelper::getParams('com_slicomments');
+		$catids = $params->get('catid');
+		if ($catids[0])
+		{
+			if ($params->get('include_child'))
+			{
+				jimport('joomla.application.categories');
+				JModel::addIncludePath(JPATH_SITE.'/components/com_content/models', 'ContentModel');
+				// Get an instance of the generic categories model
+				$categories = JModel::getInstance('Categories', 'ContentModel', array('ignore_request' => true));
+				$categories->setState('params', JFactory::getApplication()->getParams());
+				$categories->setState('filter.get_children', 9999);
+				$categories->setState('filter.published', 1);
+				$additional_catids = array();
+
+				foreach($catids as $catid)
+				{
+					$categories->setState('filter.parentId', $catid);
+					$items = $categories->getItems(true);
+
+					if ($items)
+					{
+						foreach($items as $category)
+						{
+							$additional_catids[] = $category->id;
+						}
+					}
+				}
+
+				$catids = array_unique(array_merge($catids, $additional_catids));
+			}
+
+			if (!in_array($id, $catids)) {
+				return false;
+			}
 		}
 		return true;
 	}

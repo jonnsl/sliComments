@@ -1,12 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 	<fieldset name="BASIC">
-		<field name="ratings" type="list"
-				label="COM_COMMENTS_ENABLE_RATINGS_LABEL"
-				description="COM_COMMENTS_ENABLE_RATINGS_DESC"
-				default="1">
+		<field
+			name="ratings"
+			type="list"
+			label="COM_COMMENTS_ENABLE_RATINGS_LABEL"
+			description="COM_COMMENTS_ENABLE_RATINGS_DESC"
+			default="1">
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
+		</field>
+
+		<field
+			name="catid"
+			type="category"
+			extension="com_content"
+			multiple="true"
+			size="8"
+			label="JCATEGORY"
+			description="COM_COMMENTS_CATEGORY_DESC">
+				<option value="">
+						JOPTION_ALL_CATEGORIES
+				</option>
+		</field>
+
+		<field
+			name="include_child"
+			type="radio"
+			default="0"
+			label="COM_COMMENTS_CATEGORY_INCLUDE_CHILD_LABEL"
+			description="COM_COMMENTS_CATEGORY_INCLUDE_CHILD_DESC">
+				<option value="1">
+					COM_COMMENTS_CATEGORY_OPTION_INCLUDE_VALUE
+				</option>
+				<option value="0">
+					COM_COMMENTS_CATEGORY_OPTION_EXCLUDE_VALUE
+				</option>
 		</field>
 	</fieldset>
 </config>

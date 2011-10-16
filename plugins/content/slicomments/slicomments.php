@@ -25,15 +25,18 @@ class plgContentSlicomments extends JPlugin
 		$old_task = JRequest::getVar('task');
 		JRequest::setVar('view', 'comments');
 		JRequest::setVar('task', 'comments.display');
-		ob_start();
 		$config = array('base_path'=> JPATH_SITE.'/components/com_slicomments');
 		require_once $config['base_path'].'/controllers/comments.php';
 		JFactory::getLanguage()->load('com_slicomments', JPATH_BASE, null, false, false);
 		$controller = new sliCommentsControllerComments($config);
 		$model = $controller->getModel('comments');
+		if (!$model->isCategoryEnabled($row->catid)) {
+			return;
+		}
 		$model->setState('article.id', $row->id);
 		$model->setState('article.slug', $row->slug);
 		$model->setState('article.catid', $row->catid);
+		ob_start();
 		$controller->execute('display');
 		JRequest::setVar('view', $old_view);
 		JRequest::setVar('task', $old_task);
