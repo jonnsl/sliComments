@@ -42,4 +42,21 @@ class plgContentSlicomments extends JPlugin
 		JRequest::setVar('task', $old_task);
 		return ob_get_clean();
 	}
+
+	public function onContentAfterDelete($context, $table)
+	{
+		if ($context !== 'com_content.article'){
+			return;
+		}
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->delete()
+			->from('#__slicomments')
+			->where('article_id = '.(int)$table->id);
+		$db->setQuery($query);
+		if (!$db->query()) {
+			JError::raiseWarning(500, 'Error deleting comments from article "'.$table->id.'-'.$table->title.'". '.$db->getErrorMsg());
+		}
+	}
 }
