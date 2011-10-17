@@ -1,7 +1,8 @@
 window.addEvent('domready', function(){
 	var form = document.id('adminForm');
-	form.addEvent('click:relay(.edit-comment)', function(event, clicked){
-		var td = this.getParent();
+	var editComment = function(event, clicked){
+		var td = this.get('tag') == 'td' ? this : this.getParent('td');
+		if (td.hasClass('editing')) return;
 		td.addClass('editing');
 		var span = td.getElement('span');
 		var text = span.get('text');
@@ -16,7 +17,9 @@ window.addEvent('domready', function(){
 			new Element('span', {'text': ' or '}),
 			new Element('input', {'type': 'button', 'value': 'save', 'class': 'save-button'})
 		).inject(td);
-	});
+	};
+	form.addEvent('dblclick:relay(.comment)', editComment);
+	form.addEvent('click:relay(.edit-comment)', editComment);
 
 	form.addEvent('click:relay(.cancel-button)', function(event, clicked){
 		var td = this.getParent('td');
@@ -38,15 +41,11 @@ window.addEvent('domready', function(){
 		var token = form.getElements('input[type=hidden]').filter(function(e){
 			return e.get('name').match(/[a-z0-9]{32}/i) && e.get('value') == '1';
 		})[0].get('name');
-		console.log(id);
-		console.log(text);
-		console.log(token);
 		new Request.JSON({
 			url: 'index.php?option=com_slicomments&task=comments.edit&format=json',
 			data: 'text='+text+'&id='+id+'&'+token+'=1',
 			onSuccess: function(response){
 				if (response.success) {
-					console.log(response);
 					td.removeClass('editing');
 					var span = td.getElement('span');
 					span.set('text', response.data);

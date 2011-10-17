@@ -49,7 +49,7 @@ $listDirn	= $this->state->get('list.direction');
 				<td>
 					<?php echo $this->escape($item->name); ?>
 				</td>
-				<td>
+				<td class="comment">
 					<span><?php echo $this->escape($item->text); ?></span>
 					<img class="edit-comment" src="../media/slicomments/img/edit.png" />
 				</td>
