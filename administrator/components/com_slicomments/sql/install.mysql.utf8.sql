@@ -14,5 +14,5 @@ CREATE TABLE IF NOT EXISTS `#__slicomments_ratings` (
   `comment_id` integer unsigned NOT NULL,
   `user_id` integer unsigned NOT NULL,
   `vote` integer NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`comment_id`,`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
