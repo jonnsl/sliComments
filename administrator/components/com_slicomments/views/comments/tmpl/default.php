@@ -47,7 +47,7 @@ $listDirn	= $this->state->get('list.direction');
 					<?php echo $this->escape($item->name); ?>
 				</td>
 				<td class="comment">
-					<span class="submitted">Submitted on: <?php echo JHtml::_('date', $item->created);?></span>
+					<span class="submitted">Submitted on: <?php echo JHtml::_('date', $item->created, 'l, d F Y H:i:s');?></span>
 					<span class="text"><?php echo $this->escape($item->text); ?></span>
 					<img class="edit-comment" src="../media/slicomments/img/edit.png" />
 				</td>
