@@ -4,7 +4,7 @@ window.addEvent('domready', function(){
 		var td = this.get('tag') == 'td' ? this : this.getParent('td');
 		if (td.hasClass('editing')) return;
 		td.addClass('editing');
-		var span = td.getElement('span');
+		var span = td.getElement('.text');
 		var text = span.get('text');
 		span.set('text', '')
 		var textarea = new Element('textarea', {'html': text.trim(), 'class': 'edit'}).inject(td);
@@ -18,13 +18,13 @@ window.addEvent('domready', function(){
 			new Element('input', {'type': 'button', 'value': 'save', 'class': 'save-button'})
 		).inject(td);
 	};
-	form.addEvent('dblclick:relay(.comment)', editComment);
+	form.addEvent('dblclick:relay(.text)', editComment);
 	form.addEvent('click:relay(.edit-comment)', editComment);
 
 	form.addEvent('click:relay(.cancel-button)', function(event, clicked){
 		var td = this.getParent('td');
 		td.removeClass('editing');
-		var span = td.getElement('span');
+		var span = td.getElement('.text');
 		var textarea = td.getElement('textarea');
 		span.set('text', textarea.get('text'));
 		textarea.destroy();
@@ -47,7 +47,7 @@ window.addEvent('domready', function(){
 			onSuccess: function(response){
 				if (response.success) {
 					td.removeClass('editing');
-					var span = td.getElement('span');
+					var span = td.getElement('.text');
 					span.set('text', response.data);
 					textarea.destroy();
 					td.getElement('.actions').destroy();

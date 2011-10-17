@@ -41,3 +41,12 @@ td:hover .edit-comment {
 	cursor: pointer;
 	font-size: 1.1em
 }
+.submitted {
+	float: left;
+	width: 100%;
+	margin-bottom: 5px
+}
+.text {
+	font-size: 1.1em;
+	color: #333
+}

@@ -20,22 +20,19 @@ $listDirn	= $this->state->get('list.direction');
 					<input type="checkbox" name="toggle" value="" onclick="checkAll(this)" />
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'COM_COMMENTS_HEADING_NAME', 'a.name', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('grid.sort', 'COM_COMMENTS_HEADING_AUTHOR', 'a.name', $listDirn, $listOrder); ?>
 				</th>
 				<th>
-					<?php echo JHtml::_('grid.sort', 'COM_COMMENTS_HEADING_TEXT', 'a.text', $listDirn, $listOrder); ?>
+					<?php echo JText::_('COM_COMMENTS_HEADING_COMMENT'); ?>
 				</th>
 				<th width="15%" class="nowrap">
 					<?php echo JHtml::_('grid.sort', 'COM_COMMENTS_HEADING_ARTICLE', 'a.article_id', $listDirn, $listOrder); ?>
-				</th>
-				<th width="1%" class="nowrap">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
 		<tfoot>
 			<tr>
-				<td colspan="5">
+				<td colspan="4">
 					<?php echo $this->pagination->getListFooter(); ?>
 				</td>
 			</tr>
@@ -50,16 +47,14 @@ $listDirn	= $this->state->get('list.direction');
 					<?php echo $this->escape($item->name); ?>
 				</td>
 				<td class="comment">
-					<span><?php echo $this->escape($item->text); ?></span>
+					<span class="submitted">Submitted on: <?php echo JHtml::_('date', $item->created);?></span>
+					<span class="text"><?php echo $this->escape($item->text); ?></span>
 					<img class="edit-comment" src="../media/slicomments/img/edit.png" />
 				</td>
 				<td>
 					<a href="../<?php echo ContentHelperRoute::getArticleRoute($item->alias ? ($item->article_id . ':' . $item->alias) : $item->article_id, $item->catid); ?>">
 						<?php echo $this->escape($item->title); ?>
 					</a>
-				</td>
-				<td class="center">
-					<?php echo (int) $item->id; ?>
 				</td>
 			</tr>
 			<?php endforeach; ?>

@@ -10,10 +10,9 @@ class sliCommentsModelComments extends JModelList
 	{
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'id', 'a.id',
 				'name', 'a.name',
-				'text', 'a.text',
-				'article_id', 'a.article_id'
+				'article_id', 'a.article_id',
+				'created', 'a.created'
 			);
 		}
 
@@ -40,7 +39,7 @@ class sliCommentsModelComments extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('a.id, CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, c.id as article_id, c.alias, c.title, c.catid');
+		$query->select('a.id, CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.created, c.id as article_id, c.alias, c.title, c.catid');
 		$query->from('#__slicomments AS a');
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
