@@ -1,6 +1,7 @@
 window.addEvent('domready', function(){
 	var form = document.id('adminForm');
 	var editComment = function(event, clicked){
+		event.stop();
 		var td = this.get('tag') == 'td' ? this : this.getParent('td');
 		if (td.hasClass('editing')) return;
 		td.addClass('editing');
@@ -12,7 +13,7 @@ window.addEvent('domready', function(){
 		textarea.setStyle('padding', 5);
 		dt.getLineHeight();
 		dt.checkSize(true)
-		new Element('div', {'class': 'actions'}).adopt(
+		new Element('div', {'class': 'comments-post'}).adopt(
 			new Element('a', {'text': 'Cancel', 'href':'#', 'class': 'cancel-button'}),
 			new Element('span', {'text': ' or '}),
 			new Element('input', {'type': 'button', 'value': 'save', 'class': 'save-button'})
@@ -28,7 +29,7 @@ window.addEvent('domready', function(){
 		var textarea = td.getElement('textarea');
 		span.set('text', textarea.get('text'));
 		textarea.destroy();
-		td.getElement('.actions').destroy();
+		td.getElement('.comments-post').destroy();
 		td.getElement('div').destroy();
 		event.stop();
 	});
@@ -50,7 +51,7 @@ window.addEvent('domready', function(){
 					var span = td.getElement('.text');
 					span.set('text', response.data);
 					textarea.destroy();
-					td.getElement('.actions').destroy();
+					td.getElement('.comments-post').destroy();
 					td.getElement('div').destroy();
 				} else {
 					alert(response.error);

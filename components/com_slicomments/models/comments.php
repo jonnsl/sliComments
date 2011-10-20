@@ -160,7 +160,8 @@ class sliCommentsModelComments extends JModelList
 		$query = $db->getQuery(true)
 			->select('count(*)')
 			->from('#__slicomments')
-			->where('id = '. (int) $comment_id);
+			->where('id = '. (int) $comment_id)
+			->where('status = 1');
 		$db->setQuery($query);
 		$exists = $db->loadResult();
 
@@ -279,6 +280,9 @@ class sliCommentsModelComments extends JModelList
 
 		// Filter by article
 		$query->where('a.article_id = '.(int) $this->getState('article.id'));
+
+		// Show only approved comments
+		$query->where('a.status = 1');
 
 		// Add the list ordering clause.
 		$query->order('a.created DESC');

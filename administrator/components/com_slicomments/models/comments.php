@@ -23,6 +23,9 @@ class sliCommentsModelComments extends JModelList
 	 */
 	protected function populateState()
 	{
+		$status = $this->getUserStateFromRequest($this->context.'.status', 'filter_status', '');
+		$this->setState('filter.status', $status);
+	
 		// List state information.
 		parent::populateState('a.created', 'desc');
 	}
@@ -39,16 +42,24 @@ class sliCommentsModelComments extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('a.id, CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.created, c.id as article_id, c.alias, c.title, c.catid');
+		$query->select('a.id, CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.created, a.status, c.id as article_id, c.alias, c.title, c.catid');
 		$query->from('#__slicomments AS a');
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
 		$query->leftjoin('#__content AS c ON c.id = a.article_id');
 
+		// Filter by status
+		$status = $this->getState('filter.status', '');
+		if ($status == '') {
+			$query->where('status >= 0');
+		} else if ($status != '*') {
+			$query->where('status = '.$db->getEscaped($status));
+		}
+
 		// Add the list ordering clause.
 		$query->order($db->getEscaped($this->getState('list.ordering', 'a.created')).' '.$db->getEscaped($this->getState('list.direction', 'DESC')));
 
-		// echo nl2br(str_replace('#__','jos_',$query));
+		//echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
 	}
 
@@ -58,7 +69,7 @@ class sliCommentsModelComments extends JModelList
 	}
 
 	/**
-	 * Method to delete one or more records.
+	 * Method to delete one or more comments.
 	 *
 	 * @param   array    $pks  An array of record primary keys.
 	 *
@@ -79,6 +90,43 @@ class sliCommentsModelComments extends JModelList
 				if (!$table->delete($pk)) {
 					throw new JException($table->getError()->get('message'), 500, E_WARNING);
 				}
+			}
+		} else {
+			throw new JException(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 403, E_WARNING);
+		}
+
+		return true;
+	}
+
+	/**
+	 * Method to change the status of one or more comments.
+	 *
+	 * @param   array    $pks  An array of record primary keys.
+	 *
+	 * @return  boolean  True if successful, false if an error occurs.
+	 * @since   11.1
+	 */
+	public function status($pks, $status)
+	{
+		// Initialise variables.
+		$values = array(
+			'approve' => 1,
+			'unapprove' => 0,
+			'spam' => -1,
+			'trash' => -2
+		);
+		if (isset($values[$status])) {
+			$value = $values[$status];
+		} else {
+			throw new JException(JText::sprintf('COM_COMMENTS_NOT_VALID_STATUS', $status), 500, E_WARNING);
+		}
+		$user = JFactory::getUser();
+		$table = $this->getTable();
+
+		if ($user->authorise('core.manage'))
+		{
+			if (!$table->status($pks, $value)) {
+				throw new JException($table->getError()->get('message'), 500, E_WARNING);
 			}
 		} else {
 			throw new JException(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 403, E_WARNING);

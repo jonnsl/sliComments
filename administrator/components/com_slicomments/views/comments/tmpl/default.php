@@ -3,16 +3,28 @@
 defined('_JEXEC') or die;
 
 require_once JPATH_SITE.'/components/com_content/helpers/route.php';
+require_once JPATH_COMPONENT.'/helpers/comments.php';
 JHtml::_('core');
 JHtml::_('behavior.framework', true);
 JHtml::_('script', 'slicomments/comments_admin.js', true, true);
 JHtml::_('script', 'slicomments/DynamicTextarea.js', true, true);
 JHtml::_('stylesheet', 'slicomments/admin.css', array(), true);
 $user		= JFactory::getUser();
+$token		= '&'.JUtility::getToken().'=1';
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_slicomments');?>" method="post" name="adminForm" id="adminForm">
+	<fieldset id="filter-bar">
+		<div class="filter-select fltrt">
+			<select name="filter_status" id="filter_status" class="inputbox" onchange="this.form.submit()">
+				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+				<?php echo JHtml::_('select.options', sliCommentsHelper::statusOptions() , 'value', 'text', $this->state->get('filter.status'), true);?>
+			</select>
+		</div>
+	</fieldset>
+	<div class="clr"></div>
+
 	<table class="adminlist">
 		<thead>
 			<tr>
@@ -49,7 +61,28 @@ $listDirn	= $this->state->get('list.direction');
 				<td class="comment">
 					<span class="submitted">Submitted on: <?php echo JHtml::_('date', $item->created, 'l, d F Y H:i:s');?></span>
 					<span class="text"><?php echo $this->escape($item->text); ?></span>
-					<img class="edit-comment" src="../media/slicomments/img/edit.png" />
+					<ul class="actions">
+						<?php if ($item->status == 1): ?>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.unapprove&amp;cid[]=<?php echo $item->id.$token; ?>" class="unapprove-comment"><?php echo JText::_('COM_COMMENTS_ACTION_UNAPPROVE'); ?></a></li>
+						<?php elseif ($item->status == 0) :?>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;cid[]=<?php echo $item->id.$token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_APPROVE'); ?></a></li>
+						<?php elseif ($item->status == -1) :?>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;cid[]=<?php echo $item->id.$token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_NOT_SPAM'); ?></a></li>
+						<?php elseif ($item->status == -2) :?>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;cid[]=<?php echo $item->id.$token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_RESTORE'); ?></a></li>
+						<?php endif; ?>
+
+						<?php if ($item->status != -2) :?>
+							<li><a href="#" class="edit-comment"><?php echo JText::_('COM_COMMENTS_ACTION_EDIT'); ?></a></li>
+						<?php endif; ?>
+
+						<?php if ($item->status >= 0) :?>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.spam&amp;cid[]=<?php echo $item->id.$token; ?>" class="spam-comment"><?php echo JText::_('COM_COMMENTS_ACTION_SPAM'); ?></a></li>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.trash&amp;cid[]=<?php echo $item->id.$token; ?>" class="trash-comment"><?php echo JText::_('COM_COMMENTS_ACTION_TRASH'); ?></a></li>
+						<?php else: ?>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.delete&amp;cid[]=<?php echo $item->id.$token; ?>" class="delete-comment"><?php echo JText::_('COM_COMMENTS_ACTION_DELETE_PERMANENTLY'); ?></a></li>
+						<?php endif; ?>	
+					</ul>
 				</td>
 				<td>
 					<a href="../<?php echo ContentHelperRoute::getArticleRoute($item->alias ? ($item->article_id . ':' . $item->alias) : $item->article_id, $item->catid); ?>">

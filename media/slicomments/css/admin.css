@@ -1,6 +1,24 @@
 .icon-48-comments {
 	background-image: url(../img/icon48.png)
 }
+.icon-32-approve {
+	background-image: url(../img/approve32.png)
+}
+.icon-32-unapprove {
+	background-image: url(../img/unapprove32.png)
+}
+.icon-32-spam {
+	background-image: url(../img/spam32.png)
+}
+.icon-32-restore {
+	background-image: url(../img/restore32.png) !important
+}
+.icon-32-edit {
+	background-image: url(../img/edit32.png) !important
+}
+.icon-32-trash {
+	background-image: url(../img/trash32.png) !important
+}
 .icon-32-delete {
 	background-image: url(../img/delete32.png) !important
 }
@@ -14,18 +32,8 @@
 .adminlist td {
 	position: relative
 }
-.edit-comment {
-	position: absolute;
-	top: 5px;
-	right: 5px;
-	float: right;
-	cursor: pointer;
-	display: none
-}
-td:hover .edit-comment {
-	display: block
-}
-.editing .edit-comment {
+
+.editing .actions {
 	display: none !important
 }
 .edit {
@@ -33,13 +41,41 @@ td:hover .edit-comment {
 	box-sizing:border-box;
 	padding: 0
 }
-.actions {
-	float: right;
-	margin: 5px 5px 0 0
+.text {
+	float:left;
 }
-.actions .save-button {
-	cursor: pointer;
-	font-size: 1.1em
+.actions {
+	float: left;
+	clear: both;
+	margin: 5px 5px 0 0;
+	list-style-type: none;
+	padding: 0;
+	visibility: hidden;
+}
+.comments-post {
+	float: right;
+	margin: 5px 5px 0 0;
+}
+td:hover .actions {
+	visibility: visible
+}
+.actions li {
+	float: left;
+	margin: 2px;
+	border-right: 1px solid #333;
+	padding-right: 4px;
+}
+.actions li:last-child {
+	border: 0;
+}
+.actions .approve-comment {
+	color: #006505
+}
+.actions .unapprove-comment {
+	color: #D98500;
+}
+.actions .spam-comment, .actions .trash-comment, .actions .delete-comment {
+	color: #BC0B0B;
 }
 .submitted {
 	float: left;
