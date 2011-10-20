@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="slicomments">
+	<name>plg_slicomments_akismet</name>
+	<author>Jonnathan Soares Lima</author>
+	<creationDate>October 2011</creationDate>
+	<copyright>(C) 2011 Copyleft - all rights reversed</copyright>
+	<license>GNU General Public License version 3</license>
+	<authorEmail>jonnsl@hotmail.com</authorEmail>
+	<version>1.0</version>
+	<description>PLG_SLICOMMENTS_AKISMET_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="akismet">akismet.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.plg_slicomments_akismet.ini</language>
+		<language tag="en-GB">en-GB.plg_slicomments_akismet.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+
+			<fieldset name="basic">
+				<field
+					name="site_url"
+					type="text"
+					description=""
+					label="PLG_SLICOMMENTS_AKISMET_FIELD_SITE_URL_LABEL"
+					required="true"
+				/>
+
+				<field
+					name="api_key"
+					type="text"
+					description="PLG_SLICOMMENTS_AKISMET_FIELD_API_KEY_DESC"
+					label="PLG_SLICOMMENTS_AKISMET_FIELD_API_KEY_LABEL"
+					required="true"
+				/>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

@@ -122,12 +122,27 @@ class sliCommentsModelComments extends JModelList
 		}
 		$user = JFactory::getUser();
 		$table = $this->getTable();
+		if (!is_array($pks)){
+			$pks = array($pks);
+		}
 
 		if ($user->authorise('core.manage'))
 		{
-			if (!$table->status($pks, $value)) {
-				throw new JException($table->getError()->get('message'), 500, E_WARNING);
+			foreach ($pks as $pk)
+			{
+				if (!$table->load($pk)) {
+					throw new JException($table->getError()->get('message'), 500, E_WARNING);
+				}
+
+				JPluginHelper::importPlugin('slicomments');
+				$dispatcher = JDispatcher::getInstance()
+					->trigger('onBeforeChangeCommentState', array($table, $value));
+
+				if (!$table->status($value)) {
+					throw new JException($table->getError()->get('message'), 500, E_WARNING);
+				}
 			}
+			
 		} else {
 			throw new JException(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 403, E_WARNING);
 		}
