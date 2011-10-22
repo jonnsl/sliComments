@@ -28,6 +28,7 @@ class sliCommentsModelComments extends JModelList
 		$filter['return'] = isset($data['return']) ? $data['return'] : '';
 		$filter['article_id'] = (int)$data['article_id'];
 		$filter['created'] = JFactory::getDate()->toMysql();
+		$filter['status'] = 1;
 
 		return $filter;
 	}
@@ -116,6 +117,15 @@ class sliCommentsModelComments extends JModelList
 			$this->setError($table->getError());
 			return false;
 		}
+
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('slicomments');
+		$result = $dispatcher->trigger('onBeforeSaveComment', array($table));
+		if (in_array(false, $result, true)) {
+			$this->setError($table->getError());
+			return false;
+		}
+
 		if (!$table->store($data)) {
 			$this->setError($table->getError());
 			return false;
