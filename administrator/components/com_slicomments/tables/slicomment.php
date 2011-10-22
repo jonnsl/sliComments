@@ -31,23 +31,18 @@ class JTableSliComment extends JTable
 		return true;
 	}
 
-	public function status($pk, $status)
+	public function status($status)
 	{
-		if (is_int($pk)) {
-			$id = $pk;
-		} else if (is_array($pk)) {
-			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($pk);
-			$id = implode(' OR id = ', $pk);
-		} else {
-			$e = new JException(JText::sprintf('COM_COMMENTS_ERROR_INVALID_ARGUMENT'));
+		// If no primary key is given, return false.
+		if ($this->id === null) {
+			$e = new JException(JText::_('JLIB_DATABASE_ERROR_NULL_PRIMARY_KEY'));
 			$this->setError($e);
 			return false;
 		}
 		$query = $this->_db->getQuery(true)
 			->update('#__slicomments')
-			->set('status = '.$this->_db->getEscaped($status))
-			->where('id = '.$id);
+			->set('status = '.(int)$status)
+			->where('id = '.(int)$this->id);
 		$this->_db->setQuery($query);
 
 		// Check for a database error.
