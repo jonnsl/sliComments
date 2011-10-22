@@ -47,7 +47,7 @@ class plgSlicommentsAkismet extends JPlugin
 	{
 		$akismet = new Akismet($this->params->get('site_url'), $this->params->get('api_key'));
 		if (!$akismet->isKeyValid()){
-			throw new Exception('The Wordpress API key passed to the Akismet plugin is invalid.  Please obtain a valid one from http://wordpress.com/api-keys/');
+			throw new Exception(JText::_('PLG_SLICOMMENTS_AKISMET_INVALID_API_KEY'));
 		}
 		$user = JFactory::getUser();
 		$akismet->setCommentAuthor($comment->user_id ? $user->name : $comment->name);
