@@ -23,6 +23,9 @@ class sliCommentsModelComments extends JModelList
 	 */
 	protected function populateState()
 	{
+		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
 		$status = $this->getUserStateFromRequest($this->context.'.status', 'filter_status', '');
 		$this->setState('filter.status', $status);
 	
@@ -54,6 +57,22 @@ class sliCommentsModelComments extends JModelList
 			$query->where('status >= 0');
 		} else if ($status != '*') {
 			$query->where('status = '.$db->getEscaped($status));
+		}
+
+		// Filter by search in title.
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('a.id = '.(int) substr($search, 3));
+			}
+			else if (stripos($search, 'author:') === 0) {
+				$search = $db->Quote('%'.$db->getEscaped(substr($search, 7), true).'%');
+				$query->where('(a.name LIKE '.$search.' OR u.name LIKE '.$search.' OR u.username LIKE '.$search.')');
+			}
+			else {
+				$search = $db->Quote('%'.$db->getEscaped($search, true).'%');
+				$query->where('a.text LIKE '.$search);
+			}
 		}
 
 		// Add the list ordering clause.

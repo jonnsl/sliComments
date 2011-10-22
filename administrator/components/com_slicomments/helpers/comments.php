@@ -13,4 +13,12 @@ class sliCommentsHelper
 		$options[]	= JHtml::_('select.option', '*', 'JALL');
 		return $options;
 	}
+
+	public static function highlight($string, $searchTerm)
+	{
+		if (stripos($searchTerm, 'id:') === false && stripos($searchTerm, 'author:') === false) {
+			return preg_replace("/(".preg_quote($searchTerm).")/ui" ,'<span style="background:#FF0;"><b>$1</b></span>' , $string );
+		}
+		return $string;
+	}
 }
