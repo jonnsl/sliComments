@@ -1,0 +1,60 @@
+#groups {
+	margin: 0;
+	padding: 0;
+	width: 25%;
+	float: left
+}
+.group {
+	margin: 2px 0 !important;
+	border: 1px solid transparent;
+	cursor: pointer;
+	border-left-width: 5px;
+	padding-left: 2px !important
+}
+.group:first-child {
+	margin-top: 0 !important
+}
+.group.selected{
+	border-color: #146295;
+	position: relative;
+	border-right-color: #fff
+}
+#actions {
+	width: 75%;
+	height: 420px;
+	border: 1px solid #146295;
+	padding: 0;
+	float: left;
+	margin: 0 -1px;
+	overflow-y: hidden
+}
+.action {
+	height: 100%;
+	overflow: auto
+}
+.permissions-fieldset {
+	margin: 0 5px !important;
+	padding: 5px !important;
+	border: 1px solid #ccc !important;
+	float: left;
+	min-width: 180px
+}
+.action select {
+	margin-bottom: 0 !important;
+	margin-top: 5px !important
+}
+.action label {
+	min-width: 50px !important;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+.action input[type=checkbox] + label {
+	clear: none
+}
+.action input[type=checkbox] {
+	margin: 8px 8px 0 0;
+	clear: left
+}
