@@ -22,7 +22,7 @@ class sliCommentsModelComments extends JModelList
 		} else {
 			$filter['user_id'] = 0;
 			$filter['name'] = $data['name'];
-			$filter['email'] = md5($data['email']);
+			$filter['email'] = $data['email'];
 		}
 		$filter['text'] = preg_replace('/\n/', '<br />', htmlspecialchars($data['text'], ENT_COMPAT, 'UTF-8'), 10);
 		$filter['return'] = isset($data['return']) ? $data['return'] : '';
@@ -283,7 +283,7 @@ class sliCommentsModelComments extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.id, a.user_id AS not_guest, a.rating');
+		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.id, a.rating');
 		$query->from('#__slicomments AS a');
 		
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');

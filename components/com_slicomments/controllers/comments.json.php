@@ -31,8 +31,9 @@ class sliCommentsControllerComments extends JController
 			$user = JFactory::getUser();
 			if (!$user->guest) {
 				$data['name'] = $user->name;
-				$data['email'] = md5($user->email);
+				$data['email'] = $user->email;
 			}
+			$data['email'] = md5($data['email']);
 			$return['data'] = $data;
 		}
 		echo json_encode($return);

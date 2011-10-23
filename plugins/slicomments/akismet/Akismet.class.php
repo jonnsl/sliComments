@@ -1,5 +1,5 @@
 <?php
-
+defined('_JEXEC') or die;
 /**
  * Akismet anti-comment spam service
  *
@@ -389,5 +389,3 @@ class SocketWriteRead
 		return $this->errorString;
 	}
 }
-
-?>

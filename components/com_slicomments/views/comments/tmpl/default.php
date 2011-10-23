@@ -28,7 +28,7 @@ if ($user->authorise('core.admin')) JHtml::_('script', 'slicomments/comments_for
 			</div>
 			<div class="comment-body">
 				<div class="profile-image-container">
-					<img class="profile-image" src="//www.gravatar.com/avatar/<?php echo ($item->not_guest ? md5($item->email) : $item->email); ?>?s=40" alt="<?php echo $this->escape($item->name); ?>">
+					<img class="profile-image" src="//www.gravatar.com/avatar/<?php echo md5($item->email); ?>?s=40" alt="<?php echo $this->escape($item->name); ?>">
 				</div>
 				<div class="content-container">
 					<div class="content">

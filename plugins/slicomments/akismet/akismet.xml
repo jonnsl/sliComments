@@ -19,13 +19,15 @@
 	<config>
 		<fields name="params">
 
-			<fieldset name="basic">
+			<fieldset name="basic" addrulepath="plugins/slicomments/akismet/rules">
 				<field
 					name="site_url"
 					type="text"
 					description=""
 					label="PLG_SLICOMMENTS_AKISMET_FIELD_SITE_URL_LABEL"
 					required="true"
+					validate="url"
+					schemes="http,https"
 				/>
 
 				<field
@@ -34,6 +36,7 @@
 					description="PLG_SLICOMMENTS_AKISMET_FIELD_API_KEY_DESC"
 					label="PLG_SLICOMMENTS_AKISMET_FIELD_API_KEY_LABEL"
 					required="true"
+					validate="akismetApi"
 				/>
 			</fieldset>
 		</fields>

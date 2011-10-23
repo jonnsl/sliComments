@@ -16,6 +16,13 @@ $listDirn	= $this->state->get('list.direction');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_slicomments');?>" method="post" name="adminForm" id="adminForm">
 	<fieldset id="filter-bar">
+		<div class="filter-search fltlft">
+			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" />
+
+			<button type="submit" class="btn"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+		</div>
 		<div class="filter-select fltrt">
 			<select name="filter_status" id="filter_status" class="inputbox" onchange="this.form.submit()">
 				<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
@@ -60,7 +67,13 @@ $listDirn	= $this->state->get('list.direction');
 				</td>
 				<td class="comment">
 					<span class="submitted">Submitted on: <?php echo JHtml::_('date', $item->created, 'l, d F Y H:i:s');?></span>
-					<span class="text"><?php echo $this->escape($item->text); ?></span>
+					<span class="text"><?php 
+					if ($search = $this->state->get('filter.search')){
+						echo sliCommentsHelper::highlight($this->escape($item->text), $search);
+					} else {
+						echo $this->escape($item->text);
+					}
+					?></span>
 					<ul class="actions">
 						<?php if ($item->status == 1): ?>
 							<li><a href="index.php?option=com_slicomments&amp;task=comments.unapprove&amp;cid[]=<?php echo $item->id.$token; ?>" class="unapprove-comment"><?php echo JText::_('COM_COMMENTS_ACTION_UNAPPROVE'); ?></a></li>
