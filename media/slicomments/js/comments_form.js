@@ -106,7 +106,7 @@ window.addEvent('domready', function(){
 						var data = response.data;
 						new Element('li.comment', {
 							'html': '<div class="comment-body"><div class="profile-image-container"><img class="profile-image" src="//www.gravatar.com/avatar/'+ data.email +'?s=40" alt="'+ data.name +'"></div><div class="content-container"><div class="content"><div class="author">'+data.name+':</div><div class="comment-text">'+data.text+'</div></div></div></div><div class="clr"></div>'
-						}).inject($('comments_list'), 'top');
+						}).inject($('comments_list'), form.get('data-position'));
 						var counter = $('comments_counter');
 						counter.set('text', counter.get('text').toInt() + 1);
 						form.reset();

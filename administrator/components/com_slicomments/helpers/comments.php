@@ -21,4 +21,39 @@ class sliCommentsHelper
 		}
 		return $string;
 	}
+
+	protected static $times = array(
+		'y' => 'COM_COMMENTS_YEARS_AGO',
+		'm' => 'COM_COMMENTS_MONTHS_AGO',
+		'd' => 'COM_COMMENTS_DAYS_AGO',
+		'h' => 'COM_COMMENTS_HOURS_AGO',
+		'i' => 'COM_COMMENTS_MINUTES_AGO',
+		's' => 'COM_COMMENTS_SECONDS_AGO',
+	);
+
+	/**
+	 * Returns the difference from the current time in the format X time ago
+	 *
+	 * @param int $from Time from which the difference begins.
+	 * @param int $to   Optional. Time to end the time difference. Default becomes now if not set.
+	 *
+	 * @note   Borrowed from PHP.net
+	 * @return string
+	 * @see    http://www.php.net/manual/en/function.time.php#105257
+	 */
+	public static function human_time_diff($from, $to = 'now')
+	{
+		$to   = JFactory::getDate($to);
+		$from = JFactory::getDate($from);
+		$diff = $from->diff($to);
+		
+		foreach (self::$times as $key => $value)
+		{
+			$since = $diff->$key;
+			if ($since > 0){
+				return JText::plural($value, $since);
+			}
+		}
+		return '';
+	}
 }

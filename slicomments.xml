@@ -51,6 +51,7 @@
 
 	<tables>
 		<table>#__slicomments</table>
+		<table>#__slicomments_ratings</table>
 	</tables>
 	
 </extension>
