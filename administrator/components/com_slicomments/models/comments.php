@@ -101,17 +101,12 @@ class sliCommentsModelComments extends JModelList
 		$user = JFactory::getUser();
 		$table = $this->getTable();
 
-		if ($user->authorise('core.delete'))
+		// Iterate the items to delete each one.
+		foreach ($pks as $i => $pk)
 		{
-			// Iterate the items to delete each one.
-			foreach ($pks as $i => $pk)
-			{
-				if (!$table->delete($pk)) {
-					throw new JException($table->getError()->get('message'), 500, E_WARNING);
-				}
+			if (!$table->delete($pk)) {
+				throw new JException($table->getError()->get('message'), 500, E_WARNING);
 			}
-		} else {
-			throw new JException(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 403, E_WARNING);
 		}
 
 		return true;
@@ -145,25 +140,19 @@ class sliCommentsModelComments extends JModelList
 			$pks = array($pks);
 		}
 
-		if ($user->authorise('core.manage'))
+		foreach ($pks as $pk)
 		{
-			foreach ($pks as $pk)
-			{
-				if (!$table->load($pk)) {
-					throw new JException($table->getError()->get('message'), 500, E_WARNING);
-				}
-
-				JPluginHelper::importPlugin('slicomments');
-				$dispatcher = JDispatcher::getInstance()
-					->trigger('onBeforeChangeCommentState', array($table, $value));
-
-				if (!$table->status($value)) {
-					throw new JException($table->getError()->get('message'), 500, E_WARNING);
-				}
+			if (!$table->load($pk)) {
+				throw new JException($table->getError()->get('message'), 500, E_WARNING);
 			}
-			
-		} else {
-			throw new JException(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), 403, E_WARNING);
+
+			JPluginHelper::importPlugin('slicomments');
+			$dispatcher = JDispatcher::getInstance()
+				->trigger('onBeforeChangeCommentState', array($table, $value));
+
+			if (!$table->status($value)) {
+				throw new JException($table->getError()->get('message'), 500, E_WARNING);
+			}
 		}
 
 		return true;

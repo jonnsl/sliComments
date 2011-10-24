@@ -17,14 +17,20 @@ class sliCommentsControllerComments extends JController
 	{
 		// Check for request forgeries.
 		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-		
-		$model = $this->getModel();
+
 		$data = JRequest::get('post');
-		$data = $model->filter($data);
-		if (!$model->validate($data)) {
-			$this->setMessage($model->getError(), 'error');
-		} elseif (!$model->save($data)) {
-			$this->setMessage($model->getError(), 'error');
+		if (!JFactory::getUser()->authorise('post', 'com_slicomments')){
+			$this->setMessage(JText::_('COM_COMMENTS_NO_AUTH'), 'error');
+		}
+		else
+		{
+			$model = $this->getModel();
+			$data = $model->filter($data);
+			if (!$model->validate($data)) {
+				$this->setMessage($model->getError(), 'error');
+			} elseif (!$model->save($data)) {
+				$this->setMessage($model->getError(), 'error');
+			}
 		}
 
 		$this->setRedirect(base64_decode($data['return']));
@@ -34,19 +40,31 @@ class sliCommentsControllerComments extends JController
 	{
 		// Check for request forgeries.
 		JRequest::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
-		$return = JRequest::getVar('return', null, 'get');
-		if (!JFactory::getUser()->authorise('core.admin')) {
-			$this->setMessage('Unauthorized.', 'error');
-		} else {
+
+		try {
+			$return = JRequest::getVar('return', null, 'get');
+			$user = JFactory::getUser();
 			$model = $this->getModel();
+			$table = $model->getTable();
 			$id = JRequest::getInt('id', null, 'get');
-			if ($id) {
-				if (!$model->delete($id)) {
-					$this->setMessage($model->getError(), 'error');
-				}
-			} else {
-				$this->setMessage(JText::_('COM_COMMENTS_ERROR_INVALID_ID'), 'error');
+	
+			if (!$id) {
+				throw new Exception(JText::_('COM_COMMENTS_ERROR_INVALID_ID'));
 			}
+			if (!$table->load($id)) {
+				throw new Exception(JText::_('COM_COMMENTS_ERROR_COMMENT_DONT_EXIST'));
+			}
+			if (!(
+				$user->authorise('edit', 'com_slicomments') || 
+				($user->authorise('edit.own', 'com_slicomments') && $table->user_id == $user->id)
+			)) {
+				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'));
+			}
+			if (!$model->delete($id)) {
+				throw new Exception($model->getError()->getMessage());
+			}
+		} catch (Exception $e) {
+			$this->setMessage($e->getMessage(), 'error');
 		}
 
 		$this->setRedirect(base64_decode($return));
@@ -77,15 +95,21 @@ class sliCommentsControllerComments extends JController
 	}
 	public function vote()
 	{
-		$model = $this->getModel();
-		$vote = JRequest::getInt('v');
-		$comment_id = JRequest::getInt('id');
-		if ($model->vote($comment_id, $vote)) {
-			$this->setMessage(JText::_('COM_COMMENTS_SUCCESS_RATE'));
-		} else {
-			$this->setMessage($model->getError(), 'error');
+		if (!JFactory::getUser()->authorise('vote', 'com_slicomments')){
+			$this->setMessage(JText::_('COM_COMMENTS_NO_AUTH'), 'error');
+		}
+		else
+		{
+			$model = $this->getModel();
+			$vote = JRequest::getInt('v');
+			$comment_id = JRequest::getInt('id');
+			if ($model->vote($comment_id, $vote)) {
+				$this->setMessage(JText::_('COM_COMMENTS_SUCCESS_RATE'));
+			} else {
+				$this->setMessage($model->getError(), 'error');
+			}
 		}
 
-		$this->setRedirect(base64_decode(JRequest::getVar('return', null, 'GET', 'ALNUM')));
+		$this->setRedirect(base64_decode(JRequest::getVar('return', JRoute::_('index.php'), 'GET', 'ALNUM')));
 	}
 }

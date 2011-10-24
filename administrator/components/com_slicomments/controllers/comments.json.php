@@ -16,6 +16,14 @@ class sliCommentsControllerComments extends JController
 			return;
 		}
 
+		// Check for authorisation.
+		if (!JFactory::getUser()->authorise('edit', 'com_slicomments')) {
+			$return['error'] = JText::_('COM_COMMENTS_NO_AUTH');
+			$return['success'] = false;
+			echo json_encode($return);
+			return;
+		}
+
 		$model = $this->getModel('comments');
 		$data = JRequest::get('post');
 		$id = (int) $data['id'];

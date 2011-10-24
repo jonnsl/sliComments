@@ -16,6 +16,14 @@ class sliCommentsControllerComments extends JController
 			return;
 		}
 
+		// Check for authorisation.
+		if (!JFactory::getUser()->authorise('post', 'com_slicomments')) {
+			$return['error'] = JText::_('COM_COMMENTS_NO_AUTH');
+			$return['success'] = false;
+			echo json_encode($return);
+			return;
+		}
+
 		$model = $this->getModel('comments');
 		$data = JRequest::get('post');
 		$data = $model->filter($data);
@@ -42,34 +50,41 @@ class sliCommentsControllerComments extends JController
 
 	public function delete()
 	{
-		// Check for request forgeries.
-		if (!JRequest::checkToken('get')) {
-			$return['error'] = JText::_('JINVALID_TOKEN');
+		try {
+			// Check for request forgeries.
+			if (!JRequest::checkToken('get')) {
+				throw new Exception(JText::_('JINVALID_TOKEN'));
+			}
+			$user = JFactory::getUser();
+			$model = $this->getModel('comments');
+			$table = $model->getTable();
+			$id = JRequest::getInt('id', null, 'get');
+
+			if (!$id) {
+				throw new Exception(JText::_('COM_COMMENTS_ERROR_INVALID_ID'));
+			}
+
+			if (!$table->load($id)) {
+				throw new Exception(JText::_('COM_COMMENTS_ERROR_COMMENT_DONT_EXIST'));
+			}
+
+			if (!(
+				$user->authorise('delete', 'com_slicomments') || 
+				(!$user->guest && $user->authorise('delete.own', 'com_slicomments') && $table->user_id == $user->id)
+			)) {
+				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'));
+			}
+
+			if (!$model->delete($id)) {
+				throw new Exception($model->getError()->getMessage());
+			}
+
+			$return['success'] = true;
+		} catch (Exception $e) {
 			$return['success'] = false;
-			echo json_encode($return);
-			return;
-		}
-		if (!JFactory::getUser()->authorise('core.admin')) {
-			$return['error'] = 'Unauthorized.';
-			$return['success'] = false;
-			echo json_encode($return);
-			return;
+			$return['error'] = $e->getMessage();
 		}
 
-		$model = $this->getModel('comments');
-		$id = JRequest::getInt('id', null, 'get');
-		if ($id) {
-			if (!$model->delete($id)) {
-				$return['error'] = $model->getError();
-				$return['success'] = false;
-			} else {
-				$return['success'] = true;
-			}
-		} else {
-			$return['error'] = JText::_('COM_COMMENTS_ERROR_INVALID_ID');
-			$return['success'] = false;
-		}
 		echo json_encode($return);
-		return;
 	}
 }

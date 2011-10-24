@@ -18,21 +18,27 @@ class JFormFieldPermissions extends JFormField
 		$assetId = $this->getAssetId();
 		$assetRules = JAccess::getAssetRules($assetId);
 		$access = $this->getAccess();
+		$guest_usergroup = JComponentHelper::getParams('com_users')->get('guest_usergroup', 1);
 		foreach ($groups as $group)
 		{
-			$left  .= '<li class="group"  data-id="'.$group->id.'">'.str_repeat('|—', $group->level).$group->title.'</li>';
+			$left  .= '<li class="group"  data-id="'.$group->id.'" data-parent-id="'.$group->parent_id.'">'.str_repeat('|—', $group->level).$group->title.'</li>';
 			$right .= '<li class="action" data-id="'.$group->id.'">';
 			
 			foreach ($access as $label => $actions)
 			{
 				$right .= '<fieldset class="permissions-fieldset">';
-				$right .= '<legend>'.$label.'</legend>';
+				$right .= '<legend>'.JText::_('COM_COMMENTS_'.$label.'_FIELDSET_LABEL').'</legend>';
 				foreach ($actions as $action)
 				{
+					if ($action->guest == false && $group->id == $guest_usergroup) {
+						$disabled = true;
+					} else {
+						$disabled = false;
+					}
 					// Get the actual setting for the action for this group.
 					$assetRule = $assetRules->allow($action->name, $group->id);
 
-					$right .= '<select name="'.$this->name.'['.$action->name.']['.$group->id.']" id="'.$this->id.'_'.$action->name.'_'.$group->id.'" title="'.JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title), trim($group->title)).'" class="'.($assetRule === true ? 'allowed': '').($assetRule === false ? 'denied': '').'">';
+					$right .= '<select name="'.$this->name.'['.$action->name.']['.$group->id.']" id="'.$this->id.'_'.$action->name.'_'.$group->id.'" title="'.JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title), trim($group->title)).'" class="'.($assetRule === true ? 'allowed': '').($assetRule === false ? 'denied': '').'" data-name="'.$action->name.'" '.($disabled ? 'disabled="disabled"': '').'>';
 
 					// Build the dropdowns
 
@@ -43,7 +49,7 @@ class JFormFieldPermissions extends JFormField
 					$right .= '<option class="allowed" value="1"'.($assetRule === true ? ' selected="selected"' : '').'>'.JText::_('JLIB_RULES_ALLOWED').'</option>';
 					$right .= '<option class="denied" value="0"'.($assetRule === false ? ' selected="selected"' : '').'>'.JText::_('JLIB_RULES_DENIED').'</option>';
 
-					$right .= '</select>&#160; ';
+					$right .= '</select>';
 					$right .= '<label class="hasTip" for="'.$this->id.'_'.$action->name.'_'.$group->id.'" title="'.htmlspecialchars(JText::_($action->title).'::'.JText::_($action->description), ENT_COMPAT, 'UTF-8').'">';
 					$right .= JText::_($action->title);
 					$right .= '</label>';
@@ -110,7 +116,8 @@ class JFormFieldPermissions extends JFormField
 				$return[$label][] = (object) array(
 					'name' => (string) $action['name'],
 					'title' => (string) $action['title'],
-					'description' => (string) $action['description']
+					'description' => (string) $action['description'],
+					'guest' => (((string) $action['guest']) == 'false' ? false : true)
 				);
 			}
 		}

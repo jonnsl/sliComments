@@ -37,6 +37,7 @@ class sliCommentsControllerComments extends JController
 		} else {
 			// Get the model.
 			$model = $this->getModel('comments');
+			$user = JFactory::getUser();
 
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
@@ -49,6 +50,9 @@ class sliCommentsControllerComments extends JController
 					
 					// Not actually a status change but it remain here to avoid code repetition
 					case 'delete':
+						if (!$user->authorise('edit', 'com_slicomments'){
+							throw new JException(JText::_('COM_COMMENTS_NO_AUTH'), 403, E_WARNING);
+						}
 						$model->delete($cid);
 						$message = 'COM_COMMENTS_N_COMMENTS_DELETED';
 						break;
@@ -56,6 +60,9 @@ class sliCommentsControllerComments extends JController
 					case 'unapprove':
 					case 'trash':
 					case 'spam':
+						if (!$user->authorise('manage', 'com_slicomments'){
+							throw new JException(JText::_('COM_COMMENTS_NO_AUTH'), 403, E_WARNING);
+						}
 						$model->status($cid, $this->task);
 						$message = 'COM_COMMENTS_N_COMMENTS_'.(strtoupper($this->task));
 						break;

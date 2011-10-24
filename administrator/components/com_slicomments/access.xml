@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <access component="com_slicomments">
 	<fieldset
-		label="Basic">
+		label="BASIC">
 		<action
 			name="post"
 			title="COM_COMMENTS_ACTION_POST"
@@ -15,12 +15,14 @@
 		<action
 			name="edit.own"
 			title="COM_COMMENTS_ACTION_EDIT_OWN"
-			description="COM_COMMENTS_ACTION_EDIT_OWN_DESC"/>
+			description="COM_COMMENTS_ACTION_EDIT_OWN_DESC"
+			guest="false"/>
 
 		<action
 			name="delete.own"
 			title="COM_COMMENTS_ACTION_DELETE_OWN"
-			description="COM_COMMENTS_ACTION_DELETE_OWN_DESC"/>
+			description="COM_COMMENTS_ACTION_DELETE_OWN_DESC"
+			guest="false"/>
 
 		<action
 			name="vote"
@@ -29,20 +31,23 @@
 	</fieldset>
 
 	<fieldset
-		label="Manage">
+		label="MANAGE">
 		<action
 			name="edit"
 			title="COM_COMMENTS_ACTION_EDIT"
-			description="COM_COMMENTS_ACTION_EDIT_DESC"/>
+			description="COM_COMMENTS_ACTION_EDIT_DESC"
+			guest="false"/>
 
 		<action
 			name="delete"
 			title="COM_COMMENTS_ACTION_DELETE"
-			description="COM_COMMENTS_ACTION_DELETE_DESC"/>
+			description="COM_COMMENTS_ACTION_DELETE_DESC"
+			guest="false"/>
 
 		<action
 			name="manage"
 			title="COM_COMMENTS_ACTION_MANAGE"
-			description="COM_COMMENTS_ACTION_MANAGE_DESC"/>
+			description="COM_COMMENTS_ACTION_MANAGE_DESC"
+			guest="false"/>
 	</fieldset>
 </access>

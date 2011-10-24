@@ -58,6 +58,10 @@
 .action .denied {
 	color: red
 }
+.action select[disabled]{
+	color: #ccc;
+	border-color: #ccc;
+}
 .action label {
 	min-width: 50px !important;
 	clear: none !important;
