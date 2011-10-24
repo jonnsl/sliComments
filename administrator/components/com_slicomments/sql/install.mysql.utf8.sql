@@ -8,12 +8,15 @@ CREATE TABLE IF NOT EXISTS `#__slicomments` (
   `article_id` integer unsigned NOT NULL,
   `rating` integer NOT NULL default '0',
   `status` smallint default '1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX `idx_article_id` (`article_id`),
+  INDEX `idx_status` (`status`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__slicomments_ratings` (
   `comment_id` integer unsigned NOT NULL,
   `user_id` integer unsigned NOT NULL,
   `vote` integer NOT NULL,
-  PRIMARY KEY (`comment_id`,`user_id`)
+  INDEX `idx_comment_id` (`comment_id`),
+  INDEX `idx_user_id` (`user_id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
