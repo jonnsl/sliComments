@@ -250,12 +250,16 @@ class sliCommentsModelComments extends JModelList
 		$component = JComponentHelper::getComponent('com_slicomments');
 		$this->setState('component.params', $component->params);
 
-		$limit = 20;
+		$limit = $this->params->get('limit', 20);
 		$this->setState('list.limit', $limit);
 
 		$value = JRequest::getInt('slicommentslimitstart', 0, 'GET');
 		$limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
 		$this->setState('list.start', $limitstart);
+
+		$order = $this->params->get('ordering', 'DESC');
+		if (!in_array($order, array('ASC', 'DESC'))) $order = 'DESC';
+		$this->setState('list.order_dir', $order);
 	}
 
 	/**
@@ -295,7 +299,7 @@ class sliCommentsModelComments extends JModelList
 		$query->where('a.status = 1');
 
 		// Add the list ordering clause.
-		$query->order('a.created DESC');
+		$query->order('a.created '.$this->getState('list.order_dir', 'DESC'));
 
 		// echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
@@ -310,6 +314,7 @@ class sliCommentsModelComments extends JModelList
 	 */
 	public function getPagination()
 	{
+		if ($this->getState('list.limit', 20) == 0) return;
 		$pagination = parent::getPagination();
 		$pagination->prefix = 'slicomments';
 		$url = ContentHelperRoute::getArticleRoute($this->getState('article.slug'), $this->getState('article.catid'));

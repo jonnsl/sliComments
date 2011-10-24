@@ -29,6 +29,9 @@
 	height: 100%;
 	width: 100%;
 }
+.comments_form {
+	overflow: hidden
+}
 .content-container, .comments_form form {
 	margin-left: 55px;
 }
