@@ -40,21 +40,30 @@
 	min-width: 180px
 }
 .action select {
-	margin-bottom: 0 !important;
-	margin-top: 5px !important
+	margin: 3px !important;
+	clear: both !important;
+	border: 1px solid
+}
+.action select.allowed {
+	border-color: green;
+	color: green
+}
+.action .allowed {
+	color: green
+}
+.action select.denied {
+	border-color: red;
+	color: red
+}
+.action .denied {
+	color: red
 }
 .action label {
 	min-width: 50px !important;
+	clear: none !important;
 	-webkit-user-select: none;
 	-khtml-user-select: none;
 	-moz-user-select: none;
 	-o-user-select: none;
 	user-select: none;
-}
-.action input[type=checkbox] + label {
-	clear: none
-}
-.action input[type=checkbox] {
-	margin: 8px 8px 0 0;
-	clear: left
 }

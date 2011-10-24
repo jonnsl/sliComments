@@ -1,58 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<access component="com_slicomments">
 	<fieldset
-		name="basic"
 		label="Basic">
-		<field
+		<action
 			name="post"
-			type="checkbox"
-			label="Post new comments"
+			title="Post new comments"
 			description="Allow users in this group to post new comments."/>
 
-		<field
+		<action
 			name="auto_publish"
-			type="checkbox"
-			label="Auto Publish"
+			title="Auto Publish"
 			description="Check to allow new comments to appear automatically (for selected user group). Uncheck if you want comments to be moderated (for selected user group)."/>
 
-		<field
+		<action
 			name="edit"
-			type="checkbox"
-			label="Edit own comments"
+			title="Edit own comments"
 			description="Allow users in this group to edit own comments."/>
 
-		<field
+		<action
 			name="delete"
-			type="checkbox"
-			label="Delete own comments"
+			title="Delete own comments"
 			description="Allow users in this group to delete own comments."/>
 
-		<field
+		<action
 			name="vote"
-			type="checkbox"
-			label="Rate comments"
+			title="Rate comments"
 			description="Allow users in this group to rate comments."/>
 	</fieldset>
 
 	<fieldset
-		name="manage"
 		label="Manage">
-		<field
+		<action
 			name="edit_any"
-			type="checkbox"
-			label="Edit any comments"
+			title="Edit any comments"
 			description="Allow users in this group to edit any comments."/>
 
-		<field
+		<action
 			name="delete_any"
-			type="checkbox"
-			label="Delete any comments"
+			title="Delete any comments"
 			description="Allow users in this group to delete any comments."/>
 
-		<field
+		<action
 			name="manage"
-			type="checkbox"
-			label="Manage comments"
+			title="Manage comments"
 			description="Allow users in this group to access the backend of this comment and change the state of a comment between Approved, Pending, Spam and Trash."/>
 	</fieldset>
-</form>
+</access>

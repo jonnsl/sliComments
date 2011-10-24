@@ -36,10 +36,9 @@
 		>
 
 		<field
-			name="permissions"
+			name="rules"
 			type="Permissions"
 			label="JCONFIG_PERMISSIONS_LABEL"
-			class="inputbox"
-			filter="unset" />
+			filter="rules" />
 	</fieldset>
 </config>

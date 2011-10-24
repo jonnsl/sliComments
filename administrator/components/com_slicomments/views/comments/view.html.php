@@ -58,6 +58,6 @@ class sliCommentsViewComments extends JView
 			JToolBarHelper::custom('comments.delete', 'delete', null, 'JTOOLBAR_DELETE');
 		} 
 
-		JToolBarHelper::preferences('com_slicomments');
+		if (JFactory::getUser()->authorise('core.admin')) JToolBarHelper::preferences('com_slicomments');
 	}
 }

@@ -1,12 +1,13 @@
+(function($){
 window.addEvent('domready', function(){
-	var groups = document.id('groups');
+	var groups = $('groups');
 	groups.getFirst().addClass('selected')
-	var actions = document.id('actions');
+	var actions = $('actions');
 	var elements = {};
 	actions.getChildren().each(function(item){
 		elements[item.get('data-id')] = item;
 	});
-	document.id('groups').addEvent('click:relay(.group)', function(e, clicked){
+	$('groups').addEvent('click:relay(.group)', function(e, clicked){
 		groups.getElements('.selected').removeClass('selected');
 		this.addClass('selected');
 		var id = this.get('data-id');
@@ -16,4 +17,10 @@ window.addEvent('domready', function(){
 		});
 		actions.scrollTo(position.x, position.y);
 	});
+	actions.addEvent('change:relay(select)', function(){
+		var value = !!this.get('value').toInt();
+		this.removeClass(value ? 'denied' : 'allowed')
+			.addClass(value ? 'allowed' : 'denied');
+	});
 });
+})(document.id)
