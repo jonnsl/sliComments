@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS `#__slicomments` (
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
   `article_id` integer unsigned NOT NULL,
   `rating` integer NOT NULL default '0',
+  `status` smallint default '1',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
