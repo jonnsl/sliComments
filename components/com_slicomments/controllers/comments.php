@@ -18,13 +18,15 @@ class sliCommentsControllerComments extends JController
 		// Check for request forgeries.
 		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
+		$user = JFactory::getUser();
 		$data = JRequest::get('post');
-		if (!JFactory::getUser()->authorise('post', 'com_slicomments')){
+		if (!$user->authorise('post', 'com_slicomments')){
 			$this->setMessage(JText::_('COM_COMMENTS_NO_AUTH'), 'error');
 		}
 		else
 		{
 			$model = $this->getModel();
+			$data['status'] = $user->authorise('auto_publish', 'com_slicomments') ? 1 : 0;
 			$data = $model->filter($data);
 			if (!$model->validate($data)) {
 				$this->setMessage($model->getError(), 'error');

@@ -28,7 +28,7 @@ class sliCommentsModelComments extends JModelList
 		$filter['return'] = isset($data['return']) ? $data['return'] : '';
 		$filter['article_id'] = (int)$data['article_id'];
 		$filter['created'] = JFactory::getDate()->toMysql();
-		$filter['status'] = 1;
+		$filter['status'] = (int) $data['status'];
 
 		return $filter;
 	}
