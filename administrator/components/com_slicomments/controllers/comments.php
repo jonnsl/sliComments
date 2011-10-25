@@ -50,7 +50,7 @@ class sliCommentsControllerComments extends JController
 					
 					// Not actually a status change but it remain here to avoid code repetition
 					case 'delete':
-						if (!$user->authorise('edit', 'com_slicomments'){
+						if (!$user->authorise('edit', 'com_slicomments')){
 							throw new JException(JText::_('COM_COMMENTS_NO_AUTH'), 403, E_WARNING);
 						}
 						$model->delete($cid);
@@ -60,7 +60,7 @@ class sliCommentsControllerComments extends JController
 					case 'unapprove':
 					case 'trash':
 					case 'spam':
-						if (!$user->authorise('manage', 'com_slicomments'){
+						if (!$user->authorise('manage', 'com_slicomments')){
 							throw new JException(JText::_('COM_COMMENTS_NO_AUTH'), 403, E_WARNING);
 						}
 						$model->status($cid, $this->task);
