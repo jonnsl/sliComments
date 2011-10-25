@@ -4,50 +4,50 @@
 		label="BASIC">
 		<action
 			name="post"
-			title="COM_COMMENTS_ACTION_POST"
-			description="COM_COMMENTS_ACTION_POST_DESC"/>
+			title="COM_COMMENTS_ACCESS_POST"
+			description="COM_COMMENTS_ACCESS_POST_DESC"/>
 
 		<action
 			name="auto_publish"
-			title="COM_COMMENTS_ACTION_AUTO_PUBLISH"
-			description="COM_COMMENTS_ACTION_AUTO_PUBLISH_DESC"/>
+			title="COM_COMMENTS_ACCESS_AUTO_PUBLISH"
+			description="COM_COMMENTS_ACCESS_AUTO_PUBLISH_DESC"/>
 
 		<action
 			name="edit.own"
-			title="COM_COMMENTS_ACTION_EDIT_OWN"
-			description="COM_COMMENTS_ACTION_EDIT_OWN_DESC"
+			title="COM_COMMENTS_ACCESS_EDIT_OWN"
+			description="COM_COMMENTS_ACCESS_EDIT_OWN_DESC"
 			guest="false"/>
 
 		<action
 			name="delete.own"
-			title="COM_COMMENTS_ACTION_DELETE_OWN"
-			description="COM_COMMENTS_ACTION_DELETE_OWN_DESC"
+			title="COM_COMMENTS_ACCESS_DELETE_OWN"
+			description="COM_COMMENTS_ACCESS_DELETE_OWN_DESC"
 			guest="false"/>
 
 		<action
 			name="vote"
-			title="COM_COMMENTS_ACTION_VOTE"
-			description="COM_COMMENTS_ACTION_VOTE_DESC"/>
+			title="COM_COMMENTS_ACCESS_VOTE"
+			description="COM_COMMENTS_ACCESS_VOTE_DESC"/>
 	</fieldset>
 
 	<fieldset
 		label="MANAGE">
 		<action
 			name="edit"
-			title="COM_COMMENTS_ACTION_EDIT"
-			description="COM_COMMENTS_ACTION_EDIT_DESC"
+			title="COM_COMMENTS_ACCESS_EDIT"
+			description="COM_COMMENTS_ACCESS_EDIT_DESC"
 			guest="false"/>
 
 		<action
 			name="delete"
-			title="COM_COMMENTS_ACTION_DELETE"
-			description="COM_COMMENTS_ACTION_DELETE_DESC"
+			title="COM_COMMENTS_ACCESS_DELETE"
+			description="COM_COMMENTS_ACCESS_DELETE_DESC"
 			guest="false"/>
 
 		<action
 			name="manage"
-			title="COM_COMMENTS_ACTION_MANAGE"
-			description="COM_COMMENTS_ACTION_MANAGE_DESC"
+			title="COM_COMMENTS_ACCESS_MANAGE"
+			description="COM_COMMENTS_ACCESS_MANAGE_DESC"
 			guest="false"/>
 	</fieldset>
 </access>
