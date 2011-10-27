@@ -37,17 +37,33 @@ class JFormFieldPermissions extends JFormField
 					}
 					// Get the actual setting for the action for this group.
 					$assetRule = $assetRules->allow($action->name, $group->id);
+					// Get the inherited setting for the action for this group.
+					$inheritedRule	= JAccess::checkGroup($group->id, $action->name, $assetId);
 
-					$right .= '<select name="'.$this->name.'['.$action->name.']['.$group->id.']" id="'.$this->id.'_'.$action->name.'_'.$group->id.'" title="'.JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title), trim($group->title)).'" class="'.($assetRule === true ? 'allowed': '').($assetRule === false ? 'denied': '').'" data-name="'.$action->name.'" '.($disabled ? 'disabled="disabled"': '').'>';
+					if ($inheritedRule === true) {
+						$inheritedRuleClass = "allowed";
+					} else if ($inheritedRule === false || $inheritedRule === null) {
+						$inheritedRuleClass = "denied";
+					}
+
+					if ($assetRule === true) {
+						$class = "allowed";
+					} else if ($assetRule === false){
+						$class = "denied";
+					}
+					elseif ($assetRule === null)
+					{
+						$class = empty($inheritedRuleClass) ? '' : $inheritedRuleClass;
+					}
+
+					$right .= '<select name="'.$this->name.'['.$action->name.']['.$group->id.']" id="'.$this->id.'_'.$action->name.'_'.$group->id.'" title="'.JText::sprintf('JLIB_RULES_SELECT_ALLOW_DENY_GROUP', JText::_($action->title), trim($group->title)).'" class="'.$class.'" data-name="'.$action->name.'" '.($disabled ? 'disabled="disabled"': '').'>';
 
 					// Build the dropdowns
 
 					// The parent group has "Not Set", all children can rightly "Inherit" from that.
-					if (!empty($group->parent_id)) {
-						$right .= '<option value=""'.($assetRule === null ? ' selected="selected"' : '').'>'.JText::_('JLIB_RULES_INHERITED').'</option>';
-					}
+					$right .= '<option class="'.$inheritedRuleClass.'" value=""'.($assetRule === null ? ' selected="selected"' : '').'>'.JText::_('JLIB_RULES_INHERITED').'</option>';
 					$right .= '<option class="allowed" value="1"'.($assetRule === true ? ' selected="selected"' : '').'>'.JText::_('JLIB_RULES_ALLOWED').'</option>';
-					$right .= '<option class="denied" value="0"'.($assetRule === false ? ' selected="selected"' : '').'>'.JText::_('JLIB_RULES_DENIED').'</option>';
+					$right .= '<option class="denied" value="0"'.($assetRule === false || $disabled ? ' selected="selected"' : '').'>'.JText::_('JLIB_RULES_DENIED').'</option>';
 
 					$right .= '</select>';
 					$right .= '<label class="hasTip" for="'.$this->id.'_'.$action->name.'_'.$group->id.'" title="'.htmlspecialchars(JText::_($action->title).'::'.JText::_($action->description), ENT_COMPAT, 'UTF-8').'">';
