@@ -157,13 +157,6 @@ class sliCommentsModelComments extends JModelList
 			return false;
 		}
 
-		// Logged in user?
-		$user = JFactory::getUser();
-		if ($user->guest) {
-			$this->setError(JText::_('COM_COMMENTS_ERROR_NOT_LOGGED_IN'));
-			return false;
-		}
-
 		$db = $this->_db;
 
 		// Valid comment?
@@ -180,40 +173,81 @@ class sliCommentsModelComments extends JModelList
 			return false;
 		}
 
-		// User already voted?
-		$user_id = $user->get('id');
-		$query = $db->getQuery(true)
-			->select('vote')
-			->from('#__slicomments_ratings')
-			->where('user_id = '. (int) $user_id)
-			->where('comment_id = '. (int) $comment_id);
-		$db->setQuery($query);
-		$voted = $db->loadResult();
-
-		if ($voted == $vote){
-			$this->setError(JText::_('COM_COMMENTS_ERROR_ALREADY_VOTED'));
-			return false;
-		}
-
-		// Vote!
-		if ($voted) {
+		// Logged in user?
+		$user = JFactory::getUser();
+		if (!$user->guest)
+		{
+			// User already voted?
+			$user_id = $user->get('id');
 			$query = $db->getQuery(true)
-				->update('#__slicomments_ratings')
-				->set('vote = '.(int) $vote)
-				->where('user_id = '.(int) $user_id)
+				->select('vote')
+				->from('#__slicomments_ratings')
+				->where('user_id = '. (int) $user_id)
+				->where('comment_id = '. (int) $comment_id);
+			$db->setQuery($query);
+			$voted = $db->loadResult();
+
+			if ($voted == $vote){
+				$this->setError(JText::_('COM_COMMENTS_ERROR_ALREADY_VOTED'));
+				return false;
+			}
+
+			// Vote!
+			if ($voted) {
+				$query = $db->getQuery(true)
+					->update('#__slicomments_ratings')
+					->set('vote = '.(int) $vote)
+					->where('user_id = '.(int) $user_id)
+					->where('comment_id = '.(int) $comment_id);
+				$db->setQuery($query);
+				$stored = $db->query();
+				$vote *= 2;
+			}
+			else {
+				$data = (object) array(
+					'user_id'	=> (int) $user_id,
+					'vote'		=> (int) $vote,
+					'comment_id'=> (int) $comment_id
+				);
+				$stored = $db->insertObject('#__slicomments_ratings', $data);
+			}
+		}
+		else
+		{
+			$yesterday = $db->quote(JFactory::getDate('yesterday')->toMysql());
+			// Guest already voted?
+			if (time() % 2) {
+				$query = $db->getQuery(true)
+					->delete('#__slicomments_ratings')
+					->where('user_id = 0')
+					->where('date < '. $yesterday);
+				$db->setQuery($query)->query();
+			}
+			$query = $db->getQuery(true)
+				->select('count(*)')
+				->from('#__slicomments_ratings')
+				->where('user_id = 0')
+				->where('ip = '. $db->quote($_SERVER['REMOTE_ADDR']))
+				->where('date > '. $yesterday)
 				->where('comment_id = '.(int) $comment_id);
 			$db->setQuery($query);
-			$stored = $db->query();
-			$vote *= 2;
-		}
-		else {
-			$data = new stdClass;
-			$data->user_id = (int) $user_id;
-			$data->vote = (int) $vote;
-			$data->comment_id = (int) $comment_id;
+			$voted = $db->loadResult();
+
+			if ($voted){
+				$this->setError(JText::_('COM_COMMENTS_ERROR_ALREADY_VOTED'));
+				return false;
+			}
+
+			$data = (object) array(
+				'user_id'	=> 0,
+				'vote'		=> (int) $vote,
+				'comment_id'=> (int) $comment_id,
+				'ip'		=> $_SERVER['REMOTE_ADDR'],
+				'date'		=> JFactory::getDate()->toMysql()
+			);
 			$stored = $db->insertObject('#__slicomments_ratings', $data);
 		}
-		
+
 		if (!$stored){
 			if (JDEBUG) {
 				$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COULD_NOT_STORE_VOTE_DEBUG', $db->getErrorMsg()));
@@ -227,8 +261,7 @@ class sliCommentsModelComments extends JModelList
 			->update('#__slicomments')
 			->set('rating = rating + '.$vote)
 			->where('id = '.(int) $comment_id);
-		$db->setQuery($query);
-		$updated = $db->query();
+		$updated = $db->setQuery($query)->query();
 
 		if (!$updated){
 			if (JDEBUG) {
