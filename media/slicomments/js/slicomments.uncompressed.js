@@ -5,6 +5,8 @@ window.addEvent('domready', function(){
 	var textarea = $('comments_form_textarea');
 	var counter = $('comments-remaining-count');
 	var form = $('comments_form');
+	var list = $('comments_list');
+	var comments_count = $('comments_counter');
 	var logged = form.get('data-logged') == 1 ? true : false;
 	var validator = new Form.Validator.Inline(form, {
 		scrollToErrorsOnSubmit: false,
@@ -93,6 +95,8 @@ window.addEvent('domready', function(){
 			new OverText($('comments_form_email'));
 		}
 	}
+
+	// Ajax
 	
 	$('comments_form_send').addEvent('click', function(e){
 		e.stop();
@@ -106,9 +110,8 @@ window.addEvent('domready', function(){
 						var data = response.data;
 						new Element('li.comment', {
 							'html': '<div class="comment-body"><div class="profile-image-container"><img class="profile-image" src="//www.gravatar.com/avatar/'+ data.email +'?s=40" alt="'+ data.name +'"></div><div class="content-container"><div class="content"><div class="author">'+data.name+':</div><div class="comment-text">'+data.text+'</div></div></div></div><div class="clr"></div>'
-						}).inject($('comments_list'), form.get('data-position'));
-						var counter = $('comments_counter');
-						counter.set('text', counter.get('text').toInt() + 1);
+						}).inject(list, form.get('data-position'));
+						comments_count.set('text', counter.get('text').toInt() + 1);
 						form.reset();
 						form.text.fireEvent('keypress');
 						form.text.removeClass('init');
@@ -117,6 +120,43 @@ window.addEvent('domready', function(){
 				}
 			}).send();
 		}
+	});
+
+	var req = function(onSuccess){
+		return function(e)
+		{
+			e.stop();
+			new Request.JSON({
+				'url': this.get('href')+'&format=json',
+				'method': 'get',
+				'onSuccess': onSuccess.bind(this)
+			}).send();
+		}
+	}
+
+	var vote = function(response){
+		if (response.success){
+			var meta = this.getParent('.content-container').getElement('.metadata');
+			var rating = meta.getElement('.rating') || new Element('span.rating').inject(meta);
+			var total = parseInt(rating.get('text') || 0, 10) + response.delta;
+			rating.set('text', total > 0 ? '+'+total : total)
+				.removeClass('(?:positive|negative)')
+				.addClass(total > 0 ? 'positive' : 'negative')
+		} else {
+			alert(response.error);
+		}
+	};
+
+	list.addEvents({
+		'click:relay(a.comment-delete)': 
+		req(function(response){
+			if (response.success) {
+				this.getParent('li.comment').nix(true);
+				comments_count.set('text', comments_count.get('text').toInt() - 1);
+			}
+		}),
+		'click:relay(a.comment-like)': req(vote),
+		'click:relay(a.comment-dislike)': req(vote)
 	});
 });
 })(document.id)
