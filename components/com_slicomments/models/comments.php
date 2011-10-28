@@ -143,7 +143,7 @@ class sliCommentsModelComments extends JModelList
 		return true;
 	}
 
-	public function vote($comment_id, $vote)
+	public function vote($comment_id, &$vote)
 	{
 		// Ratings enabled?
 		if (!$this->getState('component.params')->get('ratings', true)) {
@@ -320,7 +320,7 @@ class sliCommentsModelComments extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.id, a.rating');
+		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.id, a.rating, a.user_id');
 		$query->from('#__slicomments AS a');
 		
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');

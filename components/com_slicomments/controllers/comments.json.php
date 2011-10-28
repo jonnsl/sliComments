@@ -17,7 +17,8 @@ class sliCommentsControllerComments extends JController
 		}
 
 		// Check for authorisation.
-		if (!JFactory::getUser()->authorise('post', 'com_slicomments')) {
+		$user = JFactory::getUser();
+		if (!$user->authorise('post', 'com_slicomments')) {
 			$return['error'] = JText::_('COM_COMMENTS_NO_AUTH');
 			$return['success'] = false;
 			echo json_encode($return);
@@ -26,6 +27,7 @@ class sliCommentsControllerComments extends JController
 
 		$model = $this->getModel('comments');
 		$data = JRequest::get('post');
+		$data['status'] = $user->authorise('auto_publish', 'com_slicomments') ? 1 : 0;
 		$data = $model->filter($data);
 		if (!$model->validate($data)){
 			$return['error'] = $model->getError();
@@ -81,6 +83,28 @@ class sliCommentsControllerComments extends JController
 
 			$return['success'] = true;
 		} catch (Exception $e) {
+			$return['success'] = false;
+			$return['error'] = $e->getMessage();
+		}
+
+		echo json_encode($return);
+	}
+
+	public function vote()
+	{
+		try {
+			if (!JFactory::getUser()->authorise('vote', 'com_slicomments')){
+				throw new JException(JText::_('COM_COMMENTS_NO_AUTH'));
+			}
+			$model = $this->getModel('comments');
+			$vote = JRequest::getInt('v');
+			$comment_id = JRequest::getInt('id');
+			if (!$model->vote($comment_id, $vote)) {
+				throw new JException($model->getError());
+			}
+			$return['success'] = true;
+			$return['delta'] = $vote;
+		} catch (JException $e) {
 			$return['success'] = false;
 			$return['error'] = $e->getMessage();
 		}
