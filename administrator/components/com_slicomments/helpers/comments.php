@@ -54,6 +54,7 @@ class sliCommentsHelper
 				return JText::plural($value, $since);
 			}
 		}
-		return '';
+
+		return JText::_('COM_COMMENTS_SECONDS_AGO_1');
 	}
 }
