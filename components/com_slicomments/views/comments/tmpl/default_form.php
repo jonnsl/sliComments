@@ -3,6 +3,9 @@
 defined('_JEXEC') or die;
 $user = JFactory::getUser();
 $canComment = $user->authorise('post', 'com_slicomments');
+$name = $this->params->get('name', 1);
+$email = $this->params->get('email', 0);
+$maximum_chars = $this->params->get('maximum_chars', 5)
 ?>
 <div class="comments_form no-js">
 	<form id="comments_form" action="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.post'); ?>" method="post" data-logged="<?php echo (!$user->guest ? '1' : '0');?>" data-position="<?php echo $this->state->get('list.order_dir', 'DESC') == 'DESC' ? 'top' : 'bottom'; ?>">
@@ -11,14 +14,18 @@ $canComment = $user->authorise('post', 'com_slicomments');
 		<input type="hidden" name="article_id" value="<?php echo JRequest::getInt('id'); ?>"/>
 		<ul class="comments_form_inputs">
 			<?php if ($canComment && $user->guest): ?>
+			<?php if ($name != -1): ?>
 			<li>
 				<label><?php echo JText::_('COM_COMMENTS_LABEL_NAME'); ?></label>
-				<input id="comments_form_name" type="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_NAME'); ?>" name="name" class="required validation-failed"/>
+				<input id="comments_form_name" type="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_NAME'); ?>" name="name" class="<?php if ($name == 1) echo 'required ' ?>validation-failed"/>
 			</li>
+			<?php endif; ?>
+			<?php if ($email != -1): ?>
 			<li>
 				<label><?php echo JText::_('COM_COMMENTS_LABEL_EMAIL'); ?></label>
-				<input id="comments_form_email" type="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_EMAIL'); ?>" name="email" class="validate-email"/>
+				<input id="comments_form_email" type="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_EMAIL'); ?>" name="email" class="<?php if ($email == 1) echo 'required ' ?>validate-email"/>
 			</li>
+			<?php endif; ?>
 			<?php endif; ?>
 			<li>
 				<?php if (!$canComment): ?>
@@ -28,13 +35,14 @@ $canComment = $user->authorise('post', 'com_slicomments');
 				<?php else: ?>
 				<label for="comments_form_textarea"><?php echo JText::_('COM_COMMENTS_LABEL_TEXT'); ?></label>
 				<?php endif; ?>
-				<textarea id="comments_form_textarea" name="text" class="required minLength:5"
-				<?php if (!$canComment) {echo ' disabled';} else {echo 'placeholder="'.JText::_('COM_COMMENTS_LABEL_TEXT').'"';} ?>></textarea>
+				<textarea id="comments_form_textarea" name="text" class="required minLength:<?php echo $this->params->get('minimum_chars', 5); ?>"
+				<?php if (!$canComment) {echo ' disabled';} else {echo 'placeholder="'.JText::_('COM_COMMENTS_LABEL_TEXT').'"';} ?>
+				data-maxlength="<?php echo $maximum_chars; ?>"></textarea>
 			</li>
 		</ul>
 		<?php if ($canComment): ?>
 		<p class="comments-remaining">
-			<?php echo JText::sprintf('COM_COMMENTS_CHARACTERS_REMAINING', '<span id="comments-remaining-count">500</span>'); ?>
+			<?php echo JText::sprintf('COM_COMMENTS_CHARACTERS_REMAINING', '<span id="comments-remaining-count">'.$maximum_chars.'</span>'); ?>
 		</p>
 		<?php endif; ?>
 		<p class="comments-post-buttons">

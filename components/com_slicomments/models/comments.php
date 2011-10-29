@@ -21,8 +21,8 @@ class sliCommentsModelComments extends JModelList
 			$filter['email'] = '';
 		} else {
 			$filter['user_id'] = 0;
-			$filter['name'] = $data['name'];
-			$filter['email'] = $data['email'];
+			$filter['name'] = $this->params->get('name', 1) != -1 ? $data['name'] : '';
+			$filter['email'] = $this->params->get('email', 1) != -1 ? $data['email'] : '';
 		}
 		$filter['text'] = preg_replace('/\n/', '<br />', htmlspecialchars($data['text'], ENT_COMPAT, 'UTF-8'), 10);
 		$filter['return'] = isset($data['return']) ? $data['return'] : '';
@@ -54,17 +54,21 @@ class sliCommentsModelComments extends JModelList
 		}
 		if ($data['user_id'] == 0)
 		{
-			if (!$data['name'] || !preg_match('/^[\w\s]*$/i', $data['name'])) {
+			if ($this->params->get('name', 1) == 1 && empty($data['name'])) {
 				$this->setError(JText::_('COM_COMMENTS_ERROR_NAME_REQUIRED'));
 				return false;
 			}
+			if ($this->params->get('email', 0) == 1 && empty($data['email'])) {
+				$this->setError(JText::_('COM_COMMENTS_ERROR_EMAIL_REQUIRED'));
+				return false;
+			}
 		}
-		if (($n = JString::strlen($data['text'])) < 5) {
-			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MINLENGTH', $n));
+		if (($n = JString::strlen($data['text'])) < ($p = $this->params->get('minimum_chars', 5))) {
+			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MINLENGTH', $p, $n));
 			return false;
 		}
-		if (($n = JString::strlen($data['text'])) > 500) {
-			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MAXLENGTH', $n));
+		if (($n = JString::strlen($data['text'])) > ($p = $this->params->get('maximum_chars', 500))) {
+			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MAXLENGTH', $p, $n));
 			return false;
 		}
 		return true;

@@ -15,7 +15,7 @@ window.addEvent('domready', function(){
 	});
 
 	var update_counter = function() {
-		remaining_chars = 500 - this.value.length;
+		remaining_chars = this.get('data-maxlength') - this.value.length;
 		counter.set('text', remaining_chars);
 		if (remaining_chars <= 5) {
 			counter.setStyle('color', '#900');
@@ -104,7 +104,7 @@ window.addEvent('domready', function(){
 			new Request.JSON({
 				url: form.get('action')+'&format=json',
 				method: 'post',
-				data: 'article_id='+form.article_id.value+(!logged ? '&name='+form.name.value+'&email='+form.email.value : '')+'&text='+form.text.value+'&'+form.getElement('input[type=hidden]').get('name')+'=1',
+				data: form,
 				onSuccess: function(response){
 					if (response.success) {
 						var data = response.data;

@@ -29,6 +29,43 @@
 		</field>
 	</fieldset>
 
+	<fieldset name="FORM">
+		<field
+			name="name"
+			type="list"
+			label="COM_COMMENTS_SHOW_NAME_LABEL"
+			description="COM_COMMENTS_SHOW_NAME_DESC"
+			default="1">
+				<option value="-1">COM_COMMENTS_OPTION_DISABLE_VALUE</option>
+				<option value="0">COM_COMMENTS_OPTION_UNREQUIRED_VALUE</option>
+				<option value="1">COM_COMMENTS_OPTION_REQUIRED_VALUE</option>
+		</field>
+		<field
+			name="email"
+			type="list"
+			label="COM_COMMENTS_SHOW_EMAIL_LABEL"
+			description="COM_COMMENTS_SHOW_EMAIL_DESC"
+			default="1">
+				<option value="-1">COM_COMMENTS_OPTION_DISABLE_VALUE</option>
+				<option value="0">COM_COMMENTS_OPTION_UNREQUIRED_VALUE</option>
+				<option value="1">COM_COMMENTS_OPTION_REQUIRED_VALUE</option>
+		</field>
+		<field
+			name="minimum_chars"
+			type="text"
+			label="COM_COMMENTS_MINIMUM_CHARS_LABEL"
+			description="COM_COMMENTS_MINIMUM_CHARS_DESC"
+			default="5"
+			size="5"/>
+		<field
+			name="maximum_chars"
+			type="text"
+			label="COM_COMMENTS_MAXIMUM_CHARS_LABEL"
+			description="COM_COMMENTS_MAXIMUM_CHARS_DESC"
+			default="500"
+			size="5"/>
+	</fieldset>
+
 	<fieldset name="LAYOUT">
 		<field
 			name="form_position"
