@@ -1,6 +1,7 @@
 <?php
 // no direct access
 defined('_JEXEC') or die;
+require_once JPATH_ADMINISTRATOR.'/components/com_slicomments/helpers/comments.php';
 JHtml::_('behavior.framework', true);
 JHtml::_('stylesheet', 'slicomments/style.css', array(), true);
 $user = JFactory::getUser();
@@ -33,6 +34,9 @@ JHtml::_('script', 'slicomments/slicomments.js', true, true);
 					<div class="metadata">
 						<span class="author">
 							<?php echo $this->escape($item->name); ?>
+						</span>
+						<span class="created">
+							<?php echo sliCommentsHelper::human_time_diff($item->created);?>
 						</span>
 						<?php if ($item->rating != 0) : ?>
 						<span class="rating <?php echo ($item->rating > 0 ? 'positive' : 'negative'); ?>">
