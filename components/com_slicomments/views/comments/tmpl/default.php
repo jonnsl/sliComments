@@ -14,7 +14,6 @@ JHtml::_('script', 'slicomments/slicomments.js', true, true);
 	<ul id="comments_list" class="comment-list">
 	<?php foreach ($this->items as $i => $item) : ?>
 		<li class="comment">
-			
 			<div class="comment-body">
 				<div class="profile-image-container">
 					<img class="profile-image" src="//www.gravatar.com/avatar/<?php echo md5($item->email); ?>?s=40" alt="<?php echo $this->escape($item->name); ?>">

@@ -107,9 +107,8 @@ window.addEvent('domready', function(){
 				data: form,
 				onSuccess: function(response){
 					if (response.success) {
-						var data = response.data;
 						new Element('li.comment', {
-							'html': '<div class="comment-body"><div class="profile-image-container"><img class="profile-image" src="//www.gravatar.com/avatar/'+ data.email +'?s=40" alt="'+ data.name +'"></div><div class="content-container"><div class="content"><div class="author">'+data.name+':</div><div class="comment-text">'+data.text+'</div></div></div></div><div class="clr"></div>'
+							'html': response.html
 						}).inject(list, form.get('data-position'));
 						comments_count.set('text', counter.get('text').toInt() + 1);
 						form.reset();

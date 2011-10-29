@@ -114,7 +114,7 @@ class sliCommentsModelComments extends JModelList
 		return true;
 	}
 
-	public function save($data)
+	public function save(&$data)
 	{
 		$table = $this->getTable();
 		if (!$table->bind($data)) {
@@ -134,6 +134,7 @@ class sliCommentsModelComments extends JModelList
 			$this->setError($table->getError());
 			return false;
 		}
+		$data['id'] = $table->id;
 		return true;
 	}
 

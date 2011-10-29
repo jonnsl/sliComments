@@ -25,7 +25,7 @@ class sliCommentsControllerComments extends JController
 			return;
 		}
 
-		$model = $this->getModel('comments');
+		$model = $this->getModel();
 		$data = JRequest::get('post');
 		$data['status'] = $user->authorise('auto_publish', 'com_slicomments') ? 1 : 0;
 		$data = $model->filter($data);
@@ -43,8 +43,9 @@ class sliCommentsControllerComments extends JController
 				$data['name'] = $user->name;
 				$data['email'] = $user->email;
 			}
-			$data['email'] = md5($data['email']);
-			$return['data'] = $data;
+			$view = $this->getView('comment', 'html');
+			$view->setModel($model, true);
+			$return['html'] = $view->display($data);
 		}
 		echo json_encode($return);
 		return;
@@ -58,7 +59,7 @@ class sliCommentsControllerComments extends JController
 				throw new Exception(JText::_('JINVALID_TOKEN'));
 			}
 			$user = JFactory::getUser();
-			$model = $this->getModel('comments');
+			$model = $this->getModel();
 			$table = $model->getTable();
 			$id = JRequest::getInt('id', null, 'get');
 
@@ -96,7 +97,7 @@ class sliCommentsControllerComments extends JController
 			if (!JFactory::getUser()->authorise('vote', 'com_slicomments')){
 				throw new JException(JText::_('COM_COMMENTS_NO_AUTH'));
 			}
-			$model = $this->getModel('comments');
+			$model = $this->getModel();
 			$vote = JRequest::getInt('v');
 			$comment_id = JRequest::getInt('id');
 			if (!$model->vote($comment_id, $vote)) {
@@ -110,5 +111,10 @@ class sliCommentsControllerComments extends JController
 		}
 
 		echo json_encode($return);
+	}
+
+	public function getModel($name = 'comments', $prefix = 'sliCommentsModel', $config = array())
+	{
+		return parent::getModel($name, $prefix, $config);
 	}
 }
