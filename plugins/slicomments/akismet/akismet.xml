@@ -8,14 +8,19 @@
 	<authorEmail>jonnsl@hotmail.com</authorEmail>
 	<version>1.0</version>
 	<description>PLG_SLICOMMENTS_AKISMET_XML_DESCRIPTION</description>
+
 	<files>
 		<filename plugin="akismet">akismet.php</filename>
+		<filename>Akismet.class.php</filename>
 		<filename>index.html</filename>
+		<folder>rules</folder>
 	</files>
-	<languages>
-		<language tag="en-GB">en-GB.plg_slicomments_akismet.ini</language>
-		<language tag="en-GB">en-GB.plg_slicomments_akismet.sys.ini</language>
+
+	<languages folder="../../../administrator/language">
+		<language tag="en-GB">en-GB/en-GB.plg_slicomments_akismet.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_slicomments_akismet.sys.ini</language>
 	</languages>
+
 	<config>
 		<fields name="params">
 

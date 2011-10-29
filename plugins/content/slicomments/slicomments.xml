@@ -8,12 +8,13 @@
 
 	<files>
 		<filename plugin="slicomments">slicomments.php</filename>
+		<filename>index.html</filename>
 	</files>
+
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
 			</fieldset>
 		</fields>
 	</config>
-
 </extension>

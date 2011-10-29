@@ -8,7 +8,9 @@
 	<version>1.0</version>
 	<creationDate>July 2011</creationDate>
 	<description>COM_COMMENTS_XML_DESCRIPTION</description>
-	
+
+	<scriptfile>script.slicomments.php</scriptfile>
+
 	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
@@ -19,39 +21,51 @@
 			<file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>
-	
+
 	<files folder="components/com_slicomments">
 		<folder>controllers</folder>
 		<folder>models</folder>
 		<folder>views</folder>
-		<filename>comments.php</filename>
+		<filename>slicomments.php</filename>
 		<filename>index.html</filename>
 	</files>
-	
+
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.com_slicomments.ini</language>
+	</languages>
+
 	<media destination="slicomments" folder="media/slicomments">
 		<folder>css</folder>
 		<folder>img</folder>
 		<folder>js</folder>
 		<filename>index.html</filename>
 	</media>
-	
+
 	<administration>
 		<menu img="../media/slicomments/img/icon16.png">COM_COMMENTS</menu>
 
 		<files folder="administrator/components/com_slicomments">
 			<folder>controllers</folder>
+			<folder>helpers</folder>
 			<folder>models</folder>
 			<folder>tables</folder>
 			<folder>views</folder>
 			<folder>sql</folder>
+			<filename>access.xml</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
 			<filename>slicomments.php</filename>
 			<filename>index.html</filename>
 		</files>
+
+		<languages folder="administrator/language">
+			<language tag="en-GB">en-GB/en-GB.com_slicomments.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_slicomments.sys.ini</language>
+		</languages>
 	</administration>
 
 	<tables>
 		<table>#__slicomments</table>
 		<table>#__slicomments_ratings</table>
 	</tables>
-	
 </extension>
