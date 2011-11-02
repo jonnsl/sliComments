@@ -392,4 +392,19 @@ class sliCommentsModelComments extends JModelList
 	{
 		return $this->params;
 	}
+
+	public function getData()
+	{
+		$session = JFactory::getSession();
+		$data = $session->get('com_slicomments.data', array());
+
+		$ret['name'] = isset($data['name']) ? $data['name'] : '';
+		$ret['email'] = isset($data['email']) ? $data['email'] : '';
+		$ret['text'] = isset($data['text']) ? preg_replace('/<br \/>/', "\n", $data['text'], 10) : '';
+
+		// Reset the data
+		$session->set('com_slicomments.data', array('name' => $ret['name']));
+
+		return $ret;
+	}
 }

@@ -8,7 +8,7 @@ JHtml::_('behavior.framework', true);
 JHtml::_('stylesheet', 'slicomments/style.css', array(), true);
 $user = JFactory::getUser();
 $form_position = $this->params->get('form_position', 'before');
-JHtml::_('script', 'slicomments/slicomments.uncompressed.js', true, true);
+JHtml::_('script', 'slicomments/slicomments.js', true, true);
 ?>
 <div id="comments_section">
 	<h4><?php echo JText::sprintf('COM_COMMENTS_COMMENTS_COUNT', '<span id="comments_counter" >'.$this->total.'</span>'); ?></h4>

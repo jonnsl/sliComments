@@ -16,6 +16,7 @@ class sliCommentsViewComments extends JView
 		$this->params		= $this->state->get('params');
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
+		$this->data			= $this->get('Data');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {

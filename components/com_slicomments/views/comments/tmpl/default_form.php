@@ -17,13 +17,13 @@ $maximum_chars = $this->params->get('maximum_chars', 5)
 			<?php if ($name != -1): ?>
 			<li>
 				<label><?php echo JText::_('COM_COMMENTS_LABEL_NAME'); ?></label>
-				<input id="comments_form_name" type="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_NAME'); ?>" name="name" class="<?php if ($name == 1) echo 'required ' ?>validation-failed"/>
+				<input id="comments_form_name" type="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_NAME'); ?>" name="name" class="<?php if ($name == 1) echo 'required ' ?>validation-failed" value="<?php echo $this->escape($this->data['name']); ?>"/>
 			</li>
 			<?php endif; ?>
 			<?php if ($email != -1): ?>
 			<li>
 				<label><?php echo JText::_('COM_COMMENTS_LABEL_EMAIL'); ?></label>
-				<input id="comments_form_email" type="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_EMAIL'); ?>" name="email" class="<?php if ($email == 1) echo 'required ' ?>validate-email"/>
+				<input id="comments_form_email" type="text" placeholder="<?php echo JText::_('COM_COMMENTS_LABEL_EMAIL'); ?>" name="email" class="<?php if ($email == 1) echo 'required ' ?>validate-email" value="<?php echo $this->escape($this->data['email']); ?>"/>
 			</li>
 			<?php endif; ?>
 			<?php endif; ?>
@@ -37,7 +37,7 @@ $maximum_chars = $this->params->get('maximum_chars', 5)
 				<?php endif; ?>
 				<textarea id="comments_form_textarea" name="text" class="required minLength:<?php echo $this->params->get('minimum_chars', 5); ?>"
 				<?php if (!$canComment) {echo ' disabled';} else {echo 'placeholder="'.JText::_('COM_COMMENTS_LABEL_TEXT').'"';} ?>
-				data-maxlength="<?php echo $maximum_chars; ?>"></textarea>
+				data-maxlength="<?php echo $maximum_chars; ?>"><?php echo $this->escape($this->data['text']); ?></textarea>
 			</li>
 		</ul>
 		<?php if ($canComment): ?>
