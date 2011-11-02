@@ -35,20 +35,25 @@ class sliCommentsModelComments extends JModelList
 
 	public function validate($data)
 	{
-		if (!$this->params->get('guest', true) && $data['user_id'] == 0) {
-			$this->setError(JText::_('COM_COMMENTS_ERROR_LOGIN_TO_POST_COMMENT'));
-			return false;
-		}
-
 		$db = $this->_db;
 		$query = $db->getQuery(true)
-			->select('catid')
+			->select('catid, attribs')
 			->from('#__content')
 			->where('id = '. (int) $data['article_id']);
 		$db->setQuery($query);
-		$catid = $db->loadResult();
 
-		if (!$this->isCategoryEnabled($catid)) {
+		if (!($article = $db->loadAssoc())){
+			$this->setError(JText::_('COM_COMMENTS_ERROR_ARTICLE_DONT_EXISTS'));
+			return false;
+		}
+
+		$params = new JRegistry($article['attribs']);
+		if (!$params->get('slicomments.enabled', true)){
+			$this->setError(JText::_('COM_COMMENTS_ERROR_COMMENTS_DISABLED'));
+			return false;
+		}
+
+		if (!$this->isCategoryEnabled($article['catid'])) {
 			$this->setError(JText::_('COM_COMMENTS_ERROR_CATEGORY_DISABLED'));
 			return false;
 		}
@@ -151,7 +156,7 @@ class sliCommentsModelComments extends JModelList
 	public function vote($comment_id, &$vote)
 	{
 		// Ratings enabled?
-		if (!$this->getState('component.params')->get('ratings', true)) {
+		if (!$this->params->get('ratings', true)) {
 			$this->setError(JText::_('COM_COMMENTS_ERROR_RATINGS_DISABLED'));
 			return false;
 		}
@@ -166,15 +171,26 @@ class sliCommentsModelComments extends JModelList
 
 		// Valid comment?
 		$query = $db->getQuery(true)
-			->select('count(*)')
+			->select('article_id')
 			->from('#__slicomments')
 			->where('id = '. (int) $comment_id)
 			->where('status = 1');
 		$db->setQuery($query);
-		$exists = $db->loadResult();
+		$article_id = $db->loadResult();
 
-		if (!$exists) {
+		if (!$article_id) {
 			$this->setError(JText::_('COM_COMMENTS_ERROR_COMMENTS_DONT_EXISTS'));
+			return false;
+		}
+
+		$query = $db->getQuery(true)
+			->select('attribs')
+			->from('#__content')
+			->where('id = '. (int) $article_id);
+		$db->setQuery($query);
+		$params = new JRegistry($db->loadResult());
+		if (!$params->get('slicomments.ratings', true)){
+			$this->setError(JText::_('COM_COMMENTS_ERROR_RATINGS_DISABLED'));
 			return false;
 		}
 
@@ -285,8 +301,10 @@ class sliCommentsModelComments extends JModelList
 	 */
 	protected function populateState()
 	{
-		$component = JComponentHelper::getComponent('com_slicomments');
-		$this->setState('component.params', $component->params);
+		$params = new JRegistry((string)$this->state->get('article.params'));
+		$this->params->set('enabled', $params->get('slicomments.enabled', true));
+		$this->params->set('ratings', $params->get('slicomments.ratings', true) && $this->params->get('ratings', true));
+		$this->setState('params', $this->params);
 
 		$limit = $this->params->get('limit', 20);
 		$this->setState('list.limit', $limit);
@@ -368,5 +386,10 @@ class sliCommentsModelComments extends JModelList
 	public function getTable()
 	{
 		return parent::getTable('sliComment', 'JTable');
+	}
+
+	public function getParams()
+	{
+		return $this->params;
 	}
 }

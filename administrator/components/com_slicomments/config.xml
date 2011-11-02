@@ -2,6 +2,16 @@
 <config>
 	<fieldset name="BASIC">
 		<field
+			name="ratings"
+			type="radio"
+			label="COM_COMMENTS_ENABLE_RATINGS_LABEL"
+			description="COM_COMMENTS_ENABLE_RATINGS_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
 			name="catid"
 			type="category"
 			extension="com_content"

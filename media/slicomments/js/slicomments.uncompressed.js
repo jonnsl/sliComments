@@ -1,12 +1,50 @@
 (function($){
 window.addEvent('domready', function(){
 	$$('.comments_form.no-js').removeClass('no-js');
+	var comments_count = $('comments_counter');
+	var list = $('comments_list');
 
+	var req = function(onSuccess){
+		return function(e)
+		{
+			e.stop();
+			new Request.JSON({
+				'url': this.get('href')+'&format=json',
+				'method': 'get',
+				'onSuccess': onSuccess.bind(this)
+			}).send();
+		}
+	}
+
+	var vote = function(response){
+		if (response.success){
+			var meta = this.getParent('.content-container').getElement('.metadata');
+			var rating = meta.getElement('.rating') || new Element('span.rating').inject(meta);
+			var total = parseInt(rating.get('text') || 0, 10) + response.delta;
+			rating.set('text', total > 0 ? '+'+total : total)
+				.removeClass('(?:positive|negative)')
+				.addClass(total > 0 ? 'positive' : 'negative')
+		} else {
+			alert(response.error);
+		}
+	};
+
+	list.addEvents({
+		'click:relay(a.comment-delete)': 
+		req(function(response){
+			if (response.success) {
+				this.getParent('li.comment').nix(true);
+				comments_count.set('text', comments_count.get('text').toInt() - 1);
+			}
+		}),
+		'click:relay(a.comment-like)': req(vote),
+		'click:relay(a.comment-dislike)': req(vote)
+	});
+
+	var form = $('comments_form');
+	if (!form) return;
 	var textarea = $('comments_form_textarea');
 	var counter = $('comments-remaining-count');
-	var form = $('comments_form');
-	var list = $('comments_list');
-	var comments_count = $('comments_counter');
 	var logged = form.get('data-logged') == 1 ? true : false;
 	var validator = new Form.Validator.Inline(form, {
 		scrollToErrorsOnSubmit: false,
@@ -119,43 +157,6 @@ window.addEvent('domready', function(){
 				}
 			}).send();
 		}
-	});
-
-	var req = function(onSuccess){
-		return function(e)
-		{
-			e.stop();
-			new Request.JSON({
-				'url': this.get('href')+'&format=json',
-				'method': 'get',
-				'onSuccess': onSuccess.bind(this)
-			}).send();
-		}
-	}
-
-	var vote = function(response){
-		if (response.success){
-			var meta = this.getParent('.content-container').getElement('.metadata');
-			var rating = meta.getElement('.rating') || new Element('span.rating').inject(meta);
-			var total = parseInt(rating.get('text') || 0, 10) + response.delta;
-			rating.set('text', total > 0 ? '+'+total : total)
-				.removeClass('(?:positive|negative)')
-				.addClass(total > 0 ? 'positive' : 'negative')
-		} else {
-			alert(response.error);
-		}
-	};
-
-	list.addEvents({
-		'click:relay(a.comment-delete)': 
-		req(function(response){
-			if (response.success) {
-				this.getParent('li.comment').nix(true);
-				comments_count.set('text', comments_count.get('text').toInt() - 1);
-			}
-		}),
-		'click:relay(a.comment-like)': req(vote),
-		'click:relay(a.comment-dislike)': req(vote)
 	});
 });
 })(document.id)

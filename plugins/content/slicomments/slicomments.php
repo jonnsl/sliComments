@@ -36,6 +36,7 @@ class plgContentSlicomments extends JPlugin
 		$model->setState('article.id', $row->id);
 		$model->setState('article.slug', $row->slug);
 		$model->setState('article.catid', $row->catid);
+		$model->setState('article.params', $row->params);
 		ob_start();
 		$controller->execute('display');
 		JRequest::setVar('view', $old_view);
@@ -58,5 +59,14 @@ class plgContentSlicomments extends JPlugin
 		if (!$db->query()) {
 			JError::raiseWarning(500, 'Error deleting comments from article "'.$table->id.'-'.$table->title.'". '.$db->getErrorMsg());
 		}
+	}
+
+	public function onContentPrepareForm($form, $data)
+	{
+		if ($form->getName() != 'com_content.article') return;
+		
+		// Load the custom form
+		$this->loadLanguage();
+		$form->loadFile(__DIR__.'/article.xml');
 	}
 }
