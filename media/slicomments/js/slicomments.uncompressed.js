@@ -148,7 +148,7 @@ window.addEvent('domready', function(){
 						new Element('li.comment', {
 							'html': response.html
 						}).inject(list, form.get('data-position'));
-						comments_count.set('text', counter.get('text').toInt() + 1);
+						comments_count.set('text', comments_count.get('text').toInt() + 1);
 						form.reset();
 						form.text.fireEvent('keypress');
 						form.text.removeClass('init');
