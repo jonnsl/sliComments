@@ -38,7 +38,17 @@ window.addEvent('domready', function(){
 			}
 		}),
 		'click:relay(a.comment-like)': req(vote),
-		'click:relay(a.comment-dislike)': req(vote)
+		'click:relay(a.comment-dislike)': req(vote),
+		'click:relay(.slicomments-spoiler button)': function (){
+			var p = this.getParent();
+			if (p.hasClass('spoiler-hide')) {
+				p.removeClass('spoiler-hide');
+				this.set('text', this.get('data-hide'));
+			} else {
+				p.addClass('spoiler-hide');
+				this.set('text', this.get('data-show'));
+			}
+		}
 	});
 
 	var form = $('comments_form');
@@ -135,7 +145,7 @@ window.addEvent('domready', function(){
 	}
 
 	// Ajax
-	
+
 	$('comments_form_send').addEvent('click', function(e){
 		e.stop();
 		if (validator.validate()) {

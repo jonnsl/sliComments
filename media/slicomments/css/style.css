@@ -40,7 +40,7 @@
 	line-height: normal;
 	font-size: 0.9em;
 }
-.created {
+.created, .slicomments-quote .slicomments-quoteDate {
 	color: #999;
 	font-size: 0.8em;
 }
@@ -151,4 +151,16 @@
 }
 .rating.negative {
 	color: red
+}
+.slicomments-quote {
+	border: 1px inset;
+	background: #E9E9E9;
+	padding: 2px 4px;
+	margin: 0 0 15px 15px;
+}
+.spoiler-hide .slicomments-spoilerContent {
+	display: none
+}
+.slicomments-spoilerContent .slicomments-spoiler {
+	margin-left: 10px
 }

@@ -19,7 +19,7 @@ class sliCommentsControllerComments extends JController
 		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		$user = JFactory::getUser();
-		$data = JRequest::get('post');
+		$data = JRequest::get('post', JREQUEST_ALLOWRAW);
 		if (!$user->authorise('post', 'com_slicomments')){
 			$this->setMessage(JText::_('COM_COMMENTS_NO_AUTH'), 'error');
 		}

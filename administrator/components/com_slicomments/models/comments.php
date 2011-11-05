@@ -45,7 +45,7 @@ class sliCommentsModelComments extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('a.id, CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.created, a.status, c.id as article_id, c.alias, c.title, c.catid');
+		$query->select('a.id, CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.created, a.status, c.id as article_id, c.alias, c.title, c.catid, a.raw');
 		$query->from('#__slicomments AS a');
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
@@ -71,7 +71,7 @@ class sliCommentsModelComments extends JModelList
 			}
 			else {
 				$search = $db->Quote('%'.$db->getEscaped($search, true).'%');
-				$query->where('a.text LIKE '.$search);
+				$query->where('a.raw LIKE '.$search);
 			}
 		}
 
@@ -160,17 +160,46 @@ class sliCommentsModelComments extends JModelList
 
 	public function filter($data)
 	{
-		$filter['text'] = preg_replace('/\n/', '<br />', htmlspecialchars($data['text'], ENT_COMPAT, 'UTF-8'), 10);
+		$filter['raw'] = $data['text'];
+		$filter['text'] = $this->_parse($data['text']);
 		return $filter;
+	}
+
+	/**
+	 * Parse bbcode into safe HTML
+	 * 
+	 * @access protected
+	 * @param  string $text
+	 * @return string
+	 */
+	protected function _parse($text)
+	{
+		$params = JComponentHelper::getParams('com_slicomments');
+		if (!$params->get('bbcode.enabled', true)) return nl2br(htmlentities($text, ENT_QUOTES, 'UTF-8'));
+	
+		JLoader::register('Decoda', JPATH_COMPONENT_ADMINISTRATOR.'/libraries/decoda/Decoda.php');
+		$code = new Decoda();
+		$filters = $params->get('bbcode.filters');
+		foreach ($filters as $filter => $enabled)
+		{
+			if ($enabled)
+			{
+				$class = ucfirst($filter).'Filter';
+				$code->addFilter(new $class());
+			}
+		}
+
+		$code->reset($text);
+		return $code->parse();
 	}
 
 	public function validate(&$data)
 	{
-		if (($n = JString::strlen($data['text'])) < 5) {
+		if (($n = JString::strlen($data['raw'])) < 5) {
 			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MINLENGTH', $n));
 			return false;
 		}
-		if (($n = JString::strlen($data['text'])) > 500) {
+		if (($n = JString::strlen($data['raw'])) > 500) {
 			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MAXLENGTH', $n));
 			return false;
 		}

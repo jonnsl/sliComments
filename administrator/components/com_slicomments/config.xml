@@ -39,6 +39,131 @@
 		</field>
 	</fieldset>
 
+	<fields name="bbcode">
+	<fieldset name="BBCODE">
+		<field
+			name="enabled"
+			type="radio"
+			label="COM_COMMENTS_ENABLE_BBCODE_LABEL"
+			description="COM_COMMENTS_ENABLE_BBCODE_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			type="spacer"
+			label="COM_COMMENTS_BBCODE_FILTERS_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_DESC"/>
+
+		<field
+			type="spacer"
+			hr="true"/>
+		
+		<fields name="filters">
+		<field
+			name="default"
+			type="radio"
+			label="COM_COMMENTS_BBCODE_FILTERS_DEFAULT_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_DEFAULT_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="text"
+			type="radio"
+			label="COM_COMMENTS_BBCODE_FILTERS_TEXT_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_TEXT_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="block"
+			type="radio"
+			label="COM_COMMENTS_BBCODE_FILTERS_BLOCK_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_BLOCK_DESC"
+			default="0">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="image"
+			type="radio"
+			label="COM_COMMENTS_BBCODE_FILTERS_IMAGE_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_IMAGE_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="list"
+			type="radio"
+			label="COM_COMMENTS_BBCODE_FILTERS_LIST_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_LIST_DESC"
+			default="0">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="quote"
+			type="radio"
+			label="COM_COMMENTS_BBCODE_FILTERS_QUOTE_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_QUOTE_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="url"
+			type="radio"
+			label="COM_COMMENTS_BBCODE_FILTERS_URL_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_URL_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="video"
+			type="radio"
+			label="COM_COMMENTS_BBCODE_FILTERS_VIDEO_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_VIDEO_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="code"
+			type="radio"
+			label="COM_COMMENTS_BBCODE_FILTERS_CODE_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_CODE_DESC"
+			default="0">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="email"
+			type="radio"
+			label="COM_COMMENTS_BBCODE_FILTERS_EMAIL_LABEL"
+			description="COM_COMMENTS_BBCODE_FILTERS_EMAIL_DESC"
+			default="0">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+		</fields>
+	</fieldset>
+	</fields>
+
 	<fieldset name="FORM">
 		<field
 			name="name"

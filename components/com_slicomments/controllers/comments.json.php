@@ -27,7 +27,7 @@ class sliCommentsControllerComments extends JController
 
 		$model = $this->getModel();
 		$session = JFactory::getSession();
-		$data = JRequest::get('post');
+		$data = JRequest::get('post', JREQUEST_ALLOWRAW);
 		$data['status'] = $user->authorise('auto_publish', 'com_slicomments') ? 1 : 0;
 		$data = $model->filter($data);
 		if ($data['user_id'] == 0) $session->set('com_slicomments.data', array('name' => $data['name']));

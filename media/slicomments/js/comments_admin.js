@@ -7,7 +7,7 @@ window.addEvent('domready', function(){
 		td.addClass('editing');
 		var span = td.getElement('.text');
 		var text = span.get('text');
-		span.set('text', '')
+		span.setStyle('display', 'none');
 		var textarea = new Element('textarea', {'html': text.trim(), 'class': 'edit'}).inject(td);
 		var dt = new DynamicTextarea(textarea, {'offset': 10});
 		textarea.setStyle('padding', 5);
@@ -25,10 +25,8 @@ window.addEvent('domready', function(){
 	form.addEvent('click:relay(.cancel-button)', function(event, clicked){
 		var td = this.getParent('td');
 		td.removeClass('editing');
-		var span = td.getElement('.text');
-		var textarea = td.getElement('textarea');
-		span.set('text', textarea.get('text'));
-		textarea.destroy();
+		td.getElement('.text').setStyle('display', 'block');
+		td.getElement('textarea').destroy();
 		td.getElement('.comments-post').destroy();
 		td.getElement('div').destroy();
 		event.stop();
@@ -44,15 +42,14 @@ window.addEvent('domready', function(){
 		})[0].get('name');
 		new Request.JSON({
 			url: 'index.php?option=com_slicomments&task=comments.edit&format=json',
-			data: 'text='+text+'&id='+id+'&'+token+'=1',
+			data: 'text='+encodeURIComponent(text)+'&id='+id+'&'+token+'=1',
 			onSuccess: function(response){
 				if (response.success) {
 					td.removeClass('editing');
-					var span = td.getElement('.text');
-					span.set('text', response.data);
-					textarea.destroy();
+					td.getElement('.text').set('html', response.html)
+					.setStyle('display', 'block');
+					textarea.getParent('div').destroy();
 					td.getElement('.comments-post').destroy();
-					td.getElement('div').destroy();
 				} else {
 					alert(response.error);
 				}

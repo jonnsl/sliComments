@@ -25,19 +25,15 @@ class sliCommentsControllerComments extends JController
 		}
 
 		$model = $this->getModel('comments');
-		$data = JRequest::get('post');
+		$data = JRequest::get('post', JREQUEST_ALLOWRAW);
 		$id = (int) $data['id'];
 		$data = $model->filter($data);
-		if (!$model->validate($data)){
-			$return['error'] = $model->getError();
-			$return['success'] = false;
-		}
-		elseif(!$model->save($id, $data)) {
+		if (!$model->validate($data) || !$model->save($id, $data)) {
 			$return['error'] = $model->getError();
 			$return['success'] = false;
 		} else {
 			$return['success'] = true;
-			$return['data'] = $data['text'];
+			$return['html'] = nl2br(htmlentities($data['raw'], ENT_QUOTES, 'UTF-8'));
 		}
 		echo json_encode($return);
 	}

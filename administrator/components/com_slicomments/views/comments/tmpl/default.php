@@ -69,9 +69,9 @@ $listDirn	= $this->state->get('list.direction');
 					<span class="submitted">Submitted on: <?php echo sliCommentsHelper::human_time_diff($item->created);?></span>
 					<span class="text"><?php 
 					if ($search = $this->state->get('filter.search')){
-						echo sliCommentsHelper::highlight($this->escape($item->text), $search);
+						echo sliCommentsHelper::highlight(nl2br($this->escape($item->raw)), $search);
 					} else {
-						echo $this->escape($item->text);
+						echo nl2br($this->escape($item->raw));
 					}
 					?></span>
 					<ul class="actions">

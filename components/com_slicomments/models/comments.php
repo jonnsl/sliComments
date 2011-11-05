@@ -24,13 +24,42 @@ class sliCommentsModelComments extends JModelList
 			$filter['name'] = $this->params->get('name', 1) != -1 ? $data['name'] : '';
 			$filter['email'] = $this->params->get('email', 1) != -1 ? $data['email'] : '';
 		}
-		$filter['text'] = preg_replace('/\n/', '<br />', htmlspecialchars($data['text'], ENT_COMPAT, 'UTF-8'), 10);
+		$filter['raw'] = $data['text'];
+		$filter['text'] = $this->_parse($data['text']);
 		$filter['return'] = isset($data['return']) ? $data['return'] : '';
 		$filter['article_id'] = (int)$data['article_id'];
 		$filter['created'] = JFactory::getDate()->toMysql();
 		$filter['status'] = (int) $data['status'];
 
 		return $filter;
+	}
+
+	/**
+	 * Parse bbcode into safe HTML
+	 * 
+	 * @access protected
+	 * @param  string $text
+	 * @return string
+	 */
+	protected function _parse($text)
+	{
+		$params = JComponentHelper::getParams('com_slicomments');
+		if (!$params->get('bbcode.enabled', true)) return nl2br(htmlentities($text, ENT_QUOTES, 'UTF-8'));
+	
+		JLoader::register('Decoda', JPATH_COMPONENT_ADMINISTRATOR.'/libraries/decoda/Decoda.php');
+		$code = new Decoda();
+		$filters = $params->get('bbcode.filters');
+		foreach ($filters as $filter => $enabled)
+		{
+			if ($enabled)
+			{
+				$class = ucfirst($filter).'Filter';
+				$code->addFilter(new $class());
+			}
+		}
+
+		$code->reset($text);
+		return $code->parse();
 	}
 
 	public function validate($data)
@@ -68,11 +97,11 @@ class sliCommentsModelComments extends JModelList
 				return false;
 			}
 		}
-		if (($n = JString::strlen($data['text'])) < ($p = $this->params->get('minimum_chars', 5))) {
+		if (($n = JString::strlen($data['raw'])) < ($p = $this->params->get('minimum_chars', 5))) {
 			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MINLENGTH', $p, $n));
 			return false;
 		}
-		if (($n = JString::strlen($data['text'])) > ($p = $this->params->get('maximum_chars', 500))) {
+		if (($n = JString::strlen($data['raw'])) > ($p = $this->params->get('maximum_chars', 500))) {
 			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MAXLENGTH', $p, $n));
 			return false;
 		}

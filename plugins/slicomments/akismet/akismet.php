@@ -52,7 +52,7 @@ class plgSlicommentsAkismet extends JPlugin
 		$user = JFactory::getUser();
 		$akismet->setCommentAuthor($comment->user_id ? $user->name : $comment->name);
 		$akismet->setCommentAuthorEmail($comment->user_id ? $user->email : $comment->email);
-		$akismet->setCommentContent($comment->text);
+		$akismet->setCommentContent($comment->raw);
 		$akismet->setCommentType('comment');
 		return $akismet;
 	}
