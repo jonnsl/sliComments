@@ -15,6 +15,7 @@ class sliCommentsModelComments extends JModelList
 				'created', 'a.created'
 			);
 		}
+		$this->params = JComponentHelper::getParams('com_slicomments');
 
 		parent::__construct($config);
 	}
@@ -195,12 +196,12 @@ class sliCommentsModelComments extends JModelList
 
 	public function validate(&$data)
 	{
-		if (($n = JString::strlen($data['raw'])) < 5) {
-			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MINLENGTH', $n));
+		if (($n = JString::strlen($data['raw'])) < ($p = $this->params->get('minimum_chars', 5))) {
+			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MINLENGTH', $p, $n));
 			return false;
 		}
-		if (($n = JString::strlen($data['raw'])) > 500) {
-			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MAXLENGTH', $n));
+		if (($n = JString::strlen($data['raw'])) > ($p = $this->params->get('maximum_chars', 500))) {
+			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MAXLENGTH', $p, $n));
 			return false;
 		}
 		return true;
