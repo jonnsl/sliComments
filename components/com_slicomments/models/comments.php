@@ -43,12 +43,12 @@ class sliCommentsModelComments extends JModelList
 	 */
 	protected function _parse($text)
 	{
-		$params = JComponentHelper::getParams('com_slicomments');
-		if (!$params->get('bbcode.enabled', true)) return nl2br(htmlentities($text, ENT_QUOTES, 'UTF-8'));
+		if (!$this->params->get('bbcode.enabled', true)) return nl2br(htmlentities($text, ENT_QUOTES, 'UTF-8'));
 	
 		JLoader::register('Decoda', JPATH_COMPONENT_ADMINISTRATOR.'/libraries/decoda/Decoda.php');
-		$code = new Decoda();
-		$filters = $params->get('bbcode.filters');
+		$code = new Decoda($text);
+
+		$filters = $this->params->get('bbcode.filters');
 		foreach ($filters as $filter => $enabled)
 		{
 			if ($enabled)
@@ -58,7 +58,10 @@ class sliCommentsModelComments extends JModelList
 			}
 		}
 
-		$code->reset($text);
+		$whitelist = $this->params->get('bbcode.whitelist', '');
+		$whitelist = array_map('trim', explode(',', $whitelist));
+		call_user_func_array(array($code, 'whitelist'), $whitelist);
+
 		return $code->parse();
 	}
 

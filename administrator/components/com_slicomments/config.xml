@@ -161,6 +161,13 @@
 				<option value="0">JNO</option>
 		</field>
 		</fields>
+
+		<field
+			name="whitelist"
+			type="text"
+			label="COM_COMMENTS_BBCODE_WHITELIST_LABEL"
+			description="COM_COMMENTS_BBCODE_WHITELIST_DESC"
+			default=""/>
 	</fieldset>
 	</fields>
 
