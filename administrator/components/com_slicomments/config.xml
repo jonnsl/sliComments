@@ -171,6 +171,26 @@
 	</fieldset>
 	</fields>
 
+	<fieldset name="emoticons">
+		<field
+			name="emoticons_enabled"
+			type="radio"
+			label="COM_COMMENTS_ENABLE_EMOTICONS_LABEL"
+			description="COM_COMMENTS_ENABLE_EMOTICONS_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			type="spacer"
+			hr="true"/>
+		
+		<field
+			name="emoticons"
+			type="emoticons"/>
+	</fieldset>
+
 	<fieldset name="FORM">
 		<field
 			name="name"

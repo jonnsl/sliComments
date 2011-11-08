@@ -1,0 +1,20 @@
+#add-emoticon {
+	background: url(../img/add16.png) no-repeat 2px 1px;
+	padding: 2px 5px 2px 22px
+}
+#emoticons {
+	margin-top: 10px;
+	padding: 0
+}
+#emoticons li {
+	clear: both;
+	margin: 5px;
+	overflow: auto
+}
+#emoticons li .delete {
+	cursor: pointer
+}
+#emoticons li * {
+	margin: 0 5px;
+	float: left
+}

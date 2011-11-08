@@ -173,7 +173,7 @@ class sliCommentsModelComments extends JModelList
 	 * @param  string $text
 	 * @return string
 	 */
-	protected function _parse($text)
+	protected function _parseBBcode($text)
 	{
 		if (!$this->params->get('bbcode.enabled', true)) return nl2br(htmlentities($text, ENT_QUOTES, 'UTF-8'));
 	
@@ -195,6 +195,24 @@ class sliCommentsModelComments extends JModelList
 		call_user_func_array(array($code, 'whitelist'), $whitelist);
 
 		return $code->parse();
+	}
+
+	protected function _parse($text)
+	{
+		$text = $this->_parseBBcode($text);
+		$text = $this->_parseEmoticons($text);
+
+		return $text;
+	}
+
+	protected function _parseEmoticons($text)
+	{
+		if (!$this->params->get('emoticons_enabled', true)) return $text;
+	
+		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/emoticon.php';
+		$emoticon = new sliComments\Emoticon($this->params->get('emoticons'));
+
+		return $emoticon->parse($text);
 	}
 
 	public function validate(&$data)
