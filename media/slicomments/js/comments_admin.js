@@ -35,24 +35,29 @@ window.addEvent('domready', function(){
 	form.addEvent('click:relay(.save-button)', function(event, clicked){
 		var td = this.getParent('td');
 		var textarea = td.getElement('textarea');
-		var id = td.getParent('tr').getElement('input[type=checkbox]').get('value');
-		var text = textarea.get('value');
+		var data = {
+			id: td.getParent('tr').getElement('input[type=checkbox]').get('value'),
+			text: textarea.get('value'),
+		};
 		var token = form.getElements('input[type=hidden]').filter(function(e){
-			return e.get('name').match(/[a-z0-9]{32}/i) && e.get('value') == '1';
+				return e.get('name').match(/[a-z0-9]{32}/i) && e.get('value') == '1';
 		})[0].get('name');
-		new Request.JSON({
-			url: 'index.php?option=com_slicomments&task=comments.edit&format=json',
-			data: 'text='+encodeURIComponent(text)+'&id='+id+'&'+token+'=1',
+		data[token] = 1;
+		new Request({
+			url: 'index.php?option=com_slicomments&task=comments.edit',
+			format: 'raw',
+			data: data,
 			onSuccess: function(response){
-				if (response.success) {
-					td.removeClass('editing');
-					td.getElement('.text').set('html', response.html)
+				console.log(response);
+				td.removeClass('editing');
+				td.getElement('.text')
+					.set('html', response)
 					.setStyle('display', 'block');
-					textarea.getParent('div').destroy();
-					td.getElement('.comments-post').destroy();
-				} else {
-					alert(response.error);
-				}
+				textarea.getParent('div').destroy();
+				td.getElement('.comments-post').destroy();
+			},
+			onFailure: function(xhr){
+				alert(xhr.responseText);
 			}
 		}).send();
 	});

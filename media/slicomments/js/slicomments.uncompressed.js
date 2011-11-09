@@ -4,41 +4,39 @@ window.addEvent('domready', function(){
 	var comments_count = $('comments_counter');
 	var list = $('comments_list');
 
-	var req = function(onSuccess){
+	var req = function(onSuccess, onFailure){
 		return function(e)
 		{
 			e.stop();
-			new Request.JSON({
-				'url': this.get('href')+'&format=json',
-				'method': 'get',
-				'onSuccess': onSuccess.bind(this)
+			new Request({
+				url: this.get('href'),
+				format: 'raw',
+				method: 'get',
+				onSuccess: onSuccess.bind(this),
+				onFailure: function(xhr){
+					alert(xhr.responseText);
+				}
 			}).send();
 		}
 	}
 
-	var vote = function(response){
-		if (response.success){
-			var meta = this.getParent('.content-container').getElement('.metadata');
-			var rating = meta.getElement('.rating') || new Element('span.rating').inject(meta);
-			var total = parseInt(rating.get('text') || 0, 10) + response.delta;
-			rating.set('text', total > 0 ? '+'+total : total)
-				.removeClass('(?:positive|negative)')
-				.addClass(total > 0 ? 'positive' : 'negative')
-		} else {
-			alert(response.error);
-		}
-	};
+	var vote = req(function(response){
+		var meta = this.getParent('.content-container').getElement('.metadata');
+		var rating = meta.getElement('.rating') || new Element('span.rating').inject(meta);
+		var total = (rating.get('text').toInt() || 0) + response.toInt();
+		rating.set('text', total > 0 ? '+'+total : total)
+			.removeClass('(?:positive|negative)')
+			.addClass(total > 0 ? 'positive' : 'negative')
+	});
 
 	list.addEvents({
 		'click:relay(a.comment-delete)': 
 		req(function(response){
-			if (response.success) {
-				this.getParent('li.comment').nix(true);
-				comments_count.set('text', comments_count.get('text').toInt() - 1);
-			}
+			this.getParent('li.comment').nix(true);
+			comments_count.set('text', comments_count.get('text').toInt() - 1);
 		}),
-		'click:relay(a.comment-like)': req(vote),
-		'click:relay(a.comment-dislike)': req(vote),
+		'click:relay(a.comment-like)': vote,
+		'click:relay(a.comment-dislike)': vote,
 		'click:relay(.slicomments-spoiler button)': function (){
 			var p = this.getParent();
 			if (p.hasClass('spoiler-hide')) {
@@ -149,21 +147,21 @@ window.addEvent('domready', function(){
 	$('comments_form_send').addEvent('click', function(e){
 		e.stop();
 		if (validator.validate()) {
-			new Request.JSON({
-				url: form.get('action')+'&format=json',
+			new Request.HTML({
+				url: form.get('action'),
+				format: 'raw',
 				method: 'post',
 				data: form,
-				onSuccess: function(response){
-					if (response.success) {
-						new Element('li.comment', {
-							'html': response.html
-						}).inject(list, form.get('data-position'));
+				onSuccess: function(responseTree){
+						responseTree[0].inject(list, form.get('data-position'));
 						comments_count.set('text', comments_count.get('text').toInt() + 1);
 						form.reset();
 						form.text.fireEvent('keypress');
 						form.text.removeClass('init');
 						OverText.update();
-					}
+				},
+				onFailure: function(xhr){
+					alert(xhr.responseText);
 				}
 			}).send();
 		}

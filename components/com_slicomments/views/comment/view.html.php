@@ -9,11 +9,10 @@ class sliCommentsViewComment extends JView
 	/**
 	 * Display the view
 	 */
-	public function display($data)
+	public function display($tpl = null)
 	{
-		$this->data		= (object) $data;
-		$this->params	= $this->get('params');
+		$this->params = $this->get('params');
 
-		return $this->loadTemplate();
+		parent::display($tpl);
 	}
 }
