@@ -19,6 +19,7 @@ class sliCommentsModelComments extends JModelList
 
 		parent::__construct($config);
 	}
+
 	/**
 	 * Method to auto-populate the model state.
 	 */
@@ -81,6 +82,25 @@ class sliCommentsModelComments extends JModelList
 
 		//echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
+	}
+
+	/**
+	 * Returns a record count for the query
+	 *
+	 * @param    string  $query  The query.
+	 *
+	 * @return   integer  Number of rows for query
+	 * @since    11.1
+	 */
+	protected function _getListCount($query)
+	{
+		$query = clone $query;
+		$query->clear('select');
+		$query->select('count(*)');
+		$this->_db->setQuery($query);
+		$this->_db->query();
+
+		return $this->_db->loadResult();
 	}
 
 	public function getTable()
