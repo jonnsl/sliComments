@@ -36,6 +36,7 @@ class sliCommentsControllerComments extends JController
 					$data['name'] = $user->name;
 					$data['email'] = $user->email;
 				}
+				$data['rating'] = 0;
 				$view = $this->getView('comment', 'html');
 				$view->setModel($model, true);
 				$view->data = $data;
