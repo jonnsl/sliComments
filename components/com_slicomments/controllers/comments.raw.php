@@ -37,10 +37,10 @@ class sliCommentsControllerComments extends JController
 					$data['email'] = $user->email;
 				}
 				$data['rating'] = 0;
-				$view = $this->getView('comment', 'html');
-				$view->setModel($model, true);
-				$view->data = $data;
-				$view->display();
+				$view = $this->getView('comments', 'html');
+				require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/comments.php';
+				$view->params = $model->params;
+				$view->partial('comment', $data);
 			}
 			else {
 				throw new Exception((string)$model->getError(), 500);

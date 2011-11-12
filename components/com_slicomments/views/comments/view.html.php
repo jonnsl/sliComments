@@ -35,7 +35,7 @@ class sliCommentsViewComments extends JView
 	 *
 	 * @return void
 	 */
-	protected function partial($name, $vars)
+	public function partial($name, $vars)
 	{
 		try {
 			$partial = $this->getPartial($name);
