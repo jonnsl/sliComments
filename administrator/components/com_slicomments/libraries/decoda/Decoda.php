@@ -51,7 +51,8 @@ class Decoda {
 		'close' => ']',
 		'disabled' => false,
 		'shorthand' => false,
-		'xhtml' => false
+		'xhtml' => false,
+		'escapeHtml' => true
 	);
 
 	/**
@@ -370,6 +371,20 @@ class Decoda {
 		return $this;
 	}
 	
+	/**
+	 * Toggle the escape HTML option.
+	 * 
+	 * @access public
+	 * @param boolean $status
+	 * @return Decoda 
+	 * @chainable
+	 */
+	public function setEscapeHtml($status = true) {
+		$this->_config['escapeHtml'] = (bool) $status;
+		
+		return $this;
+	}
+
 	/**
 	 * Toggle XHTML.
 	 * 
@@ -833,7 +848,7 @@ class Decoda {
 
 		foreach ($nodes as $node) {
 			if (is_string($node)) {
-				$node = htmlentities($node, ENT_QUOTES, 'UTF-8');
+				if ($this->config('escapeHtml')) $node = htmlentities($node, ENT_QUOTES, 'UTF-8');
 				if (empty($wrapper)) {
 					$parsed .= nl2br($node, $xhtml);
 				} else {

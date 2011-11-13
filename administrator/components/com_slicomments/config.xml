@@ -171,6 +171,36 @@
 	</fieldset>
 	</fields>
 
+	<fields name="html">
+	<fieldset
+		name="html">
+
+		<field
+			name="allow"
+			type="radio"
+			label="COM_COMMENTS_ALLOW_HTML_LABEL"
+			description="COM_COMMENTS_ALLOW_HTML_DESC"
+			default="0">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			type="spacer"
+			label="COM_COMMENTS_HTML_FILTERS_LABEL"
+			description="COM_COMMENTS_HTML_FILTERS_DESC"/>
+
+		<field
+			type="spacer"
+			hr="true"/>
+
+		<field
+			name="filters"
+			type="filters"
+			label="" />
+	</fieldset>
+	</fields>
+
 	<fieldset name="emoticons">
 		<field
 			name="emoticons_enabled"
