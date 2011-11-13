@@ -81,4 +81,24 @@ class sliCommentsViewComments extends JView
 
 		return $this->_partials[$name] = $partial;
 	}
+
+	public function linkToProfile($userid, $name)
+	{
+		static $option;
+		if ($option == null) $option = $this->params->get('link', false);
+		if ($option == false || $userid == 0) return $this->escape($name);
+
+		switch ($option)
+		{
+			case 'com_kunena':
+				JLoader::register('KunenaFactory', JPATH_ADMINISTRATOR.'/components/com_kunena/libraries/factory.php');
+				$link = KunenaFactory::getProfile()->getProfileURL($userid);
+				break;
+			case 'com_community':
+			default:
+				$link = JRoute::_('index.php?option='.$option.'&view=profile&userid='.$userid);
+		}
+
+		return '<a href="'.$link.'">'.$this->escape($name).'</a>';
+	}
 }

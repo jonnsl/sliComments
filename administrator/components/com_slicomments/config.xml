@@ -259,7 +259,19 @@
 			step="5">
 				<option value="0">JALL</option>
 		</field>
+
+		<field
+			name="link"
+			type="components"
+			label="COM_COMMENTS_LINK_LABEL"
+			description="COM_COMMENTS_LINK_DESC"
+			default="">
+				<option value="">JNO</option>
+				<option value="com_community">COM_COMMENTS_OPTION_JOMSOCIAL</option>
+				<option value="com_kunena">COM_COMMENTS_OPTION_KUNENA</option>
+		</field>
 	</fieldset>
+
 	<fieldset
 		name="permissions"
 		label="JCONFIG_PERMISSIONS_LABEL"

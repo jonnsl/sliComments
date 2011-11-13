@@ -23,7 +23,7 @@ $user = JFactory::getUser();
 		</ul>
 		<div class="metadata">
 			<span class="author">
-				<?php echo $this->escape($name); ?>
+				<?php echo $this->linkToProfile($user_id, $name); ?>
 			</span>
 			<span class="created">
 				<?php echo sliCommentsHelper::human_time_diff($created);?>
