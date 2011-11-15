@@ -20,6 +20,11 @@ $user = JFactory::getUser();
 				<?php echo JText::_('COM_COMMENTS_ACTION_DELETE'); ?>
 			</a></li>
 			<?php endif; ?>
+			<?php if (($user_id == 0 || $user_id != $user->id) && $this->params->get('enabled', true)): ?>
+			<li><a class="comment-reply" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.reply&name='.$this->escape($name).'&'.JUtility::getToken().'=1&return='.base64_encode(JFactory::getURI()->toString())); ?>">
+				<?php echo JText::_('COM_COMMENTS_ACTION_REPLY'); ?>
+			</a></li>
+			<?php endif; ?>
 		</ul>
 		<div class="metadata">
 			<span class="author">

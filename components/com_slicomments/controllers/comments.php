@@ -97,6 +97,7 @@ class sliCommentsControllerComments extends JController
 		}
 		return $model;
 	}
+
 	public function vote()
 	{
 		if (!JFactory::getUser()->authorise('vote', 'com_slicomments')){
@@ -115,5 +116,17 @@ class sliCommentsControllerComments extends JController
 		}
 
 		$this->setRedirect(base64_decode(JRequest::getVar('return', JRoute::_('index.php'), 'GET', 'ALNUM')));
+	}
+
+	public function reply()
+	{
+		// Check for request forgeries.
+		JRequest::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
+
+		$session = JFactory::getSession();
+		$oldData = $session->get('com_slicomments.data', array());
+		$session->set('com_slicomments.data', array_merge(array('text'=> '@'.trim(JRequest::getString('name')).' '), $oldData));
+
+		$this->setRedirect(base64_decode(JRequest::getString('return')).'#comments_section');
 	}
 }

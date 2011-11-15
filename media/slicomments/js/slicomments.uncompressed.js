@@ -1,6 +1,61 @@
 (function($){
+
+var charCount = new Class({
+
+	options: {
+		maxLength: 500
+	},
+
+	textarea: null,
+	counter: null,
+
+	initialize: function(textarea, counter, options) {
+		this.textarea = $(textarea);
+		this.counter = $(counter);
+
+		this.textarea.store('charCount', this);
+
+		this.options.maxLength = textarea.get('data-maxlength') || 500;
+
+		var update = this.update_counter.bind(this);
+
+		if (Browser.chrome || Browser.safari) {
+			this.textarea.addListener('input', update);
+		} else {
+			this.textarea.addEvents({
+				'blur': update,
+				'change': update,
+				'focus': update,
+				'keydown': update,
+				'keypress': update,
+				'keyup': update,
+				'paste': update
+			});
+			this.textarea.addListener('input', update);
+		}
+
+		update();
+	},
+
+	update_counter: function() {
+		var remaining_chars = this.options.maxLength - this.textarea.value.length;
+		this.counter.set('text', remaining_chars);
+		if (remaining_chars <= 5) {
+			this.counter.setStyle('color', '#900');
+		} else {
+			this.counter.setStyle('color', null);
+		}
+		if (remaining_chars < 0) {
+			this.textarea.form.getElement('button').set('disabled', true)
+		} else {
+			this.textarea.form.getElement('button').set('disabled', false)
+		}
+	}
+});
+
 window.addEvent('domready', function(){
-	$$('.comments_form.no-js').removeClass('no-js');
+	var section = $('comments_section');
+	section.removeClass('no-js');
 	var comments_count = $('comments_counter');
 	var list = $('comments_list');
 
@@ -30,13 +85,13 @@ window.addEvent('domready', function(){
 	});
 
 	list.addEvents({
-		'click:relay(a.comment-delete)': 
+		'click:relay(.comment-delete)': 
 		req(function(response){
 			this.getParent('li.comment').nix(true);
 			comments_count.set('text', comments_count.get('text').toInt() - 1);
 		}),
-		'click:relay(a.comment-like)': vote,
-		'click:relay(a.comment-dislike)': vote,
+		'click:relay(.comment-like)': vote,
+		'click:relay(.comment-dislike)': vote,
 		'click:relay(.slicomments-spoiler button)': function (){
 			var p = this.getParent();
 			if (p.hasClass('spoiler-hide')) {
@@ -49,40 +104,34 @@ window.addEvent('domready', function(){
 		}
 	});
 
-	var form = $('comments_form');
+	var form = section.getElement('form');
 	if (!form) return;
-	var textarea = $('comments_form_textarea');
-	var counter = $('comments-remaining-count');
+	var textarea = form.getElement('textarea');
+	new charCount(textarea, form.getElement('.chars-count'));
 	var logged = form.get('data-logged') == 1 ? true : false;
-	var validator = new Form.Validator.Inline(form, {
-		scrollToErrorsOnSubmit: false,
-		evaluateFieldsOnChange: false,
-		evaluateFieldsOnBlur: false
-	});
 
-	var update_counter = function() {
-		remaining_chars = this.get('data-maxlength') - this.value.length;
-		counter.set('text', remaining_chars);
-		if (remaining_chars <= 5) {
-			counter.setStyle('color', '#900');
-			if (remaining_chars < 0) {
-				form.getElement('button').set('disabled', true)
-			}
-		} else {
-			form.getElement('button').set('disabled', false)
-			counter.setStyle('color', null);
+	var validate = function(form){
+		var validator = form.retrieve('validator');
+		if (!validator){
+			validator = new Form.Validator.Inline(form, {
+				scrollToErrorsOnSubmit: false,
+				evaluateFieldsOnChange: false,
+				evaluateFieldsOnBlur: false
+			});
+			form.store('validator', validator);
 		}
-	};
+		return validator.validate();
+	}
+
 	textarea.addEvents({
-		'keypress': update_counter,
-		'focus': function() {
+		focus: function() {
 			this.addClass('init');
 		},
-		'blur': function() {
+		blur: function() {
 			if (this.value.length == 0) this.removeClass('init');
-			update_counter.call(this);
 		}
 	});
+
 	var placeholder_support = (function () {
 		var i = document.createElement('input');
 		return 'placeholder' in i;
@@ -137,34 +186,51 @@ window.addEvent('domready', function(){
 			}
 		});
 		if (!logged) {
-			new OverText($('comments_form_name'));
-			new OverText($('comments_form_email'));
+			new OverText(form.name);
+			new OverText(form.email);
 		}
 	}
 
 	// Ajax
 
-	$('comments_form_send').addEvent('click', function(e){
+	section.addEvent('click:relay(.comment-submit)', function(e){
 		e.stop();
-		if (validator.validate()) {
+		if (validate(this.form)) {
 			new Request.HTML({
-				url: form.get('action'),
+				url: this.form.get('action'),
 				format: 'raw',
 				method: 'post',
-				data: form,
+				data: this.form,
 				onSuccess: function(responseTree){
-						responseTree[0].inject(list, form.get('data-position'));
+						responseTree[0].inject(list, this.form.get('data-position'));
 						comments_count.set('text', comments_count.get('text').toInt() + 1);
-						form.reset();
-						form.text.fireEvent('keypress');
-						form.text.removeClass('init');
+						if (this.form.hasClass('reply-form')){
+							this.form.destroy();
+						} else {
+							this.form.reset();
+							this.form.text.retrieve('charCount').update_counter();
+						}
 						OverText.update();
-				},
+				}.bind(this),
 				onFailure: function(xhr){
 					alert(xhr.responseText);
 				}
 			}).send();
 		}
 	});
+
+	list.addEvent('click:relay(.comment-reply)', function(e){
+		e.stop();
+		var replyForm = form.clone();
+		replyForm.addClass('reply-form');
+		replyForm.getElements('.validation-advice').destroy();
+		var comment = this.getParent('.comment');
+		var name = comment.getElement('.metadata .author').get('text').trim();
+		replyForm.inject(comment.getElement('.clr'), 'before');
+		var textarea = replyForm.getElement('textarea').addClass('init');
+		textarea.set('value', '@'+name+' ').setCaretPosition("end");
+		new charCount(textarea, replyForm.getElement('.chars-count'));
+		this.getParent().destroy();
+	});
 });
-})(document.id)
+})(document.id);

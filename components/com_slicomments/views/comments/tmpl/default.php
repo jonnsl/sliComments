@@ -10,7 +10,7 @@ $user = JFactory::getUser();
 $form_position = $this->params->get('form_position', 'before');
 JHtml::_('script', 'slicomments/slicomments.js', true, true);
 ?>
-<div id="comments_section">
+<div id="comments_section" class="no-js">
 	<h4><?php echo JText::sprintf('COM_COMMENTS_COMMENTS_COUNT', '<span id="comments_counter" >'.$this->total.'</span>'); ?></h4>
 	<?php if ($form_position == 'before' && $enabled) echo $this->loadTemplate('form'); ?>
 	<ul id="comments_list" class="comment-list">
