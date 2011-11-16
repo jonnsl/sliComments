@@ -21,7 +21,7 @@ class sliCommentsModelComments extends JModelList
 			$filter['email'] = '';
 		} else {
 			$filter['user_id'] = 0;
-			$filter['name'] = $this->params->get('name', 1) != -1 ? $data['name'] : '';
+			$filter['name'] = $this->params->get('name', 1) != -1 ? trim($data['name']) : '';
 			$filter['email'] = $this->params->get('email', 1) != -1 ? $data['email'] : '';
 		}
 		$filter['raw'] = $data['text'];
@@ -219,6 +219,10 @@ class sliCommentsModelComments extends JModelList
 				$this->setError(JText::_('COM_COMMENTS_ERROR_NAME_REQUIRED'));
 				return false;
 			}
+			if ($this->params->get('check_names', true) && !$this->validateName($data['name'])) {
+				$this->setError(JText::_('COM_COMMENTS_ERROR_INVALID_NAME'));
+				return false;
+			}
 			if ($this->params->get('email', 0) == 1 && empty($data['email'])) {
 				$this->setError(JText::_('COM_COMMENTS_ERROR_EMAIL_REQUIRED'));
 				return false;
@@ -233,6 +237,25 @@ class sliCommentsModelComments extends JModelList
 			return false;
 		}
 		return true;
+	}
+
+	public function validateName($name)
+	{
+		$forbidden = $this->params->get('forbidden_names', '');
+		$forbidden = array_filter(array_map('trim', explode(',', $forbidden)));
+
+		if (in_array($name, $forbidden)) {
+			return false;
+		}
+
+		$db = $this->_db;
+		$query = $db->getQuery(true);
+		$query->select('COUNT(*)')
+			->from('#__users')
+			->where('username = '.$db->quote($name), 'OR')
+			->where('name = '.$db->quote($name));
+		$db->setQuery($query);
+		return !$db->loadResult();
 	}
 
 	public function isCategoryEnabled($id)

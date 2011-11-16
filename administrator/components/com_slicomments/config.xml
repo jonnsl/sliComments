@@ -232,6 +232,7 @@
 				<option value="0">COM_COMMENTS_OPTION_UNREQUIRED_VALUE</option>
 				<option value="1">COM_COMMENTS_OPTION_REQUIRED_VALUE</option>
 		</field>
+
 		<field
 			name="email"
 			type="list"
@@ -242,6 +243,7 @@
 				<option value="0">COM_COMMENTS_OPTION_UNREQUIRED_VALUE</option>
 				<option value="1">COM_COMMENTS_OPTION_REQUIRED_VALUE</option>
 		</field>
+
 		<field
 			name="minimum_chars"
 			type="text"
@@ -249,6 +251,7 @@
 			description="COM_COMMENTS_MINIMUM_CHARS_DESC"
 			default="5"
 			size="5"/>
+	
 		<field
 			name="maximum_chars"
 			type="text"
@@ -256,6 +259,25 @@
 			description="COM_COMMENTS_MAXIMUM_CHARS_DESC"
 			default="500"
 			size="5"/>
+
+		<field
+			name="check_names"
+			type="radio"
+			label="COM_COMMENTS_CHECK_NAMES_LABEL"
+			description="COM_COMMENTS_CHECK_NAMES_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="forbidden_names"
+			type="textarea"
+			cols="35"
+			rows="4"
+			label="COM_COMMENTS_FORBIDDEN_NAMES_LABEL"
+			description="COM_COMMENTS_FORBIDDEN_NAMES_DESC"
+			default="admin, administrator, moderator"/>
 	</fieldset>
 
 	<fieldset name="LAYOUT">
