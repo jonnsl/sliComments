@@ -86,7 +86,7 @@ class sliCommentsViewComments extends JView
 	{
 		static $option;
 		if ($option == null) $option = $this->params->get('link', false);
-		if ($option == false || $userid == 0) return $this->escape($name);
+		if ($option == false || $userid == 0) return $name != '' ? $this->escape($name) : JText::_('COM_COMMENTS_ANONYMOUS');
 
 		switch ($option)
 		{

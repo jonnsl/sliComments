@@ -63,7 +63,7 @@ $listDirn	= $this->state->get('list.direction');
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>
-					<?php echo $this->escape($item->name); ?>
+					<?php echo $item->name != '' ? $this->escape($item->name) : JText::_('COM_COMMENTS_ANONYMOUS'); ?>
 				</td>
 				<td class="comment">
 					<span class="submitted">Submitted on: <?php echo sliCommentsHelper::human_time_diff($item->created);?></span>
