@@ -45,6 +45,7 @@ $maximum_chars = $this->params->get('maximum_chars', 5)
 	</p>
 	<?php endif; ?>
 	<p class="comments-post-buttons">
+		<span><a href="#" class="cancel-reply">Cancel</a> or </span>
 		<button type="submit" class="comment-submit" <?php if (!$canComment) echo ' disabled';?>>
 			<?php echo JText::_('COM_COMMENTS_SUBMIT'); ?>
 		</button>

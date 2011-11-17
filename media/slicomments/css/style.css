@@ -136,12 +136,12 @@
 .comments-actions li {
 	float: left;
 	margin: 2px !important;
-	padding-right: 4px !important;
-	border-right: 1px solid #000;
+	padding-left: 4px !important;
+	border-left: 1px solid #000;
 	line-height: 1.1em !important;
 }
-.comments-actions li:last-child {
-	border-right: none;
+.comments-actions li:first-child {
+	border-left: none;
 }
 .rating.positive {
 	color: green
@@ -160,4 +160,10 @@
 }
 .slicomments-spoilerContent .slicomments-spoiler {
 	margin-left: 10px
+}
+.comments-post-buttons span {
+	display: none
+}
+.reply-form .comments-post-buttons span {
+	display: inline
 }

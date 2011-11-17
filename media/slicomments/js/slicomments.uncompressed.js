@@ -101,6 +101,11 @@ window.addEvent('domready', function(){
 				p.addClass('spoiler-hide');
 				this.set('text', this.get('data-show'));
 			}
+		},
+		'click:relay(.cancel-reply)': function (e){
+			e.stop();
+			this.getParent('.comment').getElement('.comment-reply').getParent().setStyle('display', 'block');
+			this.getParent('form').destroy();
 		}
 	});
 
@@ -230,7 +235,7 @@ window.addEvent('domready', function(){
 		var textarea = replyForm.getElement('textarea').addClass('init');
 		textarea.set('value', '@'+name+' ').setCaretPosition("end");
 		new charCount(textarea, replyForm.getElement('.chars-count'));
-		this.getParent().destroy();
+		this.getParent().setStyle('display', 'none');
 	});
 });
 })(document.id);
