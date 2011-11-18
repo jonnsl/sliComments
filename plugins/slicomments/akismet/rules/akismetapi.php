@@ -4,7 +4,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.form.formrule');
 
-JLoader::register('Akismet', dirname(__DIR__).'/Akismet.class.php');
+JLoader::register('Akismet', dirname(__FILE__).'/../Akismet.class.php');
 
 class JFormRuleAkismetApi extends JFormRule
 {

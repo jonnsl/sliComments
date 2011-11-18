@@ -3,7 +3,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
-JLoader::register('Akismet', __DIR__.'/Akismet.class.php');
+JLoader::register('Akismet', dirname(__FILE__).'/Akismet.class.php');
 
 class plgSlicommentsAkismet extends JPlugin
 {

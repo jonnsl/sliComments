@@ -67,6 +67,6 @@ class plgContentSlicomments extends JPlugin
 		
 		// Load the custom form
 		$this->loadLanguage();
-		$form->loadFile(__DIR__.'/article.xml');
+		$form->loadFile(dirname(__FILE__).'/article.xml');
 	}
 }
