@@ -1,10 +1,8 @@
 <?php
-namespace sliComments;
-
 // No direct access
 defined('_JEXEC') or die;
 
-class Emoticon
+class sliCommentsEmoticon
 {
 	protected $_emoticons = array();
 
@@ -51,7 +49,7 @@ class Emoticon
 			return $matches[0];
 		}
 
-		$image = \JHtml::_('image', $this->_emoticons[$smiley], $smiley, 'title="'.$smiley.'" class="emoticon"');
+		$image = JHtml::_('image', $this->_emoticons[$smiley], $smiley, 'title="'.$smiley.'" class="emoticon"');
 
 		return $matches[1] . $image . $matches[3];
 	}

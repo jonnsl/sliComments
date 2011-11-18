@@ -69,7 +69,7 @@ class sliCommentsModelComments extends JModelList
 		if ($this->params->get('bbcode.enabled', true)) {
 			$text = $this->_parseBBcode($text);
 		}
-		if (!$this->params->get('emoticons_enabled', true)) {
+		if ($this->params->get('emoticons_enabled', true)) {
 			$text = $this->_parseEmoticons($text);
 		}
 		if ($this->params->get('html.allow', true)) {
@@ -84,7 +84,7 @@ class sliCommentsModelComments extends JModelList
 	protected function _parseEmoticons($text)
 	{
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/emoticon.php';
-		$emoticon = new sliComments\Emoticon($this->params->get('emoticons'));
+		$emoticon = new sliCommentsEmoticon($this->params->get('emoticons'));
 
 		return $emoticon->parse($text);
 	}
