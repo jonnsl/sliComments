@@ -66,4 +66,36 @@ class Com_sliCommentsInstallerScript
 <?php
 		return true;
 	}
+
+	public function postflight($type, $adapter)
+	{
+		if ($type !== 'install') return true;
+
+		// Store the default rules in the database
+		$db = JFactory::getDbo();
+		$defaultRules = array(
+			'post' => array('1' => 1, '2' => 1, '8' => 1),
+			'auto_publish' => array('6' => 1, '2' => 1, '8' => 1),
+			'vote' => array('6' => 1, '2' => 1, '8' => 1),
+			'edit.own' => array('6' => 1, '8' => 1),
+			'delete.own' => array('6' => 1, '8' => 1),
+			'edit' => array('4' => 1, '8' => 1),
+			'delete' => array('8' => 1),
+			'manage' => array('8' => 1)
+		);
+		jimport('joomla.access.rules');
+		$rules	= new JRules($defaultRules);
+		$asset	= JTable::getInstance('asset');
+
+		if (!$asset->loadByName('com_slicomments')) {
+			$root	= JTable::getInstance('asset');
+			$root->loadByName('root.1');
+			$asset->name = 'com_slicomments';
+			$asset->title = 'com_slicomments';
+			$asset->setLocation($root->id, 'last-child');
+		}
+		$asset->rules = (string) $rules;
+		$asset->check();
+		$asset->store();
+	}
 }
