@@ -104,7 +104,7 @@ window.addEvent('domready', function(){
 		},
 		'click:relay(.cancel-reply)': function (e){
 			e.stop();
-			this.getParent('.comment').getElement('.comment-reply').getParent().setStyle('display', 'block');
+			this.getParent('.comment').getElement('.comment-reply').getParent().setStyle('display', null);
 			this.getParent('form').destroy();
 		}
 	});

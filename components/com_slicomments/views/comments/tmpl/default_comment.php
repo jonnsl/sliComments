@@ -17,13 +17,11 @@ $user = JFactory::getUser();
 			<?php endif; ?>
 			<?php if ($user->authorise('delete', 'com_slicomments') || ($user->authorise('delete.own', 'com_slicomments') && $user_id == $user->id)): ?>
 			<li><a class="comment-delete" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.delete&id='.$id.'&'.JUtility::getToken().'=1&return='.base64_encode(JFactory::getURI()->toString())); ?>" data-id="<?php echo $id; ?>">
-				<?php echo JText::_('COM_COMMENTS_ACTION_DELETE'); ?>
-			</a></li>
+				<?php echo JText::_('COM_COMMENTS_ACTION_DELETE'); ?></a></li>
 			<?php endif; ?>
 			<?php if ($user->authorise('post', 'com_slicomments') && ($user_id == 0 || $user_id != $user->id) && $this->params->get('enabled', true)): ?>
 			<li><a class="comment-reply" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.reply&name='.$this->escape($name).'&'.JUtility::getToken().'=1&return='.base64_encode(JFactory::getURI()->toString())); ?>">
-				<?php echo JText::_('COM_COMMENTS_ACTION_REPLY'); ?>
-			</a></li>
+				<?php echo JText::_('COM_COMMENTS_ACTION_REPLY'); ?></a></li>
 			<?php endif; ?>
 		</ul>
 		<div class="metadata">

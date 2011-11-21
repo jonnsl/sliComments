@@ -134,8 +134,7 @@
 	display: none !important;
 }
 .comments-actions li {
-	float: left;
-	margin: 2px !important;
+	display: inline;
 	padding-left: 4px !important;
 	border-left: 1px solid #000;
 	line-height: 1.1em !important;
