@@ -23,7 +23,7 @@ class sliCommentsModelComments extends JModelList
 	/**
 	 * Method to auto-populate the model state.
 	 */
-	protected function populateState()
+	protected function populateState($ordering = null, $direction = null)
 	{
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -103,9 +103,9 @@ class sliCommentsModelComments extends JModelList
 		return $this->_db->loadResult();
 	}
 
-	public function getTable()
+	public function getTable($name = 'sliComment', $prefix = 'JTable', $options = array())
 	{
-		return parent::getTable('sliComment', 'JTable');
+		return parent::getTable($name, $prefix, $options);
 	}
 
 	/**
