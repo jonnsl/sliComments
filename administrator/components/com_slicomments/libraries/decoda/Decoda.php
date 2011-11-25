@@ -278,7 +278,7 @@ class Decoda {
 			$this->_extractChunks();
 			$this->_parsed = $this->_parse($this->_nodes);
 		} else {
-			$this->_parsed = nl2br($this->_string, $this->config('xhtml'));
+			$this->_parsed = $this->nl2br($this->_string, $this->config('xhtml'));
 		}
 
 		return $this->_parsed;
@@ -407,7 +407,8 @@ class Decoda {
 	 * @chainable 
 	 */
 	public function whitelist() {
-		$this->_whitelist += array_map('strtolower', func_get_args());
+		$args = func_get_args();
+		$this->_whitelist += array_map('strtolower', $args);
 		$this->_whitelist = array_filter($this->_whitelist);
 		
 		return $this;
@@ -850,7 +851,7 @@ class Decoda {
 			if (is_string($node)) {
 				if ($this->config('escapeHtml')) $node = htmlentities($node, ENT_QUOTES, 'UTF-8');
 				if (empty($wrapper)) {
-					$parsed .= nl2br($node, $xhtml);
+					$parsed .= $this->nl2br($node, $xhtml);
 				} else {
 					$parsed .= $node;
 				}
@@ -860,5 +861,14 @@ class Decoda {
 		}
 
 		return $parsed;
+	}
+
+	public function nl2br($string, $xhtml = false)
+	{
+		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+			return nl2br($string);
+		} else {
+			return nl2br($string, $xhtml);
+		}
 	}
 }

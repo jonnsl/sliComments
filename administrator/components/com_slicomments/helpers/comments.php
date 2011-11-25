@@ -45,7 +45,11 @@ class sliCommentsHelper
 	{
 		$to   = JFactory::getDate($to);
 		$from = JFactory::getDate($from);
-		$diff = $from->diff($to);
+		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+			$diff = self::dateTimeDiff($from, $to);
+		} else {
+			$diff = $from->diff($to);
+		}
 		
 		foreach (self::$times as $key => $value)
 		{
@@ -56,5 +60,17 @@ class sliCommentsHelper
 		}
 
 		return JText::_('COM_COMMENTS_SECONDS_AGO_1');
+	}
+
+	protected static function dateTimeDiff($to, $from)
+	{
+		$date = new stdClass();
+
+		foreach (self::$times as $format => $string)
+		{
+			$date->$format = $from->format($format, true) - $to->format($format, true);
+		}
+
+		return $date;
 	}
 }
