@@ -5,7 +5,7 @@
 	<authorEmail>jonnsl@hotmail.com</authorEmail>
 	<copyright>(C) 2011 Copyleft - all rights reversed</copyright>
 	<license>GNU General Public License version 3</license>
-	<version>1.0</version>
+	<version>1.0.0</version>
 	<creationDate>July 2011</creationDate>
 	<description>COM_COMMENTS_XML_DESCRIPTION</description>
 
@@ -74,4 +74,8 @@
 		<table>#__slicomments</table>
 		<table>#__slicomments_ratings</table>
 	</tables>
+
+	<updateservers>
+		<server type="extension" priority="1" name="sliComments">https://raw.github.com/jonnsl/sliComments/master/update.xml</server>
+	</updateservers>
 </extension>
