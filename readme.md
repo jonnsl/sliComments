@@ -27,4 +27,4 @@ A powerful and slick comments component for Joomla!
 * [DynamicTextarea](https://github.com/amadeus/DynamicTextarea-Mootools-Class) by Amadeus Demarzi - Licensed under [The MIT License][]
 * "Marten-Plain" emoticons by Mårten Lundin - http://adiumxtras.com/index.php?a=xtras&xtra_id=6920
 
-[MIT License]: http://opensource.org/licenses/mit-license.php
+[The MIT License]: http://opensource.org/licenses/mit-license.php
