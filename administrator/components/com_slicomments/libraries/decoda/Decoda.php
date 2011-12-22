@@ -2,7 +2,7 @@
 /**
  * Decoda
  *
- * A lightweight lexical string parser for simple markup syntax. 
+ * A lightweight lexical string parser for simple markup syntax.
  * Provides a very powerful filter and hook system to extend the parsing cycle.
  *
  * @author      Miles Johnson - http://milesj.me
@@ -34,7 +34,7 @@ class Decoda {
 
 	/**
 	 * Extracted chunks of text and tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -42,7 +42,7 @@ class Decoda {
 
 	/**
 	 * Configuration.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -57,7 +57,7 @@ class Decoda {
 
 	/**
 	 * List of all instantiated filter objects.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -65,7 +65,7 @@ class Decoda {
 
 	/**
 	 * Mapping of tags to its filter object.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -73,7 +73,7 @@ class Decoda {
 
 	/**
 	 * Children nodes.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -81,7 +81,7 @@ class Decoda {
 
 	/**
 	 * The parsed string.
-	 * 
+	 *
 	 * @access protected
 	 * @var string
 	 */
@@ -89,7 +89,7 @@ class Decoda {
 
 	/**
 	 * The raw string before parsing.
-	 * 
+	 *
 	 * @access protected
 	 * @var string
 	 */
@@ -97,15 +97,15 @@ class Decoda {
 
 	/**
 	 * List of tags from filters.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
 	protected $_tags = array();
-	
+
 	/**
 	 * Whitelist of tags to parse.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -113,7 +113,7 @@ class Decoda {
 
 	/**
 	 * Store the text and single instance configuration.
-	 * 
+	 *
 	 * @access public
 	 * @param string $string
 	 * @return void
@@ -122,15 +122,15 @@ class Decoda {
 		spl_autoload_register(array($this, '_loadFile'));
 
 		JFactory::getLanguage()->load('lib_decoda', JPATH_ADMINISTRATOR, null, false, false);
-		
+
 		$this->reset($string, true);
 	}
 
 	/**
 	 * Add additional filters.
-	 * 
+	 *
 	 * @access public
-	 * @param DecodaFilter $filter 
+	 * @param DecodaFilter $filter
 	 * @return Decoda
 	 * @chainable
 	 */
@@ -152,7 +152,7 @@ class Decoda {
 
 	/**
 	 * Return a specific configuration key value.
-	 * 
+	 *
 	 * @access public
 	 * @param string $key
 	 * @return mixed
@@ -163,12 +163,12 @@ class Decoda {
 
 	/**
 	 * Apply default filters if none are set.
-	 * 
+	 *
 	 * @access public
 	 * @return Decoda
 	 * @chainable
 	 */
-	public function defaults() {		
+	public function defaults() {
 		$this->addFilter(new DefaultFilter());
 		$this->addFilter(new EmailFilter());
 		$this->addFilter(new ImageFilter());
@@ -179,10 +179,10 @@ class Decoda {
 		$this->addFilter(new CodeFilter());
 		$this->addFilter(new QuoteFilter());
 		$this->addFilter(new ListFilter());
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Toggle parsing.
 	 *
@@ -194,7 +194,7 @@ class Decoda {
 	public function disable($status = true) {
 		$this->_config['disabled'] = (bool) $status;
 	}
-	
+
 	/**
 	 * Disable all filters.
 	 *
@@ -207,13 +207,13 @@ class Decoda {
 		$this->_filterMap = array();
 
 		$this->addFilter(new EmptyFilter());
-		
+
 		return $this;
 	}
 
 	/**
 	 * Return a specific filter based on class name.
-	 * 
+	 *
 	 * @access public
 	 * @param string $filter
 	 * @return DecodaFilter
@@ -224,7 +224,7 @@ class Decoda {
 
 	/**
 	 * Return a filter based on its supported tag.
-	 * 
+	 *
 	 * @access public
 	 * @param string $tag
 	 * @return DecodaFilter
@@ -235,7 +235,7 @@ class Decoda {
 
 	/**
 	 * Return all filters.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
@@ -265,7 +265,7 @@ class Decoda {
 
 	/**
 	 * Parse the node list by looping through each one, validating, applying filters, building and finally concatenating the string.
-	 * 
+	 *
 	 * @access public
 	 * @return string
 	 */
@@ -273,7 +273,7 @@ class Decoda {
 		if (!empty($this->_parsed)) {
 			return $this->_parsed;
 		}
-		
+
 		if (strpos($this->_string, $this->config('open')) !== false && strpos($this->_string, $this->config('close')) !== false) {
 			$this->_extractChunks();
 			$this->_parsed = $this->_parse($this->_nodes);
@@ -283,33 +283,33 @@ class Decoda {
 
 		return $this->_parsed;
 	}
-	
+
 	/**
 	 * Remove filter(s).
-	 * 
+	 *
 	 * @access public
 	 * @param string|array $filters
-	 * @return Decoda 
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function removeFilter($filters) {
 		if (!is_array($filters)) {
 			$filters = array($filters);
 		}
-		
+
 		foreach ($filters as $filter) {
 			unset($this->_filters[$filter]);
-			
+
 			foreach ($this->_filterMap as $tag => $fil) {
 				if ($fil == $filter) {
 					unset($this->_filterMap[$tag]);
 				}
 			}
 		}
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Reset the parser to a new string.
 	 *
@@ -325,21 +325,21 @@ class Decoda {
 		$this->_whitelist = array();
 		$this->_string = (string) $string;
 		$this->_parsed = '';
-		
+
 		if ($flush) {
 			$this->_filters = array();
 			$this->_filterMap = array();
 			$this->_tags = array();
 		}
-		
+
 		$this->addFilter(new EmptyFilter());
 
 		return $this;
 	}
-	
+
 	/**
 	 * Change the open/close markup brackets.
-	 * 
+	 *
 	 * @access public
 	 * @param string $open
 	 * @param string $close
@@ -350,82 +350,82 @@ class Decoda {
 		if (empty($open) || empty($close)) {
 			throw new Exception('Both the open and close brackets are required.');
 		}
-		
+
 		$this->_config['open'] = (string) $open;
 		$this->_config['close'] = (string) $close;
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Toggle shorthand syntax.
-	 * 
+	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return Decoda 
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function setShorthand($status = true) {
 		$this->_config['shorthand'] = (bool) $status;
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Toggle the escape HTML option.
-	 * 
+	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return Decoda 
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function setEscapeHtml($status = true) {
 		$this->_config['escapeHtml'] = (bool) $status;
-		
+
 		return $this;
 	}
 
 	/**
 	 * Toggle XHTML.
-	 * 
+	 *
 	 * @access public
 	 * @param boolean $status
-	 * @return Decoda 
+	 * @return Decoda
 	 * @chainable
 	 */
 	public function setXhtml($status = true) {
 		$this->_config['xhtml'] = (bool) $status;
-		
+
 		return $this;
 	}
-	
+
 	/**
 	 * Add tags to the whitelist.
-	 * 
+	 *
 	 * @access public
 	 * @return Decoda
-	 * @chainable 
+	 * @chainable
 	 */
 	public function whitelist() {
 		$args = func_get_args();
 		$this->_whitelist += array_map('strtolower', $args);
 		$this->_whitelist = array_filter($this->_whitelist);
-		
+
 		return $this;
 	}
 
 	/**
 	 * Determine if the string is an open or closing tag. If so, parse out the attributes.
-	 * 
+	 *
 	 * @access protected
 	 * @param string $string
-	 * @return array 
+	 * @return array
 	 */
 	protected function _buildTag($string) {
 		$disabled = $this->config('disabled');
 		$tag = array(
 			'tag' => '',
-			'text' => $string, 
+			'text' => $string,
 			'attributes' => array()
 		);
 
@@ -489,7 +489,7 @@ class Decoda {
 				}
 			}
 		}
-		
+
 		if ($disabled || (!empty($this->_whitelist) && !in_array($tag['tag'], $this->_whitelist))) {
 			$tag['type'] = self::TAG_NONE;
 			$tag['text'] = '';
@@ -500,11 +500,11 @@ class Decoda {
 
 	/**
 	 * Clean the chunk list by verifying that open and closing tags are nested correctly.
-	 * 
+	 *
 	 * @access protected
 	 * @param array $chunks
 	 * @param array $wrapper
-	 * @return string 
+	 * @return string
 	 */
 	protected function _cleanChunks(array $chunks, array $wrapper = array()) {
 		$clean = array();
@@ -545,7 +545,7 @@ class Decoda {
 					if ($parent['maxChildDepth'] >= 0 && !isset($depths[$tag])) {
 						$depths[$tag] = 1;
 						$parent['currentDepth'] = $depths[$tag];
-						
+
 					} else if (isset($depths[$tag])) {
 						$depths[$tag] += 1;
 						$parent['currentDepth'] = $depths[$tag];
@@ -555,13 +555,13 @@ class Decoda {
 						$prevParent = $parent;
 						$parents[] = $parent;
 						$parent = $this->getFilterByTag($tag)->tag($tag);
-						
+
 						if ($prevParent['preserveTags']) {
 							$chunk['type'] = self::TAG_NONE;
 							$parent['preserveTags'] = true;
 						}
-						
-						$clean[] = $chunk;	
+
+						$clean[] = $chunk;
 
 						if ($root) {
 							$openTags[] = array('tag' => $tag, 'index' => $i);
@@ -576,7 +576,7 @@ class Decoda {
 					if (isset($depths[$tag])) {
 						$depths[$tag] -= 1;
 					}
-					
+
 					// If something is not allowed, skip the close tag
 					if (!empty($disallowed)) {
 						$last = end($disallowed);
@@ -635,7 +635,7 @@ class Decoda {
 
 	/**
 	 * Scan the string stack and extract any tags and chunks of text that were detected.
-	 * 
+	 *
 	 * @access protected
 	 * @return void
 	 */
@@ -720,11 +720,11 @@ class Decoda {
 
 	/**
 	 * Convert the chunks into a child parent hierarchy of nodes.
-	 * 
+	 *
 	 * @access protected
 	 * @param array $chunks
 	 * @param array $wrapper
-	 * @return array 
+	 * @return array
 	 */
 	protected function _extractNodes(array $chunks, array $wrapper = array()) {
 		$chunks = $this->_cleanChunks($chunks, $wrapper);
@@ -779,11 +779,11 @@ class Decoda {
 
 	/**
 	 * Validate that the following child can be nested within the parent.
-	 * 
+	 *
 	 * @access protected
 	 * @param array $parent
 	 * @param string $tag
-	 * @return boolean 
+	 * @return boolean
 	 */
 	protected function _isAllowed($parent, $tag) {
 		$filter = $this->getFilterByTag($tag);
@@ -817,12 +817,12 @@ class Decoda {
 
 		return false;
 	}
-	
+
 	/**
 	 * Autoload filters.
-	 * 
+	 *
 	 * @access protected
-	 * @param string $class 
+	 * @param string $class
 	 * @return void
 	 */
 	protected function _loadFile($class) {
@@ -833,11 +833,11 @@ class Decoda {
 
 	/**
 	 * Cycle through the nodes and parse the string with the appropriate filter.
-	 * 
+	 *
 	 * @access protected
 	 * @param array $nodes
 	 * @param array $wrapper
-	 * @return string 
+	 * @return string
 	 */
 	protected function _parse(array $nodes, array $wrapper = array()) {
 		$parsed = '';

@@ -5,7 +5,7 @@ defined('_JEXEC') or die;
 <blockquote class="slicomments-quote">
 	<?php if (!empty($author) || !empty($date)): ?>
 		<div class="slicomments-quoteHead">
-			
+
 			<?php if (!empty($author)): ?>
 				<span class="slicomments-quoteAuthor">
 					<?php echo $this->message('quoteBy', array(
@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 					)); ?>
 				</span>
 			<?php endif ?>
-	
+
 			<?php if (!empty($date)): ?>
 				<span class="slicomments-quoteDate">
 					<?php echo JHtml::_('date', $date); ?>
@@ -23,7 +23,7 @@ defined('_JEXEC') or die;
 			<span class="clear"></span>
 		</div>
 	<?php endif; ?>
-	
+
 	<div class="slicomments-quoteBody">
 		<?php echo $content; ?>
 	</div>

@@ -51,4 +51,3 @@ $maximum_chars = $this->params->get('maximum_chars', 500)
 		</button>
 	</p>
 </form>
-	

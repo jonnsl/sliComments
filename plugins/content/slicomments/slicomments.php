@@ -20,7 +20,7 @@ class plgContentSlicomments extends JPlugin
 
 		// Include dependencies
 		jimport('application.component.controller');
-		
+
 		$old_view = JRequest::getCmd('view');
 		$old_task = JRequest::getVar('task');
 		JRequest::setVar('view', 'comments');
@@ -64,7 +64,7 @@ class plgContentSlicomments extends JPlugin
 	public function onContentPrepareForm($form, $data)
 	{
 		if ($form->getName() != 'com_content.article') return;
-		
+
 		// Load the custom form
 		$this->loadLanguage();
 		$form->loadFile(dirname(__FILE__).'/article.xml');

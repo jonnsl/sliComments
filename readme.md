@@ -14,7 +14,7 @@ A powerful and slick comments component for Joomla!
 * Ratings
 * BBCode and/or HTML
 * Emoticons
-* ACL 
+* ACL
 * Integration with Kunena and JomSocial (profile)
 * Gravatar
 * No powered by or hidden links

@@ -30,7 +30,7 @@ class sliCommentsModelComments extends JModelList
 
 		$status = $this->getUserStateFromRequest($this->context.'.status', 'filter_status', '');
 		$this->setState('filter.status', $status);
-	
+
 		// List state information.
 		parent::populateState('a.created', 'desc');
 	}
@@ -188,7 +188,7 @@ class sliCommentsModelComments extends JModelList
 
 	/**
 	 * Parse bbcode into safe HTML
-	 * 
+	 *
 	 * @access protected
 	 * @param  string $text
 	 * @return string

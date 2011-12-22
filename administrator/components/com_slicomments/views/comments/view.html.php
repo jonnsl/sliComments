@@ -49,14 +49,14 @@ class sliCommentsViewComments extends JView
 
 		if ($status != -2 || $status == '*') {
 			//JToolBarHelper::custom('comment.edit', 'edit', null, 'COM_COMMENTS_ACTION_EDIT');
-		} 
+		}
 
 		if ($status >= 0 || $status == '*') {
 			JToolBarHelper::custom('comments.spam', 'spam', null, 'COM_COMMENTS_ACTION_SPAM');
 			JToolBarHelper::custom('comments.trash', 'trash', null, 'JTOOLBAR_TRASH');
 		} else {
 			JToolBarHelper::custom('comments.delete', 'delete', null, 'JTOOLBAR_DELETE');
-		} 
+		}
 
 		if (JFactory::getUser()->authorise('core.admin')) JToolBarHelper::preferences('com_slicomments');
 	}

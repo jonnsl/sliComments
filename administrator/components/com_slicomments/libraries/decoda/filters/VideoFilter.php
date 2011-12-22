@@ -17,11 +17,11 @@ class VideoFilter extends DecodaFilter {
 
 	/**
 	 * Supported tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
-	protected $_tags = array(  
+	protected $_tags = array(
 		'video' => array(
 			'template' => 'video',
 			'type' => self::TYPE_BLOCK,
@@ -35,7 +35,7 @@ class VideoFilter extends DecodaFilter {
 
 	/**
 	 * Video formats.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -101,7 +101,7 @@ class VideoFilter extends DecodaFilter {
 
 	/**
 	 * Custom build the HTML for videos.
-	 * 
+	 *
 	 * @access public
 	 * @param array $tag
 	 * @param string $content

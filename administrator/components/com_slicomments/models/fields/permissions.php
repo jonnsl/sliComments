@@ -23,7 +23,7 @@ class JFormFieldPermissions extends JFormField
 		{
 			$left  .= '<li class="group"  data-id="'.$group->id.'" data-parent-id="'.$group->parent_id.'">'.str_repeat('|—', $group->level).$group->title.'</li>';
 			$right .= '<li class="action" data-id="'.$group->id.'">';
-			
+
 			foreach ($access as $label => $actions)
 			{
 				$right .= '<fieldset class="permissions-fieldset">';

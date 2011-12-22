@@ -15,7 +15,7 @@ class Com_sliCommentsInstallerScript
 		$src = dirname(__FILE__);
 		$status = new JObject();
 		$db = JFactory::getDbo();
-		
+
 		// Content - sliComments
 		$installer = new JInstaller;
 		$result = $installer->install($src.'/plugins/content/slicomments');

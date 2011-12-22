@@ -40,7 +40,7 @@ class sliCommentsViewComments extends JView
 		try {
 			$partial = $this->getPartial($name);
 			extract((array)$vars);
-	
+
 			include $partial;
 		}
 		catch (Exception $e) {

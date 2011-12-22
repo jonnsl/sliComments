@@ -85,11 +85,11 @@
 	height: 100px;
 }
 .comments_form textarea:hover, .comments_form input:hover {
-	border: 1px solid #999 !important; 
+	border: 1px solid #999 !important;
 }
 .comments_form textarea:focus, .comments_form input:focus {
 	outline: none;
-	border: 1px solid #CCC !important; 
+	border: 1px solid #CCC !important;
 	box-shadow: 0 0 5px rgba(81, 203, 238, 1);
 	-webkit-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
 	-moz-box-shadow: 0 0 5px rgba(81, 203, 238, 1);

@@ -47,7 +47,7 @@ class sliCommentsControllerComments extends JController
 			try {
 				switch ($this->task)
 				{
-					
+
 					// Not actually a status change but it remain here to avoid code repetition
 					case 'delete':
 						if (!$user->authorise('edit', 'com_slicomments')){

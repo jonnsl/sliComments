@@ -16,7 +16,7 @@ class sliCommentsEmoticon
 
 	/**
 	 * Parse out the emoticons and replace with images.
-	 * 
+	 *
 	 * @access public
 	 * @param  string $content
 	 * @return string
@@ -36,10 +36,10 @@ class sliCommentsEmoticon
 
 	/**
 	 * Callback for smiley processing.
-	 * 
+	 *
 	 * @access protected
 	 * @param array $matches
-	 * @return string 
+	 * @return string
 	 */
 	protected function _emoticonCallback($matches)
 	{
@@ -53,5 +53,5 @@ class sliCommentsEmoticon
 
 		return $matches[1] . $image . $matches[3];
 	}
-	
+
 }

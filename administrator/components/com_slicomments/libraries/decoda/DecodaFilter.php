@@ -2,7 +2,7 @@
 /**
  * DecodaFilter
  *
- * A filter defines the list of tags and its associative markup to parse out of a string. 
+ * A filter defines the list of tags and its associative markup to parse out of a string.
  * Supports a wide range of parameters to customize the output of each tag.
  *
  * @author      Miles Johnson - http://milesj.me
@@ -37,7 +37,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Type constants.
-	 * 
+	 *
 	 * TYPE_NONE	- Will not accept block or inline (for validating)
 	 * TYPE_INLINE	- Inline element that can only contain child inlines
 	 * TYPE_BLOCK	- Block element that can contain both inline and block
@@ -47,10 +47,10 @@ abstract class DecodaFilter extends DecodaAbstract {
 	const TYPE_INLINE = 1;
 	const TYPE_BLOCK = 2;
 	const TYPE_BOTH = 3;
-	
+
 	/**
 	 * Newline and carriage return formatting.
-	 * 
+	 *
 	 * NL_REMOVE	- Will be removed
 	 * NL_PRESERVE	- Will be preserved as \n and \r
 	 * NL_CONVERT	- Will be converted to <br> tags
@@ -61,7 +61,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Supported tags.
-	 * 
+	 *
 	 * @access protected
 	 * @var array
 	 */
@@ -69,7 +69,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Return a message string from the parser.
-	 * 
+	 *
 	 * @access public
 	 * @param string $key
 	 * @param array $vars
@@ -81,16 +81,16 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Parse the node and its content into an HTML tag.
-	 * 
+	 *
 	 * @access public
 	 * @param array $tag
 	 * @param string $content
-	 * @return string 
+	 * @return string
 	 */
 	public function parse(array $tag, $content) {
 		$setup = $this->tag($tag['tag']);
 		$xhtml = $this->getParser()->config('xhtml');
-		
+
 		if (empty($setup)) {
 			return;
 		}
@@ -103,7 +103,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 				return $content;
 			}
 		}
-		
+
 		// Add linebreaks
 		switch ($setup['lineBreaks']) {
 			case self::NL_REMOVE:
@@ -127,7 +127,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 		// Format attributes
 		$attributes = array();
 		$attr = '';
-		
+
 		if (!empty($tag['attributes'])) {
 			foreach ($tag['attributes'] as $key => $value) {
 				if (isset($setup['map'][$key])) {
@@ -144,11 +144,11 @@ abstract class DecodaFilter extends DecodaAbstract {
 				}
 			}
 		}
-		
+
 		if (!empty($setup['html'])) {
 			$attributes += $setup['html'];
 		}
-		
+
 		foreach ($attributes as $key => $value) {
 			$attr .= ' '. $key .'="'. $value .'"';
 		}
@@ -173,7 +173,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Return a tag if it exists, and merge with defaults.
-	 * 
+	 *
 	 * @access public
 	 * @param string $tag
 	 * @return array
@@ -187,12 +187,12 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'pattern' => '',
 			'type' => self::TYPE_BLOCK,
 			'allowed' => self::TYPE_BOTH,
-			
+
 			// Attributes
 			'attributes' => array(),
 			'map' => array(),
 			'html' => array(),
-			
+
 			// Processes
 			'lineBreaks' => self::NL_CONVERT,
 			'autoClose' => false,
@@ -200,7 +200,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 			'escapeContent' => false,
 			'escapeAttributes' => true,
 			'maxChildDepth' => -1,
-			
+
 			// Hierarchy
 			'parent' => array(),
 			'children' => array()
@@ -215,7 +215,7 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Return all tags.
-	 * 
+	 *
 	 * @access public
 	 * @return array
 	 */
@@ -225,11 +225,11 @@ abstract class DecodaFilter extends DecodaAbstract {
 
 	/**
 	 * Render the tag using a template.
-	 * 
+	 *
 	 * @access public
 	 * @param array $tag
 	 * @param string $content
-	 * @return string 
+	 * @return string
 	 */
 	protected function _render(array $tag, $content) {
 		$setup = $this->tag($tag['tag']);

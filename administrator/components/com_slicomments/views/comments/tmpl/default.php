@@ -67,7 +67,7 @@ $listDirn	= $this->state->get('list.direction');
 				</td>
 				<td class="comment">
 					<span class="submitted">Submitted on: <?php echo sliCommentsHelper::human_time_diff($item->created);?></span>
-					<span class="text"><?php 
+					<span class="text"><?php
 					if ($search = $this->state->get('filter.search')){
 						echo sliCommentsHelper::highlight(nl2br($this->escape($item->raw)), $search);
 					} else {
@@ -94,7 +94,7 @@ $listDirn	= $this->state->get('list.direction');
 							<li><a href="index.php?option=com_slicomments&amp;task=comments.trash&amp;cid[]=<?php echo $item->id.$token; ?>" class="trash-comment"><?php echo JText::_('COM_COMMENTS_ACTION_TRASH'); ?></a></li>
 						<?php else: ?>
 							<li><a href="index.php?option=com_slicomments&amp;task=comments.delete&amp;cid[]=<?php echo $item->id.$token; ?>" class="delete-comment"><?php echo JText::_('COM_COMMENTS_ACTION_DELETE_PERMANENTLY'); ?></a></li>
-						<?php endif; ?>	
+						<?php endif; ?>
 					</ul>
 				</td>
 				<td>

@@ -51,7 +51,7 @@ class sliCommentsControllerComments extends JController
 			$model = $this->getModel();
 			$table = $model->getTable();
 			$id = JRequest::getInt('id', null, 'get');
-	
+
 			if (!$id) {
 				throw new Exception(JText::_('COM_COMMENTS_ERROR_INVALID_ID'));
 			}
@@ -59,7 +59,7 @@ class sliCommentsControllerComments extends JController
 				throw new Exception(JText::_('COM_COMMENTS_ERROR_COMMENT_DONT_EXIST'));
 			}
 			if (!(
-				$user->authorise('edit', 'com_slicomments') || 
+				$user->authorise('edit', 'com_slicomments') ||
 				($user->authorise('edit.own', 'com_slicomments') && $table->user_id == $user->id)
 			)) {
 				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'));
