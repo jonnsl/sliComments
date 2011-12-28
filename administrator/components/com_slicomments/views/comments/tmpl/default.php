@@ -66,7 +66,7 @@ $listDirn	= $this->state->get('list.direction');
 					<?php echo $item->name != '' ? $this->escape($item->name) : JText::_('COM_COMMENTS_ANONYMOUS'); ?>
 				</td>
 				<td class="comment">
-					<span class="submitted">Submitted on: <?php echo sliCommentsHelper::human_time_diff($item->created);?></span>
+					<span class="submitted"><?php echo JText::sprintf('COM_COMMENTS_SUBMITTED', sliCommentsHelper::human_time_diff($item->created)); ?></span>
 					<span class="text"><?php
 					if ($search = $this->state->get('filter.search')){
 						echo sliCommentsHelper::highlight(nl2br($this->escape($item->raw)), $search);
@@ -107,7 +107,7 @@ $listDirn	= $this->state->get('list.direction');
 		</tbody>
 	</table>
 
-	<p class="copyright">sliComments is free software released under the <a href="http://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License</a>. Icons by <a href="http://dryicons.com">DryIcons</a>.</p>
+	<p class="copyright"><?php echo JText::_('COM_COMMENTS_COPYRIGHT'); ?></p>
 
 	<input type="hidden" name="controller" value="" />
 	<input type="hidden" name="task" value="" />
