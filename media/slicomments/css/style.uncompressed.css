@@ -202,3 +202,11 @@
 	font-size: 0.9em;
 	font-style: italic;
 }
+#live-comments-info, #live-comments-disable {
+	display: none;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	border: 1px solid #999;
+	clear: both
+}

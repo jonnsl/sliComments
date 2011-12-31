@@ -12,7 +12,7 @@ $user = JFactory::getUser();
 $rating = $likes - $dislikes;
 $token = '&'.JSession::getFormToken().'=1';
 ?>
-<li id="comment-<?php echo $id;?>" class="comment">
+<li id="comment-<?php echo $id;?>" class="comment" data-id="<?php echo $id; ?>">
 <div class="comment-body">
 	<?php if ($this->params->get('avatar', 'gravatar')) : ?>
 	<div class="profile-image-container">
@@ -26,15 +26,15 @@ $token = '&'.JSession::getFormToken().'=1';
 				<li><a class="comment-dislike" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.vote&v=0&id='.$id.$token); ?>"><?php echo JText::_('COM_COMMENTS_ACTION_DISLIKE'); ?></a></li>
 			<?php endif; ?>
 			<?php if ($user->authorise('edit', 'com_slicomments') || ($user->authorise('edit.own', 'com_slicomments') && $user_id == $user->id)): ?>
-			<li><a class="comment-edit" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.edit&id='.$id.$token.'&return='.base64_encode(JFactory::getURI()->toString())); ?>" data-id="<?php echo $id; ?>">
+			<li><a class="comment-edit" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.edit&id='.$id.$token.'&return='.base64_encode(JFactory::getURI()->toString())); ?>">
 				<?php echo JText::_('COM_COMMENTS_ACTION_EDIT'); ?></a></li>
 			<?php endif; ?>
 			<?php if ($user->authorise('delete', 'com_slicomments') || ($user->authorise('delete.own', 'com_slicomments') && $user_id == $user->id)): ?>
-			<li><a class="comment-delete" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.delete&id='.$id.$token); ?>" data-id="<?php echo $id; ?>">
+			<li><a class="comment-delete" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.delete&id='.$id.$token); ?>">
 				<?php echo JText::_('COM_COMMENTS_ACTION_DELETE'); ?></a></li>
 			<?php endif; ?>
 			<?php if ($user->authorise('flag', 'com_slicomments')): ?>
-			<li><a class="comment-flag" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.flag&id='.$id.$token); ?>" data-id="<?php echo $id; ?>" title="<?php echo JText::_('COM_COMMENTS_ACTION_FLAG_TITLE'); ?>">
+			<li><a class="comment-flag" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.flag&id='.$id.$token); ?>" title="<?php echo JText::_('COM_COMMENTS_ACTION_FLAG_TITLE'); ?>">
 				<?php echo JText::_('COM_COMMENTS_ACTION_FLAG'); ?></a></li>
 			<?php endif; ?>
 			<?php if ($user->authorise('post', 'com_slicomments') && ($user_id == 0 || $user_id != $user->id) && $this->params->get('enabled', true)): ?>
@@ -53,7 +53,7 @@ $token = '&'.JSession::getFormToken().'=1';
 				}
 				?>
 			</span>
-			<span class="created" title="<?php echo JHtml::_('date', $created, JText::_('DATE_FORMAT_LC2'))?>">
+			<span class="created" title="<?php echo JHtml::_('date', $created, JText::_('DATE_FORMAT_LC2'))?>" data-created="<?php echo JFactory::getDate($created)->toUnix();?>">
 				<?php echo sliCommentsHelper::human_time_diff($created);?>
 			</span>
 			<?php if ($rating != 0) : ?>
@@ -69,10 +69,10 @@ $token = '&'.JSession::getFormToken().'=1';
 		</div>
 		<div class="content">
 			<?php
-			if ($spam) {
+			if (isset($isSpam) && $isSpam) {
 				$this->partial('comment_hidden', array('text' => $text, 'legend' => JText::_('COM_COMMENTS_FLAGGED')));
 			}
-			else if ($lowRated) {
+			else if (isset($lowRated) && $lowRated) {
 				$this->partial('comment_hidden', array('text' => $text, 'legend' => JText::_('COM_COMMENTS_LOW_RATED')));
 			} else {
 				echo $text;

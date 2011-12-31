@@ -245,7 +245,7 @@ class sliCommentsModelComments extends sliModel
 			$data['email'] = $user->email;
 		} else {
 			$comment = $this->preProcess(array((object)$data));
-			$data = $comment[0];
+			$data = (array) $comment[0];
 		}
 		return true;
 	}
@@ -502,11 +502,15 @@ class sliCommentsModelComments extends sliModel
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.'.$field.' END as name'
+		$query->select($this->getState('list.select', 'CASE WHEN a.user_id = 0 THEN a.name ELSE u.'.$field.' END as name'
 			. ', CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email'
-			. ', a.text, a.id, a.user_id, a.created, a.score, a.spaminess'
-			. ', positive_votes - 1 as likes, negative_votes as dislikes, total_votes - 1 as votes');
+			. ', a.text, a.id, a.user_id, UNIX_TIMESTAMP(a.created) as created'));
 		$query->from('#__slicomments AS a');
+
+		if (!$this->getState('list.live', false)) {
+			$query->select('a.score, a.spaminess, positive_votes - 1 as likes');
+			$query->select('negative_votes as dislikes, total_votes - 1 as votes');
+		}
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
 
@@ -534,6 +538,19 @@ class sliCommentsModelComments extends sliModel
 		// Filter by extension/item
 		$query->where('a.extension = '. $db->quote($this->getState('extension')));
 		$query->where('a.item_id = '.(int) $this->getState('item.id'));
+
+		$since = $this->getState('since', false);
+		if ($since)
+		{
+			// JDate->toSql is bugged and will return the date in a different timezone
+			$query->where('a.created > ' . $db->quote(date($db->getDateFormat(), $since)));
+		}
+
+		$posts = $this->getState('exclude.posts');
+		if ($posts)
+		{
+			$query->where('a.id NOT IN ('.implode(',', $posts).')');
+		}
 
 		// Show only approved comments
 		$query->where('a.status = 1');
@@ -637,8 +654,12 @@ class sliCommentsModelComments extends sliModel
 
 		foreach ($comments as $k => $comment)
 		{
-			$comment->spam = $spam_threshold && $comment->spaminess > $spam_threshold;
-			$comment->lowRated = $low_rated_threshold && $comment->score < $low_rated_threshold;
+			if ($spam_threshold && isset($comment->spaminess)) {
+				$comment->isSpam = $comment->spaminess > $spam_threshold;
+			}
+			if ($low_rated_threshold && isset($comment->score)) {
+				$comment->lowRated = $comment->score < $low_rated_threshold;
+			}
 
 			switch ($avatar)
 			{

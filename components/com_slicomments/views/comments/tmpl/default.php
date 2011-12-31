@@ -13,6 +13,28 @@ JHtml::_('behavior.framework', true);
 JHtml::_('stylesheet', 'slicomments/style.uncompressed.css', array(), true);
 $user = JFactory::getUser();
 JHtml::_('script', 'slicomments/slicomments.js', true, true);
+if ($this->params->get('livecomments', false)) {
+	JText::script('COM_COMMENTS_ACTION_LIKE', true);
+	JText::script('COM_COMMENTS_ACTION_DISLIKE', true);
+	JText::script('COM_COMMENTS_ACTION_EDIT', true);
+	JText::script('COM_COMMENTS_ACTION_DELETE', true);
+	JText::script('COM_COMMENTS_ACTION_FLAG', true);
+	JText::script('COM_COMMENTS_ACTION_FLAG_TITLE', true);
+	JText::script('COM_COMMENTS_ACTION_REPLY', true);
+	JHtml::_('script', 'slicomments/livecomments.js', true, true);
+
+$actions = array('vote', 'edit', 'delete', 'flag', 'post');
+foreach ($actions as $action) {
+	$permissions[$action] = $user->authorise($action, 'com_slicomments');
+}
+JFactory::getDocument()->addScriptDeclaration('
+	var sliComments = {
+		token: "'.JSession::getFormToken().'",
+		user: '.json_encode(array(
+		'id' => $user->id,
+		'permissions' => $permissions
+	))."\n\t};\n");
+}
 ?>
 <div id="comments" class="no-js<?php if ($this->params->get('avatar', 'gravatar') === '0') echo ' no-avatar'; ?>">
 
@@ -35,7 +57,14 @@ JHtml::_('script', 'slicomments/slicomments.js', true, true);
 		<?php echo JText::sprintf('COM_COMMENTS_COMMENTS_COUNT', '<span id="comments_counter" >'.$this->total.'</span>'); ?></h4>
 	<?php if ($user->authorise('post', 'com_slicomments') || $user->guest) echo $this->loadTemplate('form'); ?>
 
-	<ul id="comments_list" class="comment-list">
+	<?php if ($this->params->get('livecomments', false)): ?>
+	<div id="live-comments-info"><?php echo JText::sprintf('COM_COMMENTS_LIVE_COMMENTS_NEW', '<strong>0</strong>',
+	'<a href="#" class="show_comments">'.JText::_('COM_COMMENTS_LIVE_COMMENTS_SHOW').'</a>',
+	'<a href="#" class="update_comments">'.JText::_('COM_COMMENTS_LIVE_COMMENTS_UPDATE').'</a>');?></div>
+	<div id="live-comments-disable"><a href="#"><?php echo JText::_('COM_COMMENTS_LIVE_COMMENTS_DISABLE'); ?></a></div>
+	<?php endif; ?>
+
+	<ul id="comments_list" class="comment-list<?php echo $classes; ?>">
 	<?php
 	foreach ($this->comments as $comment) {
 		$this->partial('comment', $comment);

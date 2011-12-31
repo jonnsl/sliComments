@@ -256,8 +256,9 @@ window.addEvent('domready', function(){
 	 */
 	section.addEvent('click:relay(.comment-edit)',
 		req(function(response){
+			var comment = this.getParent('li.comment');
 			var container =
-				this.getParent('li.comment')
+				comment
 					.addClass('editing')
 					.getElement('.content-container'),
 				editForm = form.clone()
@@ -267,7 +268,7 @@ window.addEvent('domready', function(){
 				avatar.destroy();
 			}
 			editForm.task.set('value', 'comments.save');
-			editForm.item_id.set('name', 'id').set('value', this.get('data-id'));
+			editForm.item_id.set('name', 'id').set('value', comment.get('data-id'));
 			editForm.text.set('text', response).addClass('init');
 			new charCount(editForm.text, editForm.getElement('.chars-count'));
 			editForm.inject(container);

@@ -235,6 +235,16 @@
 		</field>
 
 		<field
+			name="livecomments"
+			type="radio"
+			label="COM_COMMENTS_LIVE_COMMENTS_LABEL"
+			description="COM_COMMENTS_LIVE_COMMENTS_DESC"
+			default="0">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
 			name="limit"
 			type="integer"
 			label="COM_COMMENTS_LIMIT_LABEL"

@@ -91,6 +91,9 @@ class sliCommentsControllerComments extends sliController
 			}
 			if ($model->validate($data) && $model->save($data))
 			{
+				$posts = $session->get('slicomments.posts', array());
+				$posts[] = $data['id'];
+				$session->set('slicomments.posts', $posts);
 				$view = $this->getView('comments', 'html');
 				require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/comments.php';
 				$view->params = $model->params;
@@ -255,6 +258,51 @@ class sliCommentsControllerComments extends sliController
 			echo $data['text'];
 		}
 		catch (Exception $e) {
+			JResponse::setHeader('status', $e->getCode());
+			echo $e->getMessage();
+		}
+	}
+
+	public function live()
+	{
+		try
+		{
+			$item_id = JRequest::getInt('item_id', 0);
+			$extension = JRequest::getCmd('extension', '');
+			if (!$item_id || !$extension) {
+				throw new Exception(JText::_('COM_COMMENTS_ERROR_BAD_REQUEST'), 400);
+			}
+			$since = JRequest::getInt('lt', 0);
+			//$since = $since == 0 ? false : JFactory::getDate($since);
+
+			$session = JFactory::getSession();
+			$posts = $session->get('slicomments.posts', array());
+			$posts = array_filter(array_unique($posts));
+			JArrayHelper::toInteger($posts);
+			$model = $this->getModel();
+			$state = $model->getState();
+			$state->set('list.live', true);
+			$state->set('list.start', 0);
+			$state->set('list.limit', 0);
+			$state->set('list.order_dir', 'ASC');
+			$state->set('extension', $extension);
+			$state->set('item.id', $item_id);
+			if ($since) $state->set('since', $since);
+			if (!empty($posts)) $state->set('exclude.posts', $posts);
+
+			$comments = $model->getComments();
+
+			if (count($comments))
+			{
+				echo '[' , implode(',', array_map('json_encode', $comments)) , ']';
+			}
+			else
+			{
+				JResponse::setHeader('status', 204);
+			}
+		}
+		catch (Exception $e)
+		{
 			JResponse::setHeader('status', $e->getCode());
 			echo $e->getMessage();
 		}

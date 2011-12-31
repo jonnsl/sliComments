@@ -1,0 +1,47 @@
+<li id="comment-<%= id %>" class="comment" data-id="<%= id %>">
+<div class="comment-body">
+	<% if (typeof avatar != 'undefined') { %>
+	<div class="profile-image-container">
+		<img class="profile-image" src="<%= avatar %>" alt="<%= name %>">
+	</div>
+	<% } %>
+	<div class="content-container">
+		<ul class="comments-actions">
+			<% if (this.user.permissions.vote) { %>
+				<li><a class="comment-like" href="index.php?option=com_slicomments&amp;task=comments.vote&amp;v=1&amp;id=<%= id %>&amp;<%= this.token %>=1"><%=: 'COM_COMMENTS_ACTION_LIKE' | _ %></a></li>
+				<li><a class="comment-dislike" href="index.php?option=com_slicomments&amp;task=comments.vote&amp;v=0&amp;id=<%= id %>&amp;<%= this.token %>=1"><%=: 'COM_COMMENTS_ACTION_DISLIKE' | _ %></a></li>
+			<% } %>
+			<% if (this.user.permissions.edit) { %>
+			<li><a class="comment-edit" href="index.php?option=com_slicomments&amp;task=comments.edit&amp;id=<%= id %>&amp;<%= this.token %>=1">
+				<%=: 'COM_COMMENTS_ACTION_EDIT' | _ %></a></li>
+			<% } %>
+			<% if (this.user.permissions.delete) { %>
+			<li><a class="comment-delete" href="index.php?option=com_slicomments&amp;task=comments.delete&amp;id=<%= id %>&amp;<%= this.token %>=1">
+				<%=: 'COM_COMMENTS_ACTION_DELETE' | _ %></a></li>
+			<% } %>
+			<% if (this.user.permissions.flag) { %>
+			<li><a class="comment-flag" href="index.php?option=com_slicomments&amp;task=comments.flag&amp;id=<%= id %>&amp;<%= this.token %>=1" title="<%=: 'COM_COMMENTS_ACTION_FLAG_TITLE' | _ %>">
+				<%=: 'COM_COMMENTS_ACTION_FLAG' | _ %></a></li>
+			<% } %>
+			<% if (this.user.permissions.post) { %>
+			<li><a class="comment-reply" href="#">
+				<%=: 'COM_COMMENTS_ACTION_REPLY' | _ %></a></li>
+			<% } %>
+		</ul>
+		<div class="metadata">
+			<span class="author">
+				<% if (typeof link != 'undefined') { %>
+				<a href="<%= link %>"><%= name %></a>
+				<% } else { %>
+					<%= name %>
+				<% } %>
+			</span>
+			<span class="created">
+				<%=: created | format:'%A, %d %B %Y %H:%M' %>
+			</span>
+		</div>
+		<div class="content"><%- text %></div>
+	</div>
+</div>
+<div class="clr"></div>
+</li>
