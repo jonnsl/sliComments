@@ -521,7 +521,7 @@ class sliCommentsModelComments extends JModelList
 	 *
 	 * @return	string
 	 */
-	function getListQuery()
+	protected function getListQuery()
 	{
 		// Create a new query object.
 		$db = $this->_db;
