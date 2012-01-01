@@ -103,16 +103,16 @@ class sliCommentsControllerComments extends JController
 				throw new Exception(JText::_('JINVALID_TOKEN'), 500);
 			}
 			if (!JFactory::getUser()->authorise('vote', 'com_slicomments')){
-				throw new JException(JText::_('COM_COMMENTS_NO_AUTH'), 403);
+				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
 			}
 			$model = $this->getModel();
 			$vote = JRequest::getInt('v');
 			$comment_id = JRequest::getInt('id');
 			if (!$model->vote($comment_id, $vote)) {
-				throw new JException((string)$model->getError(), 500);
+				throw new Exception((string)$model->getError(), 500);
 			}
 			echo $vote;
-		} catch (JException $e) {
+		} catch (Exception $e) {
 			JResponse::setHeader('status', $e->getCode());
 			echo $e->getMessage();
 		}
