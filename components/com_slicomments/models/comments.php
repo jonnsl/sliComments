@@ -53,7 +53,7 @@ class sliCommentsModelComments extends JModelList
 		$code = new Decoda($text);
 		$code->setEscapeHtml(!$this->params->get('html.allow', true));
 
-		$filters = $this->params->get('bbcode.filters');
+		$filters = $this->params->get('bbcode.filters', array('default' => 1, 'text' => 1, 'image' => 1, 'quote' => 1, 'url' => 1, 'video' => 1));
 		foreach ($filters as $filter => $enabled)
 		{
 			if ($enabled)
@@ -90,7 +90,7 @@ class sliCommentsModelComments extends JModelList
 	protected function _parseEmoticons($text)
 	{
 		require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/emoticon.php';
-		$emoticon = new sliCommentsEmoticon($this->params->get('emoticons'));
+		$emoticon = new sliCommentsEmoticon($this->params->get('emoticons', array()));
 
 		return $emoticon->parse($text);
 	}
