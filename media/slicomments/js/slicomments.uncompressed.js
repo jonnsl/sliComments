@@ -114,6 +114,14 @@ window.addEvent('domready', function(){
 	var textarea = form.getElement('textarea');
 	new charCount(textarea, form.getElement('.chars-count'));
 	var logged = form.get('data-logged') == 1 ? true : false;
+	var lang = document.getElement('html').get('lang');
+
+	// Make sure that the language is in the format xx-XX
+	lang = lang.split('-');
+	lang[1] = lang[1].toUpperCase();
+	lang = lang.join('-');
+
+	if (Locale.list().contains(lang)) Locale.use(lang);
 
 	var validate = function(form){
 		var validator = form.retrieve('validator');
