@@ -313,6 +313,18 @@
 		</field>
 
 		<field
+			name="top_comments"
+			type="integer"
+			label="COM_COMMENTS_TOP_COMMENTS_LABEL"
+			description="COM_COMMENTS_TOP_COMMENTS_DESC"
+			default="0"
+			first="1"
+			last="10"
+			step="1">
+				<option value="0">JNONE</option>
+		</field>
+
+		<field
 			name="link"
 			type="components"
 			label="COM_COMMENTS_LINK_LABEL"

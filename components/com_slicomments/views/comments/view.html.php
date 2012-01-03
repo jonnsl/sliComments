@@ -20,6 +20,7 @@ class sliCommentsViewComments extends JView
 		$this->total		= $this->get('Total');
 		$this->state		= $this->get('State');
 		$this->params		= $this->state->get('params');
+		$this->topComments	= $this->get('topComments');
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
 		$this->data			= $this->get('Data');

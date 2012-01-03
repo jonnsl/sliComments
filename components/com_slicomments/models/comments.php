@@ -513,6 +513,9 @@ class sliCommentsModelComments extends JModelList
 	{
 		// Compile the store id.
 		$id	.= ':'.$this->getState('article.id');
+		$id	.= ':'.$this->getState('list.start');
+		$id	.= ':'.$this->getState('list.order_dir');
+		$id	.= ':'.implode(':', $this->getState('exclude.id', array()));
 		return parent::getStoreId($id);
 	}
 
@@ -539,11 +542,43 @@ class sliCommentsModelComments extends JModelList
 		// Show only approved comments
 		$query->where('a.status = 1');
 
+		// Don't show the top comments
+		$exclude = $this->getState('exclude.id', array());
+		if (count($exclude))
+		{
+			$query->where('a.id <> '.implode(' AND a.id <> ', $exclude));
+		}
+
 		// Add the list ordering clause.
 		$query->order('a.created '.$this->getState('list.order_dir', 'DESC'));
 
 		// echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
+	}
+
+	public function getTopComments()
+	{
+		if (($limit = (int) $this->params->get('top_comments', 0)) <= 0
+			|| $this->getState('list.start', 0) > 0
+			|| $this->getTotal() < $limit + $this->getState('list.limit', 20)) return array();
+
+		$db = $this->_db;
+		$query = $this->getListQuery()
+			->clear('order')
+			->where('a.rating > 2')
+			->order('a.rating DESC, a.created '.$this->getState('list.order_dir', 'DESC'));
+
+		$db->setQuery($query, 0, $limit);
+		$comments = $db->loadObjectList();
+
+		$exclude = array();
+		foreach ($comments as $comment)
+		{
+			$exclude[] = $comment->id;
+		}
+		$this->setState('exclude.id', $exclude);
+
+		return $comments;
 	}
 
 	/**

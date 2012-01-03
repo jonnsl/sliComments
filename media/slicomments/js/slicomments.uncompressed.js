@@ -84,7 +84,7 @@ window.addEvent('domready', function(){
 			.addClass(total > 0 ? 'positive' : 'negative')
 	});
 
-	list.addEvents({
+	section.addEvents({
 		'click:relay(.comment-delete)': 
 		req(function(response){
 			this.getParent('li.comment').nix(true);
@@ -232,7 +232,7 @@ window.addEvent('domready', function(){
 		}
 	});
 
-	list.addEvent('click:relay(.comment-reply)', function(e){
+	section.addEvent('click:relay(.comment-reply)', function(e){
 		e.stop();
 		var replyForm = form.clone();
 		replyForm.addClass('reply-form');
