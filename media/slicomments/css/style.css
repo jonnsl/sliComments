@@ -29,7 +29,7 @@
 	height: 100%;
 	width: 100%;
 }
-.content-container, .comments_form {
+.content-container {
 	margin-left: 55px;
 }
 .clr{clear: both}
@@ -45,7 +45,7 @@
 	width: 100%;
 }
 .comments_form_inputs {
-	margin: 0 !important;
+	margin: 0 0 0 55px !important;
 	padding: 0 !important;
 	list-style-type: none !important;
 }
@@ -62,7 +62,6 @@
 	height: 18px;
 	padding-left: 2px
 }
-
 .comments_form textarea {
 	padding: 5px;
 	width: 98%;
@@ -95,6 +94,7 @@
 	-moz-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
 }
 .comments-remaining {
+	margin: 8px 0 8px 55px;
 	float: left
 }
 .no-js .comments-remaining {
