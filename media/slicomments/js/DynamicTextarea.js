@@ -62,7 +62,8 @@ var DynamicTextarea = this.DynamicTextarea = new Class({
 				margin:0,
 				border:0,
 				height:'auto',
-				width:'auto'
+				width:'auto',
+				clear:'both'
 			}
 		})
 			.inject(this.textarea,'after')
