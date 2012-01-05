@@ -16,7 +16,7 @@ $user = JFactory::getUser();
 $form_position = $this->params->get('form_position', 'before');
 JHtml::_('script', 'slicomments/slicomments.js', true, true);
 ?>
-<div id="comments_section" class="no-js">
+<div id="comments" class="no-js">
 	
 	<?php if (count($this->topComments)): ?>
 	<h4><?php echo JText::_('COM_COMMENTS_TOP_COMMENTS'); ?></h4>

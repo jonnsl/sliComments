@@ -54,7 +54,7 @@ var charCount = new Class({
 });
 
 window.addEvent('domready', function(){
-	var section = $('comments_section');
+	var section = $('comments');
 	section.removeClass('no-js');
 	var comments_count = $('comments_counter');
 	var list = $('comments_list');

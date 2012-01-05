@@ -593,6 +593,7 @@ class sliCommentsModelComments extends JModelList
 	{
 		$query = clone $query;
 		$query->clear('select');
+		$query->clear('order');
 		$query->select('count(*)');
 		$this->_db->setQuery($query);
 		$this->_db->query();
