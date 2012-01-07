@@ -29,7 +29,7 @@ class sliCommentsModelComments extends sliModel
 			$filter['email'] = $this->params->get('email', 1) != -1 ? strtolower($data['email']) : '';
 		}
 		$filter['raw'] = $data['text'];
-		$filter['text'] = $this->_parse($this->censureWords($data['text']));
+		$filter['text'] = $this->parse($this->censureWords($data['text']));
 		$filter['article_id'] = (int)$data['article_id'];
 		$filter['created'] = JFactory::getDate()->toSql();
 		$filter['status'] = (int) $data['status'];

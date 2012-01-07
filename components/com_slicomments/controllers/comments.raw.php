@@ -175,6 +175,7 @@ class sliCommentsControllerComments extends sliController
 			if (!JRequest::checkToken('get')) {
 				throw new Exception(JText::_('JINVALID_TOKEN'), 500);
 			}
+
 			if (!JFactory::getUser()->authorise('flag', 'com_slicomments')){
 				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
 			}
@@ -185,6 +186,77 @@ class sliCommentsControllerComments extends sliController
 			}
 			echo JText::_('COM_COMMENTS_SUCCESS_FLAG');
 		} catch (Exception $e) {
+			JResponse::setHeader('status', $e->getCode());
+			echo $e->getMessage();
+		}
+	}
+
+	public function edit()
+	{
+		try {
+			$id = JRequest::getInt('id', null, 'get');
+			if (!$id) {
+				throw new Exception(JText::_('COM_COMMENTS_ERROR_INVALID_ID'), 500);
+			}
+
+			$model = $this->getModel();
+			$table = $model->getTable();
+			if (!$table->load($id)) {
+				throw new Exception(JText::_('COM_COMMENTS_ERROR_COMMENT_DONT_EXIST'), 500);
+			}
+
+			$user = JFactory::getUser();
+			if (!$user->authorise('edit', 'com_slicomments') &&
+				!(!$user->guest && $user->authorise('edit.own', 'com_slicomments') && $table->user_id == $user->id)) {
+				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
+			}
+
+			echo $table->raw;
+		} catch (Exception $e) {
+			JResponse::setHeader('status', $e->getCode());
+			echo $e->getMessage();
+		}
+	}
+
+	public function save()
+	{
+		try {
+			// Check for request forgeries.
+			if (!JRequest::checkToken()) {
+				throw new Exception(JText::_('JINVALID_TOKEN'), 500);
+			}
+
+			$id = JRequest::getInt('id', null, 'post');
+			if (!$id) {
+				throw new Exception(JText::_('COM_COMMENTS_ERROR_INVALID_ID'), 500);
+			}
+
+			// Check for authorisation.
+			$user = JFactory::getUser();
+			if (!$user->authorise('edit', 'com_slicomments') &&
+				!(!$user->guest && $user->authorise('edit.own', 'com_slicomments') && $table->user_id == $user->id)) {
+				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
+			}
+
+			$model = $this->getModel();
+			$table = $model->getTable();
+			if (!$table->load($id)) {
+				throw new Exception(JText::_('COM_COMMENTS_ERROR_COMMENT_DONT_EXIST'), 500);
+			}
+
+			$data = $table->getProperties();
+			$text = JRequest::getVar('text', '', 'post', 'string', JREQUEST_ALLOWHTML);
+			$data['raw'] = $text;
+			$data['text'] = $model->parse($text);
+			
+			if (!$model->validate($data) || !$model->save($data))
+			{
+				throw new Exception((string)$model->getError(), 500);
+			}
+
+			echo $data['text'];
+		}
+		catch (Exception $e) {
 			JResponse::setHeader('status', $e->getCode());
 			echo $e->getMessage();
 		}

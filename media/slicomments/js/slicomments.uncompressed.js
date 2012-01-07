@@ -74,6 +74,9 @@ window.addEvent('domready', function(){
 		}
 	}
 
+	/**
+	 * Vote function
+	 */
 	var vote = req(function(response){
 		var meta = this.getParent('.content-container').getElement('.metadata');
 		var rating = meta.getElement('.rating') || new Element('span.rating').inject(meta);
@@ -107,7 +110,10 @@ window.addEvent('domready', function(){
 		},
 		'click:relay(.cancel-reply)': function (e){
 			e.stop();
-			this.getParent('.comment').getElement('.comment-reply').getParent().setStyle('display', null);
+			this.getParent('.comment')
+				.set('class', 'comment')
+				.getElement('.comments-actions')
+				.getChildren().setStyle('display', null);
 			this.getParent('form').destroy();
 		}
 	});
@@ -189,6 +195,9 @@ window.addEvent('domready', function(){
 		}
 	});
 
+	/**
+	 * Placeholder polyfill
+	 */
 	var placeholder_support = (function () {
 		var i = document.createElement('input');
 		return 'placeholder' in i;
@@ -214,8 +223,9 @@ window.addEvent('domready', function(){
 		}
 	}
 
-	// Ajax
-
+	/**
+	 * Post button
+	 */
 	section.addEvent('click:relay(.comment-submit)', function(e){
 		e.stop();
 		if (validate(this.form)) {
@@ -224,8 +234,14 @@ window.addEvent('domready', function(){
 				format: 'raw',
 				method: 'post',
 				data: this.form,
-				onSuccess: function(responseTree){
-						responseTree[0].inject($('comments_list'), this.form.get('data-position'));
+				onSuccess: function(tree, elements, html){
+						if (this.form.hasClass('edit-form')){
+							this.form.getParent('li.comment').removeClass('editing')
+								.getElement('.content').set('html', html);
+							this.form.destroy();
+							return;
+						}
+						tree[0].inject($('comments_list'), this.form.get('data-position'));
 						comments_count.set('text', comments_count.get('text').toInt() + 1);
 						if (this.form.hasClass('reply-form')){
 							this.form.destroy();
@@ -263,6 +279,9 @@ window.addEvent('domready', function(){
 		}
 	});
 
+	/**
+	 * Reply link
+	 */
 	section.addEvent('click:relay(.comment-reply)', function(e){
 		e.stop();
 		var replyForm = form.clone();
@@ -279,6 +298,26 @@ window.addEvent('domready', function(){
 		}
 		this.getParent().setStyle('display', 'none');
 	});
+
+	/**
+	 * Edit Link
+	 */
+	section.addEvent('click:relay(.comment-edit)',
+		req(function(response){
+			var container =
+				this.getParent('li.comment')
+					.addClass('editing')
+					.getElement('.content-container'),
+				editForm = form.clone()
+					.addClass('edit-form');
+			editForm.getElement('.profile-image-container').destroy();
+			editForm.task.set('value', 'comments.save');
+			editForm.article_id.set('name', 'id').set('value', this.get('data-id'));
+			editForm.text.set('text', response).addClass('init');
+			new charCount(editForm.text, editForm.getElement('.chars-count'));
+			editForm.inject(container);
+		})
+	);
 
 	var avatar;
 	if (!logged && (avatar = form.getElement('.profile-image'))) {

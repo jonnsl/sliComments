@@ -42,7 +42,7 @@ class sliModel extends JModelList
 		return $code->parse();
 	}
 
-	protected function _parse($text)
+	public function parse($text)
 	{
 		if ($this->params->get('bbcode.enabled', true)) {
 			$text = $this->_parseBBcode($text);

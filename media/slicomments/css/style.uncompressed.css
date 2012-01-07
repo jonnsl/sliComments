@@ -54,6 +54,9 @@
 	color: #999;
 	font-size: 0.8em;
 }
+.comment .edit-area {
+	width: 100%;
+}
 .comment .content {
 	width: 100%;
 	text-align: justify;
@@ -155,6 +158,9 @@
 .comments-actions li:first-child {
 	border-left: none;
 }
+.comment.editing .comments-actions, .comment.editing .content {
+	display: none !important;
+}
 .rating.positive {
 	color: green;
 }
@@ -176,11 +182,17 @@
 .comments-post-buttons span {
 	display: none;
 }
-.reply-form .comments-post-buttons span {
+.reply-form .comments-post-buttons span, .edit-form  .comments-post-buttons span{
 	display: inline;
 }
-.reply-form textarea {
-	height: 100px;
+.edit-form .comments_form_inputs {
+	margin: 0 !important;
+}
+.edit-form .comments-remaining {
+	margin-left: 0
+}
+.reply-form textarea, .edit-form textarea {
+	height: 100px !important;
 }
 .no-avatar .comments_form_inputs, .no-avatar .content-container, .no-avatar .comments-remaining {
 	margin-left: 0 !important;

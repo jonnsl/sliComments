@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 if (($enabled = $this->params->get('enabled', true)) || $this->total > 0) :
 require_once JPATH_ADMINISTRATOR.'/components/com_slicomments/helpers/comments.php';
 JHtml::_('behavior.framework', true);
-JHtml::_('stylesheet', 'slicomments/style.css', array(), true);
+JHtml::_('stylesheet', 'slicomments/style.uncompressed.css', array(), true);
 $user = JFactory::getUser();
 $form_position = $this->params->get('form_position', 'before');
 JHtml::_('script', 'slicomments/slicomments.uncompressed.js', true, true);

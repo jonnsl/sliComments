@@ -25,6 +25,10 @@ $token = '&'.JSession::getFormToken().'=1';
 				<li><a class="comment-like" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.vote&v=1&id='.$id.$token); ?>"><?php echo JText::_('COM_COMMENTS_ACTION_LIKE'); ?></a></li>
 				<li><a class="comment-dislike" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.vote&v=0&id='.$id.$token); ?>"><?php echo JText::_('COM_COMMENTS_ACTION_DISLIKE'); ?></a></li>
 			<?php endif; ?>
+			<?php if ($user->authorise('edit', 'com_slicomments') || ($user->authorise('edit.own', 'com_slicomments') && $user_id == $user->id)): ?>
+			<li><a class="comment-edit" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.edit&id='.$id.'&'.JUtility::getToken().'=1&return='.base64_encode(JFactory::getURI()->toString())); ?>" data-id="<?php echo $id; ?>">
+				<?php echo JText::_('COM_COMMENTS_ACTION_EDIT'); ?></a></li>
+			<?php endif; ?>
 			<?php if ($user->authorise('delete', 'com_slicomments') || ($user->authorise('delete.own', 'com_slicomments') && $user_id == $user->id)): ?>
 			<li><a class="comment-delete" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.delete&id='.$id.$token); ?>" data-id="<?php echo $id; ?>">
 				<?php echo JText::_('COM_COMMENTS_ACTION_DELETE'); ?></a></li>

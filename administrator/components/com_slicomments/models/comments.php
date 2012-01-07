@@ -304,7 +304,7 @@ class sliCommentsModelComments extends sliModel
 	public function filter($data)
 	{
 		$filter['raw'] = $data['text'];
-		$filter['text'] = $this->_parse($data['text']);
+		$filter['text'] = $this->parse($data['text']);
 		return $filter;
 	}
 
