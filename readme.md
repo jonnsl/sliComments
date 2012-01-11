@@ -11,6 +11,7 @@ A powerful and slick comments component for Joomla!
 * Ajax
 * Akismet plugin
 * Approval system
+* Top comments
 * Ratings
 * BBCode and/or HTML
 * Emoticons
