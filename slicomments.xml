@@ -33,6 +33,7 @@
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.com_slicomments.ini</language>
 		<language tag="pt-BR">pt-BR/pt-BR.com_slicomments.ini</language>
+		<language tag="sk-SK">sk-SK/sk-SK.com_slicomments.ini</language>
 	</languages>
 
 	<media destination="slicomments" folder="media/slicomments">
