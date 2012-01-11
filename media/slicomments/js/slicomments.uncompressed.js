@@ -136,12 +136,13 @@ window.addEvent('domready', function(){
 		return validator.validate();
 	}
 
+	var originalHeight = textarea.getDimensions().y;
 	textarea.addEvents({
 		focus: function() {
-			this.addClass('init');
+			if (this.value.length == 0) this.tween('height', originalHeight, 100);
 		},
 		blur: function() {
-			if (this.value.length == 0) this.removeClass('init');
+			if (this.value.length == 0) this.tween('height', originalHeight);
 		}
 	});
 
