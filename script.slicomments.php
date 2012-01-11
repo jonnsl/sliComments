@@ -13,18 +13,8 @@ class Com_sliCommentsInstallerScript
 	public function install($adapter)
 	{
 		$src = dirname(__FILE__);
-		$status = new JObject();
+		$status = $this->installPlugins();
 		$db = JFactory::getDbo();
-
-		// Content - sliComments
-		$installer = new JInstaller;
-		$result = $installer->install($src.'/plugins/content/slicomments');
-		$status->plugins[] = array('name' => 'Content - sliComments','group' => 'content', 'result' => $result);
-
-		// sliComments - Akismet
-		$installer = new JInstaller;
-		$result = $installer->install($src.'/plugins/slicomments/akismet');
-		$status->plugins[] = array('name' => 'sliComments - Akismet','group' => 'slicomments', 'result' => $result);
 
 		// Activated the plugins
 		$db->setQuery("UPDATE `#__extensions` SET enabled = 1 WHERE name = 'plg_content_slicomments'");
@@ -65,6 +55,31 @@ class Com_sliCommentsInstallerScript
 		</table>
 <?php
 		return true;
+	}
+
+	public function update($adapter)
+	{
+		// Make sure that the plugins are updated as well
+		$this->installPlugins();
+		return true;
+	}
+
+	protected function installPlugins()
+	{
+		$src = dirname(__FILE__);
+		$status = new stdClass;
+
+		// Content - sliComments
+		$installer = new JInstaller;
+		$result = $installer->install($src.'/plugins/content/slicomments');
+		$status->plugins[] = array('name' => 'Content - sliComments','group' => 'content', 'result' => $result);
+
+		// sliComments - Akismet
+		$installer = new JInstaller;
+		$result = $installer->install($src.'/plugins/slicomments/akismet');
+		$status->plugins[] = array('name' => 'sliComments - Akismet','group' => 'slicomments', 'result' => $result);
+
+		return $status;
 	}
 
 	public function postflight($type, $adapter)

@@ -17,6 +17,12 @@ $maximum_chars = $this->params->get('maximum_chars', 500)
 	<?php echo JHtml::_('form.token'); ?>
 	<input type="hidden" name="return" value="<?php echo base64_encode(JFactory::getURI()->toString()); ?>"/>
 	<input type="hidden" name="article_id" value="<?php echo JRequest::getInt('id'); ?>"/>
+
+	<?php if(!$user->guest): ?>
+		<div class="profile-image-container">
+			<img class="profile-image" src="//www.gravatar.com/avatar/<?php echo md5($user->email); ?>?s=40" alt="<?php echo $this->escape($user->name); ?>">
+		</div>
+	<?php endif; ?>
 	<ul class="comments_form_inputs">
 		<?php if ($canComment && $user->guest): ?>
 		<?php if ($name != -1): ?>

@@ -54,7 +54,7 @@ var charCount = new Class({
 });
 
 window.addEvent('domready', function(){
-	var section = $('comments_section');
+	var section = $('comments');
 	section.removeClass('no-js');
 	var comments_count = $('comments_counter');
 	var list = $('comments_list');
@@ -84,7 +84,7 @@ window.addEvent('domready', function(){
 			.addClass(total > 0 ? 'positive' : 'negative')
 	});
 
-	list.addEvents({
+	section.addEvents({
 		'click:relay(.comment-delete)': 
 		req(function(response){
 			this.getParent('li.comment').nix(true);
@@ -136,12 +136,13 @@ window.addEvent('domready', function(){
 		return validator.validate();
 	}
 
+	var originalHeight = textarea.getDimensions().y;
 	textarea.addEvents({
 		focus: function() {
-			this.addClass('init');
+			if (this.value.length == 0) this.tween('height', originalHeight, 100);
 		},
 		blur: function() {
-			if (this.value.length == 0) this.removeClass('init');
+			if (this.value.length == 0) this.tween('height', originalHeight);
 		}
 	});
 
@@ -232,7 +233,7 @@ window.addEvent('domready', function(){
 		}
 	});
 
-	list.addEvent('click:relay(.comment-reply)', function(e){
+	section.addEvent('click:relay(.comment-reply)', function(e){
 		e.stop();
 		var replyForm = form.clone();
 		replyForm.addClass('reply-form');

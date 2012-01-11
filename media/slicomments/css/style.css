@@ -1,168 +1,36 @@
-#comments_section h4 {
-	margin-bottom: 10px;
-}
-.comment-list {
-	clear:both;
-	margin-top: 10px !important;
-	padding: 0 !important;
-}
-.comment {
-	position: relative;
-	list-style: none;
-	border-top: 1px solid #fff;
-	border-bottom: 1px solid #E1E1E1;
-	margin: 0 !important;
-	padding: 10px 0 !important;
-}
-.comment-list:first-child {
-	border-top: none;
-}
-.comment-list:last-child {
-	border-bottom: none;
-}
-.profile-image-container {
-	float: left;
-	height: 40px;
-	width: 40px;
-}
-.profile-image {
-	height: 100%;
-	width: 100%;
-}
-.content-container, .comments_form {
-	margin-left: 55px;
-}
-.clr{clear: both}
-.author {
-	line-height: normal;
-	font-size: 0.9em;
-}
-.created, .slicomments-quote .slicomments-quoteDate {
-	color: #999;
-	font-size: 0.8em;
-}
-.comment .content {
-	width: 100%;
-}
-.comments_form_inputs {
-	margin: 0 !important;
-	padding: 0 !important;
-	list-style-type: none !important;
-}
-.comments_form_inputs li {
-	margin: 8px 0 0 0 !important;
-	position: relative;
-}
-.comments_form_inputs li label{
-	min-width: 45px;
-	display: block;
-	float: left;
-}
-.comments_form_inputs li input{
-	height: 18px;
-	padding-left: 2px
-}
-
-.comments_form textarea {
-	padding: 5px;
-	width: 98%;
-	height: 40px;
-}
-.comments_form textarea, .comments_form input {
-	font-family: arial, helvetica, sans-serif;
-	border: 1px solid #CCC;
-	transition: all 0.25s ease-in-out;
-	-webkit-transition: all 0.25s ease-in-out;
-	-moz-transition: all 0.25s ease-in-out;
-	box-shadow: 0 0 5px rgba(81, 203, 238, 0);
-	-webkit-box-shadow: 0 0 5px rgba(81, 203, 238, 0);
-	-moz-box-shadow: 0 0 5px rgba(81, 203, 238, 0);
-}
-.no-js textarea {
-	min-height: 50px;
-}
-.comments_form textarea.init {
-	height: 100px;
-}
-.comments_form textarea:hover, .comments_form input:hover {
-	border: 1px solid #999 !important;
-}
-.comments_form textarea:focus, .comments_form input:focus {
-	outline: none;
-	border: 1px solid #CCC !important;
-	box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-	-webkit-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-	-moz-box-shadow: 0 0 5px rgba(81, 203, 238, 1);
-}
-.comments-remaining {
-	float: left
-}
-.no-js .comments-remaining {
-	display: none
-}
-.comments-post-buttons {
-	float: right
-}
-.overTxtLabel {
-	color: #999
-}
-.login-to-post{
-	line-height: normal;
-	cursor: text;
-	position: absolute;
-	left: 6px;
-	top: 6px;
-	color: #333
-}
-#comments_section .pagination {
-	border-top: none !important
-}
-.comments_form .validation-advice {
-	color: #F11;
-	font-style: italic
-}
-.comment:hover .comments-actions {
-	display: block !important;
-}
-.comments-actions {
-	position: absolute;
-	top: 0;
-	right: 0;
-	list-style-type: none !important;
-	margin: 3px 0 0 0 !important;
-	padding: 0 !important;
-	display: none !important;
-}
-.comments-actions li {
-	display: inline;
-	padding-left: 4px !important;
-	border-left: 1px solid #000;
-	line-height: 1.1em !important;
-}
-.comments-actions li:first-child {
-	border-left: none;
-}
-.rating.positive {
-	color: green
-}
-.rating.negative {
-	color: red
-}
-.slicomments-quote {
-	border: 1px inset;
-	background: #E9E9E9;
-	padding: 2px 4px;
-	margin: 0 0 15px 15px;
-}
-.spoiler-hide .slicomments-spoilerContent {
-	display: none
-}
-.slicomments-spoilerContent .slicomments-spoiler {
-	margin-left: 10px
-}
-.comments-post-buttons span {
-	display: none
-}
-.reply-form .comments-post-buttons span {
-	display: inline
-}
+#comments h4{margin-bottom:10px}
+.comment-list{clear:both;margin-top:10px!important;padding:0!important}
+.comment{position:relative;list-style:none;border-top:1px solid #fff;border-bottom:1px solid #E1E1E1;margin:0!important;padding:10px 0!important}
+.comment-list:first-child{border-top:none}
+.comment-list:last-child{border-bottom:none}
+.profile-image-container{float:left;height:40px;width:40px}
+.profile-image{height:100%;width:100%}
+.content-container{margin-left:55px}
+.clr{clear:both}
+.author{line-height:normal;font-size:.9em}
+.created,.slicomments-quote .slicomments-quoteDate{color:#999;font-size:.8em}
+.comment .content{width:100%}
+.comments_form_inputs{list-style-type:none!important;margin:0 0 0 55px !important;padding:0!important}
+.comments_form_inputs li{position:relative;background:none!important;margin:8px 0 0!important}
+.comments_form_inputs li label{min-width:45px;display:block;float:left}
+.comments_form_inputs li input{height:18px;padding-left:2px}
+.comments_form textarea{padding:5px;width:100%;height:40px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box;*padding:0}
+.comments_form textarea,.comments_form input{font-family:arial, helvetica, sans-serif;border:1px solid #CCC;-webkit-transition:border .25s ease-in-out;-moz-transition:border .25s ease-in-out;transition:border .25s ease-in-out}
+.no-js textarea{min-height:50px}
+.comments_form textarea:hover,.comments_form input:hover,.comments_form textarea:focus,.comments_form input:focus{outline:none;border:1px solid #999!important}
+.comments-remaining{float:left;margin:8px 0 8px 55px}
+.comments-post-buttons{float:right}
+.overTxtLabel{color:#999}
+.login-to-post{line-height:normal;cursor:text;position:absolute;left:6px;top:6px;color:#333}
+#comments .pagination{border-top:none!important}
+.comments_form .validation-advice{color:#F11;font-style:italic}
+.comment:hover .comments-actions{display:block!important}
+.comments-actions{position:absolute;top:0;right:0;list-style-type:none!important;display:none!important;margin:3px 0 0!important;padding:0!important}
+.comments-actions li{display:inline;padding-left:4px!important;border-left:1px solid #000;line-height:1.1em!important}
+.comments-actions li:first-child{border-left:none}
+.rating.positive{color:green}
+.rating.negative{color:red}
+.slicomments-quote{border:1px inset;background:#E9E9E9;margin:0 0 15px 15px;padding:2px 4px}
+.slicomments-spoilerContent .slicomments-spoiler{margin-left:10px}
+.reply-form .comments-post-buttons span{display:inline}
+.no-js .comments-remaining,.spoiler-hide .slicomments-spoilerContent,.comments-post-buttons span{display:none}

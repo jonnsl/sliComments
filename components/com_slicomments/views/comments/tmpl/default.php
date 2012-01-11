@@ -16,9 +16,22 @@ $user = JFactory::getUser();
 $form_position = $this->params->get('form_position', 'before');
 JHtml::_('script', 'slicomments/slicomments.js', true, true);
 ?>
-<div id="comments_section" class="no-js">
+<div id="comments" class="no-js clr">
+	
+	<?php if (count($this->topComments)): ?>
+	<h4><?php echo JText::_('COM_COMMENTS_TOP_COMMENTS'); ?></h4>
+	<ul id="top_comments_list" class="comment-list">
+	<?php
+	foreach ($this->topComments as $comment) {
+		$this->partial('comment', $comment);
+	}
+	?>
+	</ul>
+	<?php endif; ?>
+
 	<h4><?php echo JText::sprintf('COM_COMMENTS_COMMENTS_COUNT', '<span id="comments_counter" >'.$this->total.'</span>'); ?></h4>
 	<?php if ($form_position == 'before' && $enabled) echo $this->loadTemplate('form'); ?>
+
 	<ul id="comments_list" class="comment-list">
 	<?php
 	foreach ($this->items as $comment) {
