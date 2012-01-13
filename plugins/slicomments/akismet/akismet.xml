@@ -25,6 +25,8 @@
 		<language tag="de-DE">de-DE/de-DE.plg_slicomments_akismet.sys.ini</language>
 		<language tag="pl-PL">pl-PL/pl-PL.plg_slicomments_akismet.ini</language>
 		<language tag="pl-PL">pl-PL/pl-PL.plg_slicomments_akismet.sys.ini</language>
+		<language tag="nl-NL">nl-NL/nl-NL.plg_slicomments_akismet.ini</language>
+		<language tag="nl-NL">nl-NL/nl-NL.plg_slicomments_akismet.sys.ini</language>
 	</languages>
 
 	<config>
