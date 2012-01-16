@@ -41,7 +41,7 @@ $maximum_chars = $this->params->get('maximum_chars', 500)
 		<li>
 			<?php if (!$canComment): ?>
 			<label class="login-to-post" for="comments_form_textarea">
-				<?php echo preg_replace('/#([^#]*)#/i', '<a href="'.JRoute::_('index.php?option=com_users&view=login').'">$1</a>', JText::_('COM_COMMENTS_LOGIN_TO_POST_COMMENT'), 1); ?>
+				<?php echo preg_replace('/#([^#]*)#/i', '<a href="'.JRoute::_('index.php?option=com_users&view=login&return='.base64_encode(JFactory::getURI()->toString().'#comments')).'">$1</a>', JText::_('COM_COMMENTS_LOGIN_TO_POST_COMMENT'), 1); ?>
 			</label>
 			<?php else: ?>
 			<label for="comments_form_textarea"><?php echo JText::_('COM_COMMENTS_LABEL_TEXT'); ?></label>
