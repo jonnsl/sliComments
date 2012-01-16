@@ -9,6 +9,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
+jimport('joomla.utilities.arrayhelper');
 
 class sliCommentsModelComments extends JModelList
 {
@@ -16,9 +17,7 @@ class sliCommentsModelComments extends JModelList
 	{
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'name', 'a.name',
-				'article_id', 'a.article_id',
-				'created', 'a.created'
+				'name', 'article_id', 'created'
 			);
 		}
 		$this->params = JComponentHelper::getParams('com_slicomments');
@@ -34,11 +33,72 @@ class sliCommentsModelComments extends JModelList
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$status = $this->getUserStateFromRequest($this->context.'.status', 'filter_status', '');
+		$filter_author = $this->getUserStateFromRequest($this->context.'.filter.author', 'filter_author');
+		$this->setState('filter.author', $filter_author);
+
+		$filter_article = $this->getUserStateFromRequest($this->context.'.filter.article', 'filter_article');
+		$this->setState('filter.article', $filter_article);
+
+		$filter_category = $this->getUserStateFromRequest($this->context.'.filter.category', 'filter_category', null, 'INT');
+		$this->setState('filter.category', $filter_category);
+		
+		$status = $this->getUserStateFromRequest($this->context.'.status', 'filter_status', array(), 'array');
+		$status = array_filter($status, 'is_numeric');
+		JArrayHelper::toInteger($status);
+		$status = array_unique($status);
+		if (empty($status)) $status = array(0,1);
 		$this->setState('filter.status', $status);
 
+		// Query to search for
+		$q = JRequest::getString('q', '');
+		$this->setState('filter.q', $q);
+
 		// List state information.
-		parent::populateState('a.created', 'desc');
+		parent::populateState('created', 'DESC');
+	}
+
+	public function getAuthors()
+	{
+		// Create a new query object.
+		$db = $this->_db;
+		
+		$query = $db->getQuery(true)
+			->select('DISTINCT CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END')
+			->from('#__slicomments as a')
+			->leftjoin('#__users AS u ON u.id = a.user_id')
+			->order('text ASC');
+
+		$q = $this->getState('filter.q', false);
+		if ($q)
+		{
+			$search = $db->Quote($db->escape($q, true) . '%', false);
+			$query->where('a.name LIKE '. $search . ' OR u.name LIKE ' . $search);
+		}
+
+		$this->_db->setQuery($query, 0, $this->getState('list.limit', 20));
+		return $this->_db->loadColumn();
+	}
+
+	public function getArticles()
+	{
+		// Create a new query object.
+		$db = $this->_db;
+		
+		$query = $db->getQuery(true)
+			->select('DISTINCT a.title')
+			->from('#__slicomments as c')
+			->leftjoin('#__content AS a ON a.id = c.article_id')
+			->order('title ASC');
+
+		$q = $this->getState('filter.q', false);
+		if ($q)
+		{
+			$search = $db->Quote($db->escape($q, true) . '%', false);
+			$query->where('a.title LIKE ' . $search);
+		}
+
+		$this->_db->setQuery($query, 0, $this->getState('list.limit', 20));
+		return $this->_db->loadColumn();
 	}
 
 	/**
@@ -59,37 +119,45 @@ class sliCommentsModelComments extends JModelList
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
 		$query->leftjoin('#__content AS c ON c.id = a.article_id');
 
-		$query->select('COUNT(f.user_id) as flagged');
-		$query->leftjoin('#__slicomments_flags AS f ON f.comment_id = a.id');
+		/*$query->select('COUNT(f.user_id) as flagged');
+		$query->leftjoin('#__slicomments_flags AS f ON f.comment_id = a.id');*/
 
 		// Filter by status
-		$status = $this->getState('filter.status', '');
-		if ($status == '') {
-			$query->where('status >= 0');
-		} else if ($status == -3) {
-			$query->where('f.user_id <> 0');
-		} else if ($status != '*') {
-			$query->where('status = '.$db->escape($status));
+		$status = $this->getState('filter.status');
+		if (!empty($status))
+		{
+			$query->where('(a.status = ' . implode(' OR a.status = ', $status) . ')');
 		}
 
-		// Filter by search in title.
+		// Search comment
 		$search = $this->getState('filter.search');
-		if (!empty($search)) {
-			if (stripos($search, 'id:') === 0) {
-				$query->where('a.id = '.(int) substr($search, 3));
-			}
-			else if (stripos($search, 'author:') === 0) {
-				$search = $db->Quote('%'.$db->escape(substr($search, 7), true).'%');
-				$query->where('(a.name LIKE '.$search.' OR u.name LIKE '.$search.' OR u.username LIKE '.$search.')');
-			}
-			else if (stripos($search, 'email:') === 0) {
-				$search = $db->Quote('%'.$db->escape(substr($search, 6), true).'%');
-				$query->where('(a.email LIKE '.$search.' OR u.email LIKE '.$search.')');
-			}
-			else {
-				$search = $db->Quote('%'.$db->escape($search, true).'%');
-				$query->where('a.raw LIKE '.$search);
-			}
+		if (!empty($search))
+		{
+			$search = $db->Quote('%' . $db->escape($search, true) . '%');
+			$query->where('a.raw LIKE ' . $search);
+		}
+
+		// Search author
+		$author = $this->getState('filter.author');
+		if (!empty($author))
+		{
+			$author = $db->Quote('%' . $db->escape($author, true) . '%');
+			$query->where('(a.name LIKE ' . $author . ' OR u.name LIKE ' . $author . ')');
+		}
+
+		// Search article
+		$article = $this->getState('filter.article');
+		if (!empty($article))
+		{
+			$article = $db->Quote($db->escape($article, true) . '%');
+			$query->where('c.title LIKE ' . $article);
+		}
+
+		// Filter by article category
+		$category = $this->getState('filter.category');
+		if (!empty($category))
+		{
+			$query->where('c.catid = ' . (int) $category);
 		}
 
 		$query->group('a.id');
@@ -97,7 +165,7 @@ class sliCommentsModelComments extends JModelList
 		// Add the list ordering clause.
 		$query->order($db->escape($this->getState('list.ordering', 'a.created')).' '.$db->escape($this->getState('list.direction', 'DESC')));
 
-		//echo nl2br(str_replace('#__','jos_',$query));
+		// echo nl2br(str_replace('#__', 'yhb1y_', $query));
 		return $query;
 	}
 

@@ -37,9 +37,9 @@ class sliCommentsControllerComments extends sliController
 		JRequest::checkToken() or JRequest::checkToken('get') or die(JText::_('JINVALID_TOKEN'));
 
 		// Get items to remove from the request.
-		$cid = JRequest::getVar('cid', array(), '', 'array');
+		$id = JRequest::getVar('id', array(), '', 'array');
 
-		if (!is_array($cid) || count($cid) < 1) {
+		if (!is_array($id) || count($id) < 1) {
 			JError::raiseWarning(500, JText::_('COM_COMMENTS_NO_COMMENTS_SELECTED'));
 		} else {
 			// Get the model.
@@ -48,7 +48,7 @@ class sliCommentsControllerComments extends sliController
 
 			// Make sure the item ids are integers
 			jimport('joomla.utilities.arrayhelper');
-			JArrayHelper::toInteger($cid);
+			JArrayHelper::toInteger($id);
 
 			// Remove the items.
 			try {
@@ -60,7 +60,7 @@ class sliCommentsControllerComments extends sliController
 						if (!$user->authorise('edit', 'com_slicomments')){
 							throw new JException(JText::_('COM_COMMENTS_NO_AUTH'), 403, E_WARNING);
 						}
-						$model->delete($cid);
+						$model->delete($id);
 						$message = 'COM_COMMENTS_N_COMMENTS_DELETED';
 						break;
 					case 'unflag':
@@ -77,11 +77,11 @@ class sliCommentsControllerComments extends sliController
 						if (!$user->authorise('manage', 'com_slicomments')){
 							throw new JException(JText::_('COM_COMMENTS_NO_AUTH'), 403, E_WARNING);
 						}
-						$model->status($cid, $this->task);
+						$model->status($id, $this->task);
 						$message = 'COM_COMMENTS_N_COMMENTS_'.(strtoupper($this->task));
 						break;
 				}
-				JFactory::getApplication()->enqueueMessage(JText::plural($message, count($cid)));
+				JFactory::getApplication()->enqueueMessage(JText::plural($message, count($id)));
 			}
 			catch(JException $e) {
 				JError::throwError($e);
