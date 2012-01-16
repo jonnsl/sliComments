@@ -4,7 +4,7 @@ A powerful and slick comments component for Joomla!
 
 ## Requirements ##
 
-* Joomla! 1.6 or 1.7
+* Joomla! 1.7 or 2.5
 
 ## Features ##
 
