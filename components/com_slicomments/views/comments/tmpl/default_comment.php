@@ -12,9 +12,11 @@ $user = JFactory::getUser();
 ?>
 <li class="comment">
 <div class="comment-body">
+	<?php if (isset($avatar)) : ?>
 	<div class="profile-image-container">
-		<img class="profile-image" src="//www.gravatar.com/avatar/<?php echo md5($email); ?>?s=40" alt="<?php echo $this->escape($name); ?>">
+		<img class="profile-image" src="<?php echo $avatar; ?>" alt="<?php echo $this->escape($name); ?>">
 	</div>
+	<?php endif; ?>
 	<div class="content-container">
 		<ul class="comments-actions">
 			<?php if ($this->params->get('ratings', true) && $user->authorise('vote', 'com_slicomments')) : ?>
@@ -32,7 +34,14 @@ $user = JFactory::getUser();
 		</ul>
 		<div class="metadata">
 			<span class="author">
-				<?php echo $this->linkToProfile($user_id, $name); ?>
+				<?php
+				if (isset($link) && !empty($link)) { ?>
+				<a href="<?php echo $link; ?>"><?php echo $this->escape($name); ?></a>
+				<?php
+				} else { 
+					echo $this->escape($name); 
+				}
+				?>
 			</span>
 			<span class="created">
 				<?php echo sliCommentsHelper::human_time_diff($created);?>

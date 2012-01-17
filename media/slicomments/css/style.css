@@ -34,3 +34,4 @@
 .slicomments-spoilerContent .slicomments-spoiler{margin-left:10px}
 .reply-form .comments-post-buttons span{display:inline}
 .no-js .comments-remaining,.spoiler-hide .slicomments-spoilerContent,.comments-post-buttons span{display:none}
+.no-avatar .comments_form_inputs,.no-avatar .content-container,.no-avatar .comments-remaining{margin-left:0!important}

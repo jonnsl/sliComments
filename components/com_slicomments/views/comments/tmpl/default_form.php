@@ -11,15 +11,15 @@ $user = JFactory::getUser();
 $canComment = $user->authorise('post', 'com_slicomments');
 $name = $this->params->get('name', 1);
 $email = $this->params->get('email', 0);
-$maximum_chars = $this->params->get('maximum_chars', 500)
+$maximum_chars = $this->params->get('maximum_chars', 500);
 ?>
 <form class="comments_form" action="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.post'); ?>" method="post" data-logged="<?php echo (!$user->guest ? '1' : '0');?>" data-position="<?php echo $this->state->get('list.order_dir', 'DESC') == 'DESC' ? 'top' : 'bottom'; ?>">
 	<?php echo JHtml::_('form.token'); ?>
 	<input type="hidden" name="article_id" value="<?php echo JRequest::getInt('id'); ?>"/>
 
-	<?php if(!$user->guest): ?>
+	<?php if (!$user->guest && $this->avatar) : ?>
 		<div class="profile-image-container">
-			<img class="profile-image" src="//www.gravatar.com/avatar/<?php echo md5($user->email); ?>?s=40" alt="<?php echo $this->escape($user->name); ?>">
+			<img class="profile-image" src="<?php echo $this->avatar; ?>" alt="<?php echo $this->escape($user->name); ?>">
 		</div>
 	<?php endif; ?>
 	<ul class="comments_form_inputs">

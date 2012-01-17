@@ -324,7 +324,15 @@ class sliCommentsModelComments extends JModelList
 			$this->setError($table->getError());
 			return false;
 		}
+		$user = JFactory::getUser();
 		$data['id'] = $table->id;
+		$data['rating'] = 0;
+		$data['avatar'] = $this->getAvatar();
+		$data['link'] = $this->getLink();
+		if (!$user->guest) {
+			$data['name'] = $user->name;
+			$data['email'] = $user->email;
+		}
 		return true;
 	}
 
@@ -536,6 +544,19 @@ class sliCommentsModelComments extends JModelList
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
 
+		$avatar = $this->params->get('avatar', 'gravatar');
+		switch ($avatar)
+		{
+			case 'com_community':
+				$query->leftjoin('#__community_users AS j ON j.userid = a.user_id');
+				$query->select('j.thumb as avatar');
+				break;
+			case 'com_kunena':
+				$query->leftjoin('#__kunena_users AS k ON k.userid = a.user_id');
+				$query->select('k.avatar');
+				break;
+		}
+
 		// Filter by article
 		$query->where('a.article_id = '.(int) $this->getState('article.id'));
 
@@ -578,7 +599,124 @@ class sliCommentsModelComments extends JModelList
 		}
 		$this->setState('exclude.id', $exclude);
 
+		return $this->preProcess($comments);
+	}
+
+	public function getComments()
+	{
+		JDEBUG && $GLOBALS['_PROFILER']->mark('beforePreProcessComments');
+		$comments = $this->preProcess($this->getItems());
+		JDEBUG && $GLOBALS['_PROFILER']->mark('afterPreProcessComments');
 		return $comments;
+	}
+
+	/**
+	 * Pre process the comments adding the avatar URI if any and the profile URL if any
+	 */
+	protected function preProcess($comments)
+	{
+		$link	= $this->params->get('link', false);
+		$avatar	= $this->params->get('avatar', 'gravatar');
+
+		if ($link == 'com_kunena') {
+			require_once JPATH_ADMINISTRATOR.'/components/com_kunena/libraries/factory.php';
+		}
+
+		foreach ($comments as $k => $comment)
+		{
+			switch ($avatar)
+			{
+				case 'gravatar':
+					$comments[$k]->avatar = '//www.gravatar.com/avatar/'.md5($comment->email);
+					break;
+				case 'com_kunena':
+					if ($comment->avatar) {
+						$comments[$k]->avatar = 'media/kunena/avatars/resized/size72/'.$comment->avatar;
+					} else {
+						$comments[$k]->avatar = 'media/kunena/avatars/resized/size72/s_nophoto.jpg';
+					}
+					break;
+				case 'com_community':
+					if (!$comment->avatar) {
+						$comments[$k]->avatar = 'components/com_community/assets/default_thumb.jpg';
+					}
+					break;
+			}
+			if ($comment->user_id == 0) {
+				if ($comment->name === '') $comments[$k]->name = JText::_('COM_COMMENTS_ANONYMOUS');
+				continue;
+			}
+			switch ($link)
+			{
+				case 'com_kunena':
+					$comments[$k]->link = KunenaFactory::getProfile()->getProfileURL($comment->user_id);
+					break;
+				case 'com_community':
+					$comments[$k]->link = JRoute::_('index.php?option=com_community&view=profile&userid='.$comment->user_id);
+					break;
+			}
+		}
+
+		return $comments;
+	}
+
+	/**
+	 * Get the avatar URI of the current logged-in user
+	 */
+	public function getAvatar()
+	{
+		$user = JFactory::getUser();
+		$avatar	= $this->params->get('avatar', 'gravatar');
+		switch ($avatar)
+		{
+			case 'gravatar':
+				return '//www.gravatar.com/avatar/'.md5($user->email);
+			case 'com_kunena':
+				if ($user->guest) return 'media/kunena/avatars/resized/size72/s_nophoto.jpg';
+				$query = $this->_db->getQuery(true)
+					->select('avatar')
+					->from('#__kunena_users')
+					->where('userid = '.(int)$user->id);
+				$this->_db->setQuery($query);
+				$avatar = $this->_db->loadResult();
+
+				if (!$avatar) {
+					return 'media/kunena/avatars/resized/size72/s_nophoto.jpg';
+				}
+				return 'media/kunena/avatars/resized/size72/'.$avatar;
+			case 'com_community':
+				if ($user->guest) return 'components/com_community/assets/default_thumb.jpg';
+				$query = $this->_db->getQuery(true)
+					->select('thumb as avatar')
+					->from('#__community_users')
+					->where('userid = '.(int)$user->id);
+				$this->_db->setQuery($query);
+				$avatar = $this->_db->loadResult();
+
+				if (!$avatar) {
+					return 'components/com_community/assets/default_thumb.jpg';
+				}
+				return $avatar;
+		}
+		return '';
+	}
+
+	/**
+	 * Get the profile URL of the current logged-in user
+	 */
+	protected function getLink()
+	{
+		$user = JFactory::getUser();
+		$link = $this->params->get('link', false);
+		if (!$link || $user->guest) return;
+		switch ($link)
+		{
+			case 'com_kunena':
+				require_once JPATH_ADMINISTRATOR.'/components/com_kunena/libraries/factory.php';
+				return KunenaFactory::getProfile()->getProfileURL($user->id);
+			case 'com_community':
+				return JRoute::_('index.php?option=com_community&view=profile&userid='.$user->id);
+		}
 	}
 
 	/**
@@ -587,7 +725,6 @@ class sliCommentsModelComments extends JModelList
 	 * @param    string  $query  The query.
 	 *
 	 * @return   integer  Number of rows for query
-	 * @since    11.1
 	 */
 	protected function _getListCount($query)
 	{
@@ -605,8 +742,6 @@ class sliCommentsModelComments extends JModelList
 	 * Method to get a JPagination object for the data set.
 	 *
 	 * @return  JPagination  A JPagination object for the data set.
-	 *
-	 * @since   11.1
 	 */
 	public function getPagination()
 	{

@@ -334,6 +334,18 @@
 				<option value="com_community">COM_COMMENTS_OPTION_JOMSOCIAL</option>
 				<option value="com_kunena">COM_COMMENTS_OPTION_KUNENA</option>
 		</field>
+
+		<field
+			name="avatar"
+			type="components"
+			label="COM_COMMENTS_AVATAR_LABEL"
+			description="COM_COMMENTS_AVATAR_DESC"
+			default="gravatar">
+				<option value="0">JNONE</option>
+				<option value="gravatar">COM_COMMENTS_OPTION_GRAVATAR</option>
+				<option value="com_community">COM_COMMENTS_OPTION_JOMSOCIAL</option>
+				<option value="com_kunena">COM_COMMENTS_OPTION_KUNENA</option>
+		</field>
 	</fieldset>
 
 	<fieldset

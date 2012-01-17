@@ -45,7 +45,7 @@ class JFormFieldComponents extends JFormFieldList
 			$value = (string) $option['value'];
 
 			// Create a new option object based on the <option /> element.
-			$options[] = JHtml::_('select.option', (string) $option['value'], JText::alt(trim((string) $option), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)), 'value', 'text', $value !== '' ? !$this->isEnabled($value) : false);
+			$options[] = JHtml::_('select.option', (string) $option['value'], JText::alt(trim((string) $option), preg_replace('/[^a-zA-Z0-9_\-]/', '_', $this->fieldname)), 'value', 'text', strpos($value, 'com_') === 0 ? !$this->isEnabled($value) : false);
 		}
 
 		reset($options);

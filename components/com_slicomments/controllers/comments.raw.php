@@ -38,11 +38,6 @@ class sliCommentsControllerComments extends JController
 			}
 			if ($model->validate($data) && $model->save($data))
 			{
-				if (!$user->guest) {
-					$data['name'] = $user->name;
-					$data['email'] = $user->email;
-				}
-				$data['rating'] = 0;
 				$view = $this->getView('comments', 'html');
 				require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/comments.php';
 				$view->params = $model->params;
