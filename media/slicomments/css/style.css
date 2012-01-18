@@ -1,6 +1,9 @@
+#comments:before,#comments:after{content:"";display:table}
+#comments:after{clear:both}
+#comments{zoom:1}
 #comments h4{margin-bottom:10px}
 .comment-list{clear:both;margin-top:10px!important;padding:0!important}
-.comment{position:relative;list-style:none;border-top:1px solid #fff;border-bottom:1px solid #E1E1E1;margin:0!important;padding:10px 0!important}
+.comment{position:relative;border-top:1px solid #fff;border-bottom:1px solid #E1E1E1;margin:0!important;padding:10px 0!important}
 .comment-list:first-child{border-top:none}
 .comment-list:last-child{border-bottom:none}
 .profile-image-container{float:left;height:40px;width:40px}
@@ -9,11 +12,12 @@
 .clr{clear:both}
 .author{line-height:normal;font-size:.9em}
 .created,.slicomments-quote .slicomments-quoteDate{color:#999;font-size:.8em}
-.comment .content{width:100%}
-.comments_form_inputs{list-style-type:none!important;margin:0 0 0 55px !important;padding:0!important}
+.comment .content{width:100%;text-align:justify}
+.comments_form_inputs, .comments_form_inputs li, .comment-list, .comment{list-style-type:none!important}
+.comments_form_inputs{margin:0 0 0 55px !important;padding:0!important}
 .comments_form_inputs li{position:relative;background:none!important;margin:8px 0 0!important}
 .comments_form_inputs li label{min-width:45px;display:block;float:left}
-.comments_form_inputs li input{height:18px;padding-left:2px}
+.comments_form_inputs li input{margin:0;height:18px;padding:1px 5px}
 .comments_form textarea{padding:5px;width:100%;height:40px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;box-sizing:border-box;*padding:0}
 .comments_form textarea,.comments_form input{font-family:arial, helvetica, sans-serif;border:1px solid #CCC;-webkit-transition:border .25s ease-in-out;-moz-transition:border .25s ease-in-out;transition:border .25s ease-in-out}
 .no-js textarea{min-height:50px}
@@ -33,5 +37,6 @@
 .slicomments-quote{border:1px inset;background:#E9E9E9;margin:0 0 15px 15px;padding:2px 4px}
 .slicomments-spoilerContent .slicomments-spoiler{margin-left:10px}
 .reply-form .comments-post-buttons span{display:inline}
+.reply-form textarea{height:100px}
 .no-js .comments-remaining,.spoiler-hide .slicomments-spoilerContent,.comments-post-buttons span{display:none}
 .no-avatar .comments_form_inputs,.no-avatar .content-container,.no-avatar .comments-remaining{margin-left:0!important}

@@ -1,3 +1,15 @@
+#comments:before,
+#comments:after {
+	content: "";
+	display: table;
+}
+
+#comments:after {
+	clear: both;
+}
+#comments {
+	zoom: 1;
+}
 #comments h4 {
 	margin-bottom: 10px;
 }
@@ -8,7 +20,6 @@
 }
 .comment {
 	position: relative;
-	list-style: none;
 	border-top: 1px solid #fff;
 	border-bottom: 1px solid #E1E1E1;
 	margin: 0 !important;
@@ -45,11 +56,14 @@
 }
 .comment .content {
 	width: 100%;
+	text-align: justify;
+}
+.comments_form_inputs, .comments_form_inputs li, .comment-list, .comment{
+	list-style-type: none !important;
 }
 .comments_form_inputs {
 	margin: 0 0 0 55px !important;
 	padding: 0 !important;
-	list-style-type: none !important;
 }
 .comments_form_inputs li {
 	margin: 8px 0 0 0 !important;
@@ -63,7 +77,8 @@
 }
 .comments_form_inputs li input{
 	height: 18px;
-	padding-left: 2px;
+	padding: 1px 5px;
+	margin: 0;
 }
 .comments_form textarea {
 	padding: 5px;
@@ -163,6 +178,9 @@
 }
 .reply-form .comments-post-buttons span {
 	display: inline;
+}
+.reply-form textarea {
+	height: 100px;
 }
 .no-avatar .comments_form_inputs, .no-avatar .content-container, .no-avatar .comments-remaining {
 	margin-left: 0 !important;
