@@ -51,6 +51,11 @@ $user = JFactory::getUser();
 				<?php echo ($rating > 0 ? '+' : '').$rating; ?>
 			</span>
 			<?php endif; ?>
+			<?php if (isset($status) && $status == 0) : ?>
+			<span class="pending">
+				<?php echo JText::_('COM_COMMENTS_PENDING_APPROVAL'); ?>
+			</span>
+			<?php endif; ?>
 		</div>
 		<div class="content">
 			<?php echo $text; ?>

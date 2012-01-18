@@ -185,3 +185,8 @@
 .no-avatar .comments_form_inputs, .no-avatar .content-container, .no-avatar .comments-remaining {
 	margin-left: 0 !important;
 }
+.comment .pending {
+	color: red;
+	font-size: 0.9em;
+	font-style: italic;
+}
