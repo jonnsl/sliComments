@@ -325,6 +325,17 @@
 		</field>
 
 		<field
+			name="field_name"
+			type="list"
+			label="COM_COMMENTS_FIELD_NAME_LABEL"
+			description="COM_COMMENTS_FIELD_NAME_DESC"
+			default="name"
+			validate="options">
+				<option value="name">COM_COMMENTS_OPTION_NAME</option>
+				<option value="username">COM_COMMENTS_OPTION_USERNAME</option>
+		</field>
+
+		<field
 			name="link"
 			type="components"
 			label="COM_COMMENTS_LINK_LABEL"

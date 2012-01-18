@@ -534,12 +534,16 @@ class sliCommentsModelComments extends JModelList
 	 */
 	protected function getListQuery()
 	{
+		// Name or Username?
+		$field = $this->params->get('field_name', 'name');
+		if (!in_array($field, array('name', 'username'))) $field = 'name';
+
 		// Create a new query object.
 		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.id, a.rating, a.user_id, a.created');
+		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.'.$field.' END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.id, a.rating, a.user_id, a.created');
 		$query->from('#__slicomments AS a');
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
