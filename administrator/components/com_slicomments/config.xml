@@ -356,6 +356,7 @@
 				<option value="gravatar">COM_COMMENTS_OPTION_GRAVATAR</option>
 				<option value="com_community">COM_COMMENTS_OPTION_JOMSOCIAL</option>
 				<option value="com_kunena">COM_COMMENTS_OPTION_KUNENA</option>
+				<option value="com_k2">COM_COMMENTS_OPTION_K2</option>
 		</field>
 	</fieldset>
 

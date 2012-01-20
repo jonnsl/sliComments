@@ -559,6 +559,10 @@ class sliCommentsModelComments extends JModelList
 				$query->leftjoin('#__kunena_users AS k ON k.userid = a.user_id');
 				$query->select('k.avatar');
 				break;
+			case 'com_k2':
+				$query->leftjoin('#__k2_users AS k ON k.userID = a.user_id');
+				$query->select('k.image as avatar');
+				break;
 		}
 
 		// Filter by article
@@ -645,6 +649,13 @@ class sliCommentsModelComments extends JModelList
 						$comments[$k]->avatar = 'components/com_community/assets/default_thumb.jpg';
 					}
 					break;
+				case 'com_k2':
+					if ($comment->avatar) {
+						$comments[$k]->avatar = 'media/k2/users/'.$comment->avatar;
+					} else {
+						$comments[$k]->avatar = 'components/com_k2/images/placeholder/user.png';
+					}
+					break;
 			}
 			if ($comment->user_id == 0) {
 				if ($comment->name === '') $comments[$k]->name = JText::_('COM_COMMENTS_ANONYMOUS');
@@ -701,6 +712,19 @@ class sliCommentsModelComments extends JModelList
 					return 'components/com_community/assets/default_thumb.jpg';
 				}
 				return $avatar;
+			case 'com_k2':
+				if ($user->guest) return 'components/com_k2/images/placeholder/user.png';
+				$query = $this->_db->getQuery(true)
+					->select('image')
+					->from('#__k2_users')
+					->where('userID = '.(int)$user->id);
+				$this->_db->setQuery($query);
+				$avatar = $this->_db->loadResult();
+
+				if (!$avatar) {
+					return 'components/com_k2/images/placeholder/user.png';
+				}
+				return 'media/k2/users/'.$avatar;
 		}
 		return '';
 	}
