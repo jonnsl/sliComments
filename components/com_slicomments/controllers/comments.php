@@ -43,7 +43,7 @@ class sliCommentsControllerComments extends JController
 			}
 		}
 
-		$this->setRedirect(base64_decode($data['return']));
+		$this->setRedirect($this->getReferrer('comments'));
 	}
 
 	public function delete()
@@ -52,7 +52,6 @@ class sliCommentsControllerComments extends JController
 		JRequest::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
 
 		try {
-			$return = JRequest::getVar('return', null, 'get');
 			$user = JFactory::getUser();
 			$model = $this->getModel();
 			$table = $model->getTable();
@@ -77,7 +76,7 @@ class sliCommentsControllerComments extends JController
 			$this->setMessage($e->getMessage(), 'error');
 		}
 
-		$this->setRedirect(base64_decode($return));
+		$this->setRedirect($this->getReferrer('comments'));
 	}
 
 	public function getModel()
@@ -121,7 +120,7 @@ class sliCommentsControllerComments extends JController
 			}
 		}
 
-		$this->setRedirect(base64_decode(JRequest::getVar('return', JRoute::_('index.php'), 'GET', 'ALNUM')));
+		$this->setRedirect($this->getReferrer());
 	}
 
 	public function reply()
@@ -133,6 +132,23 @@ class sliCommentsControllerComments extends JController
 		$oldData = $session->get('com_slicomments.data', array());
 		$session->set('com_slicomments.data', array_merge(array('text'=> '@'.trim(JRequest::getString('name')).' '), $oldData));
 
-		$this->setRedirect(base64_decode(JRequest::getString('return')).'#comments_section');
+		$this->setRedirect($this->getReferrer('comments'));
+	}
+
+	protected function getReferrer($fragment = false)
+	{
+		$referrer = JRequest::getVar('HTTP_REFERER', null, 'server');
+		if ($referrer && JURI::isInternal($referrer)) {
+			$referrer = JURI::getInstance($referrer);
+			// Avoid Loops
+			if ($referrer->getVar('option') == 'com_slicomments'){
+				$referrer = JURI::base();
+			} else if ($fragment) {
+				$referrer->setFragment($fragment);
+			}
+		} else {
+			$referrer = JURI::base();
+		}
+		return (string) $referrer;
 	}
 }
