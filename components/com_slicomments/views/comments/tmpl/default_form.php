@@ -11,16 +11,15 @@ $user = JFactory::getUser();
 $canComment = $user->authorise('post', 'com_slicomments');
 $name = $this->params->get('name', 1);
 $email = $this->params->get('email', 0);
-$maximum_chars = $this->params->get('maximum_chars', 500)
+$maximum_chars = $this->params->get('maximum_chars', 500);
 ?>
 <form class="comments_form" action="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.post'); ?>" method="post" data-logged="<?php echo (!$user->guest ? '1' : '0');?>" data-position="<?php echo $this->state->get('list.order_dir', 'DESC') == 'DESC' ? 'top' : 'bottom'; ?>">
 	<?php echo JHtml::_('form.token'); ?>
-	<input type="hidden" name="return" value="<?php echo base64_encode(JFactory::getURI()->toString()); ?>"/>
 	<input type="hidden" name="article_id" value="<?php echo JRequest::getInt('id'); ?>"/>
 
-	<?php if(!$user->guest): ?>
+	<?php if (!$user->guest && $this->avatar) : ?>
 		<div class="profile-image-container">
-			<img class="profile-image" src="//www.gravatar.com/avatar/<?php echo md5($user->email); ?>?s=40" alt="<?php echo $this->escape($user->name); ?>">
+			<img class="profile-image" src="<?php echo $this->avatar; ?>" alt="<?php echo $this->escape($user->name); ?>">
 		</div>
 	<?php endif; ?>
 	<ul class="comments_form_inputs">
@@ -41,7 +40,7 @@ $maximum_chars = $this->params->get('maximum_chars', 500)
 		<li>
 			<?php if (!$canComment): ?>
 			<label class="login-to-post" for="comments_form_textarea">
-				<?php echo preg_replace('/#([^#]*)#/i', '<a href="'.JRoute::_('index.php?option=com_users&view=login').'">$1</a>', JText::_('COM_COMMENTS_LOGIN_TO_POST_COMMENT'), 1); ?>
+				<?php echo preg_replace('/#([^#]*)#/i', '<a href="'.JRoute::_('index.php?option=com_users&view=login&return='.base64_encode(JFactory::getURI()->toString().'#comments')).'">$1</a>', JText::_('COM_COMMENTS_LOGIN_TO_POST_COMMENT'), 1); ?>
 			</label>
 			<?php else: ?>
 			<label for="comments_form_textarea"><?php echo JText::_('COM_COMMENTS_LABEL_TEXT'); ?></label>
