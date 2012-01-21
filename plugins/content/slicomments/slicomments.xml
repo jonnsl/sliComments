@@ -25,6 +25,8 @@
 		<language tag="nl-NL">nl-NL/nl-NL.plg_content_slicomments.sys.ini</language>
 		<language tag="it-IT">it-IT/it-IT.plg_content_slicomments.ini</language>
 		<language tag="it-IT">it-IT/it-IT.plg_content_slicomments.sys.ini</language>
+		<language tag="uk-UA">uk-UA/uk-UA.plg_content_slicomments.ini</language>
+		<language tag="uk-UA">uk-UA/uk-UA.plg_content_slicomments.sys.ini</language>
 	</languages>
 
 	<config>
