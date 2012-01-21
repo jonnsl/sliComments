@@ -21,9 +21,10 @@ class sliCommentsViewComments extends JView
 		$this->state		= $this->get('State');
 		$this->params		= $this->state->get('params');
 		$this->topComments	= $this->get('topComments');
-		$this->items		= $this->get('Items');
+		$this->comments		= $this->get('Comments');
 		$this->pagination	= $this->get('Pagination');
 		$this->data			= $this->get('Data');
+		$this->avatar		= $this->get('Avatar');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
@@ -45,10 +46,10 @@ class sliCommentsViewComments extends JView
 	public function partial($name, $vars)
 	{
 		try {
-			$partial = $this->getPartial($name);
+			$_partial = $this->getPartial($name);
 			extract((array)$vars);
 
-			include $partial;
+			include $_partial;
 		}
 		catch (Exception $e) {
 			return JError::raiseError(500, $e->getMessage());
@@ -87,25 +88,5 @@ class sliCommentsViewComments extends JView
 		}
 
 		return $this->_partials[$name] = $partial;
-	}
-
-	public function linkToProfile($userid, $name)
-	{
-		static $option;
-		if ($option == null) $option = $this->params->get('link', false);
-		if ($option == false || $userid == 0) return $name != '' ? $this->escape($name) : JText::_('COM_COMMENTS_ANONYMOUS');
-
-		switch ($option)
-		{
-			case 'com_kunena':
-				JLoader::register('KunenaFactory', JPATH_ADMINISTRATOR.'/components/com_kunena/libraries/factory.php');
-				$link = KunenaFactory::getProfile()->getProfileURL($userid);
-				break;
-			case 'com_community':
-			default:
-				$link = JRoute::_('index.php?option='.$option.'&view=profile&userid='.$userid);
-		}
-
-		return '<a href="'.$link.'">'.$this->escape($name).'</a>';
 	}
 }

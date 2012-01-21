@@ -223,8 +223,10 @@ window.addEvent('domready', function(){
 						} else {
 							this.form.reset();
 							this.form.text.retrieve('charCount').update_counter();
+							this.form.text.fireEvent('blur');
 						}
 						OverText.update();
+
 				}.bind(this),
 				onFailure: function(xhr){
 					alert(xhr.responseText);

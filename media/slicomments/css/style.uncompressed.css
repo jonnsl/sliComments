@@ -1,14 +1,25 @@
+#comments:before,
+#comments:after {
+	content: "";
+	display: table;
+}
+
+#comments:after {
+	clear: both;
+}
+#comments {
+	zoom: 1;
+}
 #comments h4 {
 	margin-bottom: 10px;
 }
 .comment-list {
-	clear:both;
+	clear: both;
 	margin-top: 10px !important;
 	padding: 0 !important;
 }
 .comment {
 	position: relative;
-	list-style: none;
 	border-top: 1px solid #fff;
 	border-bottom: 1px solid #E1E1E1;
 	margin: 0 !important;
@@ -32,7 +43,9 @@
 .content-container {
 	margin-left: 55px;
 }
-.clr{clear: both}
+.clr {
+	clear: both
+}
 .author {
 	line-height: normal;
 	font-size: 0.9em;
@@ -43,11 +56,14 @@
 }
 .comment .content {
 	width: 100%;
+	text-align: justify;
+}
+.comments_form_inputs, .comments_form_inputs li, .comment-list, .comment{
+	list-style-type: none !important;
 }
 .comments_form_inputs {
 	margin: 0 0 0 55px !important;
 	padding: 0 !important;
-	list-style-type: none !important;
 }
 .comments_form_inputs li {
 	margin: 8px 0 0 0 !important;
@@ -61,7 +77,8 @@
 }
 .comments_form_inputs li input{
 	height: 18px;
-	padding-left: 2px
+	padding: 1px 5px;
+	margin: 0;
 }
 .comments_form textarea {
 	padding: 5px;
@@ -91,31 +108,31 @@
 }
 .comments-remaining {
 	margin: 8px 0 8px 55px;
-	float: left
+	float: left;
 }
 .no-js .comments-remaining {
-	display: none
+	display: none;
 }
 .comments-post-buttons {
-	float: right
+	float: right;
 }
 .overTxtLabel {
-	color: #999
+	color: #999;
 }
-.login-to-post{
+.login-to-post {
 	line-height: normal;
 	cursor: text;
 	position: absolute;
 	left: 6px;
 	top: 6px;
-	color: #333
+	color: #333;
 }
 #comments .pagination {
-	border-top: none !important
+	border-top: none !important;
 }
 .comments_form .validation-advice {
 	color: #F11;
-	font-style: italic
+	font-style: italic;
 }
 .comment:hover .comments-actions {
 	display: block !important;
@@ -139,10 +156,10 @@
 	border-left: none;
 }
 .rating.positive {
-	color: green
+	color: green;
 }
 .rating.negative {
-	color: red
+	color: red;
 }
 .slicomments-quote {
 	border: 1px inset;
@@ -151,14 +168,25 @@
 	margin: 0 0 15px 15px;
 }
 .spoiler-hide .slicomments-spoilerContent {
-	display: none
+	display: none;
 }
 .slicomments-spoilerContent .slicomments-spoiler {
-	margin-left: 10px
+	margin-left: 10px;
 }
 .comments-post-buttons span {
-	display: none
+	display: none;
 }
 .reply-form .comments-post-buttons span {
-	display: inline
+	display: inline;
+}
+.reply-form textarea {
+	height: 100px;
+}
+.no-avatar .comments_form_inputs, .no-avatar .content-container, .no-avatar .comments-remaining {
+	margin-left: 0 !important;
+}
+.comment .pending {
+	color: red;
+	font-size: 0.9em;
+	font-style: italic;
 }
