@@ -36,7 +36,7 @@ class plgContentSlicomments extends JPlugin
 			$model = $this->getModel();
 			$model->setState('article.id', $row->id);
 			$total = $model->getTotal();
-			if ($total > 0 || $attribs->get('slicomments.enabled', true)) {
+			if (($total > 0 || $attribs->get('slicomments.enabled', true)) && $model->isCategoryEnabled($row->catid)) {
 				return '<a href="'.JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catid)).'#comments">'.JText::sprintf('PLG_CONTENT_SLICOMMENTS_COMMENTS_COUNT', $total).'</a>';
 			}
 		}
