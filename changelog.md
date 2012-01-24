@@ -1,5 +1,10 @@
 # sliComments - Changelog #
 
+## 1.2.1 / 2012-01-24 ##
+  
+  * Convert all the translation files to UTF-8 without BOM
+  * Missing file for uk-UA translation
+
 ## 1.2.0 / 2012-01-24 ##
 
   * Add nl-NL translation. Thanks Jaco van Dieren
