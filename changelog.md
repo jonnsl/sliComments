@@ -1,5 +1,17 @@
 # sliComments - Changelog #
 
+## 1.2.0 / 2012-01-24 ##
+
+  * Add nl-NL translation. Thanks Jaco van Dieren
+  * Add it-IT translation. Thanks Federico Ferrazzani
+  * Add ru-RU translation. Thanks Алексей and Dmitry
+  * Add uk-UA translation. Thanks Dmitry Krasnokutsky
+  * Get avatar from third party components (Gravatar, Kunena, Jomsocial, K2)
+  * Add option to display usernames instead of real names.
+  * Some improvements in the layout.
+  * Show a notice if the comment is pending approval.
+  * Don't show comments links on categories that have comments disabled.
+
 ## 1.1.0 / 2012-01-11 ##
 
   * Top Comments.

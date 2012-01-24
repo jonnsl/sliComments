@@ -16,10 +16,21 @@ A powerful and slick comments component for Joomla!
 * BBCode and/or HTML
 * Emoticons
 * ACL
-* Integration with Kunena and JomSocial (profile)
-* Gravatar
+* Avatar from Gravatar, Kunena, JomSocial or K2
+* Link usernames to profile from Kunena or Jomsocial
 * No powered by or hidden links
 * Easy updates through the Extension Manager
+
+## Translations ##
+
+ * English
+ * Portuguese (Brazil)
+ * Dutch (Netherlands) - by Jaco van Dieren
+ * German (Germany) - by Jörg Fiedler.
+ * Italian (Italy) - by Federico Ferrazzani
+ * Polish (Poland) - by Igor Czajka
+ * Russian (Russia) - by Алексей and Dmitry
+ * Ukrainian (Ukraine) - by Dmitry Krasnokutsky
 
 ## Credits ##
 
