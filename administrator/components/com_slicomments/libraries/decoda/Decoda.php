@@ -278,6 +278,7 @@ class Decoda {
 			$this->_extractChunks();
 			$this->_parsed = $this->_parse($this->_nodes);
 		} else {
+			if ($this->config('escapeHtml')) $this->_string = htmlentities($this->_string, ENT_QUOTES, 'UTF-8');
 			$this->_parsed = $this->nl2br($this->_string, $this->config('xhtml'));
 		}
 
