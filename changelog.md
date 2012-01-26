@@ -1,5 +1,9 @@
 # sliComments - Changelog #
 
+## 1.2.2 / 2012-01-25 ##
+  
+  * Fixed XSS security issue.
+
 ## 1.2.1 / 2012-01-24 ##
   
   * Convert all the translation files to UTF-8 without BOM
