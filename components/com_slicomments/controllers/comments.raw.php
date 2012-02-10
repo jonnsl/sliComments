@@ -114,6 +114,28 @@ class sliCommentsControllerComments extends JController
 		}
 	}
 
+	public function flag()
+	{
+		try {
+			// Check for request forgeries.
+			if (!JRequest::checkToken('get')) {
+				throw new Exception(JText::_('JINVALID_TOKEN'), 500);
+			}
+			if (!JFactory::getUser()->authorise('flag', 'com_slicomments')){
+				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
+			}
+			$model = $this->getModel();
+			$comment_id = JRequest::getInt('id');
+			if (!$model->flag($comment_id)) {
+				throw new Exception((string)$model->getError(), 500);
+			}
+			echo JText::_('COM_COMMENTS_SUCCESS_FLAG');
+		} catch (Exception $e) {
+			JResponse::setHeader('status', $e->getCode());
+			echo $e->getMessage();
+		}
+	}
+
 	public function getModel($name = 'comments', $prefix = 'sliCommentsModel', $config = array())
 	{
 		return parent::getModel($name, $prefix, $config);

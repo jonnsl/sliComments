@@ -92,6 +92,7 @@ class Com_sliCommentsInstallerScript
 			'post' => array('1' => 1, '2' => 1, '8' => 1),
 			'auto_publish' => array('6' => 1, '2' => 1, '8' => 1),
 			'vote' => array('6' => 1, '2' => 1, '8' => 1),
+			'flag' => array('6' => 1, '2' => 1, '8' => 1),
 			'edit.own' => array('6' => 1, '8' => 1),
 			'delete.own' => array('6' => 1, '8' => 1),
 			'edit' => array('4' => 1, '8' => 1),

@@ -489,6 +489,42 @@ class sliCommentsModelComments extends JModelList
 		return true;
 	}
 
+	public function flag($comment_id)
+	{
+		$user = JFactory::getUser();
+		$user_id = $user->get('id');
+		$db = $this->_db;
+
+		// User already flag this comment?
+		$query = $db->getQuery(true)
+			->select('count(*)')
+			->from('#__slicomments_flags')
+			->where('user_id = '. (int) $user_id)
+			->where('comment_id = '. (int) $comment_id);
+		$db->setQuery($query);
+		$flaged = $db->loadResult();
+
+		if ($flaged){
+			return true;
+		}
+
+		// Flag as spam
+		$data = (object) array(
+			'user_id'	=> (int) $user_id,
+			'comment_id'=> (int) $comment_id
+		);
+		$stored = $db->insertObject('#__slicomments_flags', $data);
+
+		if (!$stored){
+			if (JDEBUG) {
+				$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COULD_NOT_FLAG_DEBUG', $db->getErrorMsg()));
+			} else {
+				$this->setError(JText::_('COM_COMMENTS_ERROR_COULD_NOT_FLAG'));
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * Method to auto-populate the model state.
 	 */

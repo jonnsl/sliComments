@@ -43,6 +43,7 @@
 }
 .text {
 	float:left;
+	width: 100%;
 }
 .actions {
 	float: left;
@@ -79,8 +80,11 @@ td:hover .actions {
 }
 .submitted {
 	float: left;
-	width: 100%;
 	margin-bottom: 5px
+}
+.flagged {
+	float: left;
+	margin-left: 5px
 }
 .text {
 	font-size: 1.1em;

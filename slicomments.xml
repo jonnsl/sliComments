@@ -22,6 +22,12 @@
 		</sql>
 	</uninstall>
 
+	<update>
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
 	<files folder="components/com_slicomments">
 		<folder>controllers</folder>
 		<folder>models</folder>

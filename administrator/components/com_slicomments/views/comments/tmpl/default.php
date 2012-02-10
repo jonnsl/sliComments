@@ -12,6 +12,7 @@ require_once JPATH_SITE.'/components/com_content/helpers/route.php';
 require_once JPATH_COMPONENT.'/helpers/comments.php';
 JHtml::_('core');
 JHtml::_('behavior.framework', true);
+JHtml::_('behavior.tooltip');
 JHtml::_('script', 'slicomments/comments_admin.js', true, true);
 JHtml::_('script', 'slicomments/DynamicTextarea.js', true, true);
 JHtml::_('stylesheet', 'slicomments/admin.css', array(), true);
@@ -73,6 +74,16 @@ $listDirn	= $this->state->get('list.direction');
 				</td>
 				<td class="comment">
 					<span class="submitted"><?php echo JText::sprintf('COM_COMMENTS_SUBMITTED', sliCommentsHelper::human_time_diff($item->created)); ?></span>
+					<?php
+					if ($item->flagged) :
+						$desc = implode('<br/>', array_map(array($this, 'escape'), $this->flaggedBy[$item->id]));
+						if ($item->flagged > 5) {
+							$desc .= '<br/>' . JText::sprintf('COM_COMMENTS_FLAGGED_BY_OTHERS', '<b>' . ($item->flagged - 5) . '</b>');
+						}
+					?>
+
+						<img src="../media/slicomments/img/spam16.png" title="<?php echo JText::_('COM_COMMENTS_FLAGGED_BY'), '::', $desc; ?>" class="flagged hasTip"/>
+					<?php endif; ?>
 					<span class="text"><?php
 					if ($search = $this->state->get('filter.search')){
 						echo sliCommentsHelper::highlight(nl2br($this->escape($item->raw)), $search);

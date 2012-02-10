@@ -126,6 +126,28 @@ class sliCommentsControllerComments extends JController
 		$this->setRedirect($this->getReferrer());
 	}
 
+	public function flag()
+	{
+		// Check for request forgeries.
+		JRequest::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
+
+		if (!JFactory::getUser()->authorise('flag', 'com_slicomments')){
+			$this->setMessage(JText::_('COM_COMMENTS_NO_AUTH'), 'error');
+		}
+		else
+		{
+			$model = $this->getModel();
+			$comment_id = JRequest::getInt('id');
+			if ($model->flag($comment_id)) {
+				$this->setMessage(JText::_('COM_COMMENTS_SUCCESS_FLAG'));
+			} else {
+				$this->setMessage($model->getError(), 'error');
+			}
+		}
+
+		$this->setRedirect($this->getReferrer());
+	}
+
 	public function reply()
 	{
 		// Check for request forgeries.

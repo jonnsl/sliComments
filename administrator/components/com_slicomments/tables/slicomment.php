@@ -57,6 +57,21 @@ class JTableSliComment extends JTable
 			return false;
 		}
 
+		if ($status == -1)
+		{
+			$query = $this->_db->getQuery(true)
+				->delete()
+				->from('#__slicomments_flags')
+				->where('comment_id = '.(int)$this->id);
+			$this->_db->setQuery($query);
+			// Check for a database error.
+			if (!$this->_db->query()) {
+				$e = new JException(JText::sprintf('COM_COMMENTS_ERROR_REMOVE_FLAGS_FAILED', get_class($this), $this->_db->getErrorMsg()));
+				$this->setError($e);
+				return false;
+			}
+		}
+
 		return true;
 	}
 }

@@ -85,13 +85,17 @@ window.addEvent('domready', function(){
 	});
 
 	section.addEvents({
-		'click:relay(.comment-delete)': 
+		'click:relay(.comment-delete)':
 		req(function(response){
 			this.getParent('li.comment').nix(true);
 			comments_count.set('text', comments_count.get('text').toInt() - 1);
 		}),
 		'click:relay(.comment-like)': vote,
 		'click:relay(.comment-dislike)': vote,
+		'click:relay(.comment-flag)':
+		req(function(response){
+			alert(response);
+		}),
 		'click:relay(.slicomments-spoiler button)': function (){
 			var p = this.getParent();
 			if (p.hasClass('spoiler-hide')) {
@@ -161,9 +165,9 @@ window.addEvent('domready', function(){
 				var element = this.element,
 					options = this.options,
 					value = options.textOverride || element.get('placeholder') || element.get('alt') || element.get('title');
-		
+
 				if (!value) return this;
-		
+
 				var text = this.text = (element.getPrevious(options.element) || new Element(options.element).inject(element, 'after'))
 					.addClass(options.labelClass)
 					.setStyles({
@@ -173,12 +177,12 @@ window.addEvent('domready', function(){
 					})
 					.set('html', value)
 					.addEvent('click', this.hide.pass(options.element == 'label', this));
-		
+
 				if (options.element == 'label'){
 					if (!element.get('id')) element.set('id', 'input_' + String.uniqueID());
 					text.set('for', element.get('id'));
 				}
-				
+
 				if (options.wrap){
 					this.textHolder = new Element('div.overTxtWrapper', {
 						styles: {
@@ -187,7 +191,7 @@ window.addEvent('domready', function(){
 						}
 					}).grab(text).inject(element, 'before');
 				}
-		
+
 				return this.enable();
 			}
 		});

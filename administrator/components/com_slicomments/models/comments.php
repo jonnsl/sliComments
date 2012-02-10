@@ -59,10 +59,15 @@ class sliCommentsModelComments extends JModelList
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
 		$query->leftjoin('#__content AS c ON c.id = a.article_id');
 
+		$query->select('COUNT(f.user_id) as flagged');
+		$query->leftjoin('#__slicomments_flags AS f ON f.comment_id = a.id');
+
 		// Filter by status
 		$status = $this->getState('filter.status', '');
 		if ($status == '') {
 			$query->where('status >= 0');
+		} else if ($status == -3) {
+			$query->where('f.user_id <> 0');
 		} else if ($status != '*') {
 			$query->where('status = '.$db->getEscaped($status));
 		}
@@ -83,11 +88,36 @@ class sliCommentsModelComments extends JModelList
 			}
 		}
 
+		$query->group('a.id');
+
 		// Add the list ordering clause.
 		$query->order($db->getEscaped($this->getState('list.ordering', 'a.created')).' '.$db->getEscaped($this->getState('list.direction', 'DESC')));
 
 		//echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
+	}
+
+	public function getFlags()
+	{
+		$db = $this->_db;
+		$flags = array();
+		$comments = $this->getItems();
+
+		foreach ($comments as $comment)
+		{
+			if (!$comment->flagged){
+				continue;
+			}
+			$query = $db->getQuery(true)
+				->select('u.name')
+				->from('#__slicomments_flags AS a')
+				->leftjoin('#__users as u ON u.id = a.user_id')
+				->where('a.comment_id = ' . (int) $comment->id);
+			$db->setQuery($query, 0, 5);
+			$flags[$comment->id] = $db->loadResultArray();
+		}
+
+		return $flags;
 	}
 
 	/**

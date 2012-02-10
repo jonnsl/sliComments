@@ -17,7 +17,7 @@ $form_position = $this->params->get('form_position', 'before');
 JHtml::_('script', 'slicomments/slicomments.js', true, true);
 ?>
 <div id="comments" class="no-js<?php if ($this->params->get('avatar', 'gravatar') === '0') echo ' no-avatar'; ?>">
-	
+
 	<?php if (count($this->topComments)): ?>
 	<h4><?php echo JText::_('COM_COMMENTS_TOP_COMMENTS'); ?></h4>
 	<ul id="top_comments_list" class="comment-list">

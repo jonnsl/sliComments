@@ -27,6 +27,10 @@ $user = JFactory::getUser();
 			<li><a class="comment-delete" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.delete&id='.$id.'&'.JUtility::getToken().'=1'); ?>" data-id="<?php echo $id; ?>">
 				<?php echo JText::_('COM_COMMENTS_ACTION_DELETE'); ?></a></li>
 			<?php endif; ?>
+			<?php if ($user->authorise('flag', 'com_slicomments')): ?>
+			<li><a class="comment-flag" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.flag&id='.$id.'&'.JUtility::getToken().'=1'); ?>" data-id="<?php echo $id; ?>" title="<?php echo JText::_('COM_COMMENTS_ACTION_FLAG_TITLE'); ?>">
+				<?php echo JText::_('COM_COMMENTS_ACTION_FLAG'); ?></a></li>
+			<?php endif; ?>
 			<?php if ($user->authorise('post', 'com_slicomments') && ($user_id == 0 || $user_id != $user->id) && $this->params->get('enabled', true)): ?>
 			<li><a class="comment-reply" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.reply&name='.$this->escape($name).'&'.JUtility::getToken().'=1'); ?>">
 				<?php echo JText::_('COM_COMMENTS_ACTION_REPLY'); ?></a></li>
@@ -38,8 +42,8 @@ $user = JFactory::getUser();
 				if (isset($link) && !empty($link)) { ?>
 				<a href="<?php echo $link; ?>"><?php echo $this->escape($name); ?></a>
 				<?php
-				} else { 
-					echo $this->escape($name); 
+				} else {
+					echo $this->escape($name);
 				}
 				?>
 			</span>

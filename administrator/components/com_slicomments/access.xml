@@ -28,6 +28,12 @@
 			name="vote"
 			title="COM_COMMENTS_ACCESS_VOTE"
 			description="COM_COMMENTS_ACCESS_VOTE_DESC"/>
+
+		<action
+			name="flag"
+			title="COM_COMMENTS_ACCESS_FLAG"
+			description="COM_COMMENTS_ACCESS_FLAG_DESC"
+			guest="false"/>
 	</fieldset>
 
 	<fieldset

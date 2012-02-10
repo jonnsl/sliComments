@@ -19,6 +19,7 @@ class sliCommentsViewComments extends JView
 	{
 		$this->state		= $this->get('State');
 		$this->items		= $this->get('Items');
+		$this->flaggedBy	= $this->get('Flags');
 		$this->pagination	= $this->get('Pagination');
 
 		// Check for errors.
