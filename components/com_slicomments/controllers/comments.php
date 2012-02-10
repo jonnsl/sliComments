@@ -105,6 +105,9 @@ class sliCommentsControllerComments extends JController
 
 	public function vote()
 	{
+		// Check for request forgeries.
+		JRequest::checkToken('get') or jexit(JText::_('JINVALID_TOKEN'));
+
 		if (!JFactory::getUser()->authorise('vote', 'com_slicomments')){
 			$this->setMessage(JText::_('COM_COMMENTS_NO_AUTH'), 'error');
 		}
