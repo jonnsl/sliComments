@@ -44,7 +44,7 @@ class sliCommentsViewComments extends JView
 		if ($status == 0 || $status == '*') {
 			JToolBarHelper::custom('comments.approve', 'approve', null, 'COM_COMMENTS_ACTION_APPROVE');
 		}
-		if ($status == 1 || $status == '*') {
+		if ($status == 1 || $status == '*' || $status == -3) {
 			JToolBarHelper::custom('comments.unapprove', 'unapprove', null, 'COM_COMMENTS_ACTION_UNAPPROVE');
 		}
 		if ($status == -1) {
@@ -58,7 +58,7 @@ class sliCommentsViewComments extends JView
 			//JToolBarHelper::custom('comment.edit', 'edit', null, 'COM_COMMENTS_ACTION_EDIT');
 		}
 
-		if ($status >= 0 || $status == '*') {
+		if ($status >= 0 || $status == '*' || $status == -3) {
 			JToolBarHelper::custom('comments.spam', 'spam', null, 'COM_COMMENTS_ACTION_SPAM');
 			JToolBarHelper::custom('comments.trash', 'trash', null, 'JTOOLBAR_TRASH');
 		} else {
