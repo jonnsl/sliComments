@@ -70,14 +70,9 @@ class sliCommentsControllerLorem extends JController
 
 	public function getRandDate()
 	{
-		$days = round((strtotime('today') - strtotime('today - 6 months')) / (60 * 60 * 24));
-		$n = rand(0, $days);
-		return date('Y-m-d', strtotime("today - $n days")) . ' ' . $this->numberPad(rand(0,23)).':'.$this->numberPad(rand(0,59)).':'.$this->numberPad(rand(0,59));
-	}
-
-	private function numberPad($number)
-	{
-		return str_pad($number,2,"0",STR_PAD_LEFT);
+		$seconds = strtotime('today') - strtotime('today - 6 months');
+		$n = rand(0, $seconds);
+		return date('Y-m-d H:i:s', strtotime("today - $n seconds"));
 	}
 
 	public function getRandStatus()
