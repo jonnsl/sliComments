@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 $user = JFactory::getUser();
 $rating = $likes - $dislikes;
 ?>
-<li class="comment">
+<li id="comment-<?php echo $id;?>" class="comment">
 <div class="comment-body">
 	<?php if (isset($avatar)) : ?>
 	<div class="profile-image-container">
