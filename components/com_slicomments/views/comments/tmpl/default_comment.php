@@ -9,6 +9,7 @@
 defined('_JEXEC') or die;
 
 $user = JFactory::getUser();
+$rating = $likes - $dislikes;
 ?>
 <li class="comment">
 <div class="comment-body">
@@ -21,7 +22,7 @@ $user = JFactory::getUser();
 		<ul class="comments-actions">
 			<?php if ($this->params->get('ratings', true) && $user->authorise('vote', 'com_slicomments')) : ?>
 				<li><a class="comment-like" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.vote&v=1&id='.$id.'&'.JUtility::getToken().'=1'); ?>"><?php echo JText::_('COM_COMMENTS_ACTION_LIKE'); ?></a></li>
-				<li><a class="comment-dislike" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.vote&v=-1&id='.$id.'&'.JUtility::getToken().'=1'); ?>"><?php echo JText::_('COM_COMMENTS_ACTION_DISLIKE'); ?></a></li>
+				<li><a class="comment-dislike" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.vote&v=0&id='.$id.'&'.JUtility::getToken().'=1'); ?>"><?php echo JText::_('COM_COMMENTS_ACTION_DISLIKE'); ?></a></li>
 			<?php endif; ?>
 			<?php if ($user->authorise('delete', 'com_slicomments') || ($user->authorise('delete.own', 'com_slicomments') && $user_id == $user->id)): ?>
 			<li><a class="comment-delete" href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.delete&id='.$id.'&'.JUtility::getToken().'=1'); ?>" data-id="<?php echo $id; ?>">
@@ -51,7 +52,7 @@ $user = JFactory::getUser();
 				<?php echo sliCommentsHelper::human_time_diff($created);?>
 			</span>
 			<?php if ($rating != 0) : ?>
-			<span class="rating <?php echo ($rating > 0 ? 'positive' : 'negative'); ?>">
+			<span class="rating <?php echo ($rating > 0 ? 'positive' : 'negative'); ?>" title="<?php echo JText::plural('COM_COMMENTS_RATINGS_LIKES', $likes), ', ', JText::plural('COM_COMMENTS_RATINGS_DISLIKES', $dislikes); ?>">
 				<?php echo ($rating > 0 ? '+' : '').$rating; ?>
 			</span>
 			<?php endif; ?>

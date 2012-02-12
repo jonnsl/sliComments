@@ -326,7 +326,7 @@ class sliCommentsModelComments extends JModelList
 		}
 		$user = JFactory::getUser();
 		$data['id'] = $table->id;
-		$data['rating'] = 0;
+		$data['likes'] = $data['dislikes'] = 0;
 		$data['avatar'] = $this->getAvatar();
 		$data['link'] = $this->getLink();
 		if (!$user->guest) {
@@ -355,7 +355,7 @@ class sliCommentsModelComments extends JModelList
 		}
 
 		// Valid vote?
-		if ($vote !== -1 && $vote !== 1) {
+		if ($vote !== 0 && $vote !== 1) {
 			$this->setError(JText::_('COM_COMMENTS_ERROR_INVALID_VOTE'));
 			return false;
 		}
@@ -401,13 +401,13 @@ class sliCommentsModelComments extends JModelList
 			$db->setQuery($query);
 			$voted = $db->loadResult();
 
-			if ($voted == $vote){
+			if ($voted !== null && $voted == $vote){
 				$this->setError(JText::_('COM_COMMENTS_ERROR_ALREADY_VOTED'));
 				return false;
 			}
 
 			// Vote!
-			if ($voted) {
+			if ($voted !== null) {
 				$query = $db->getQuery(true)
 					->update('#__slicomments_ratings')
 					->set('vote = '.(int) $vote)
@@ -415,7 +415,6 @@ class sliCommentsModelComments extends JModelList
 					->where('comment_id = '.(int) $comment_id);
 				$db->setQuery($query);
 				$stored = $db->query();
-				$vote *= 2;
 			}
 			else {
 				$data = (object) array(
@@ -470,20 +469,11 @@ class sliCommentsModelComments extends JModelList
 			}
 		}
 
-		// Update the cache
-		$query = $db->getQuery(true)
-			->update('#__slicomments')
-			->set('rating = rating + '.$vote)
-			->where('id = '.(int) $comment_id);
-		$updated = $db->setQuery($query)->query();
-
-		if (!$updated){
-			if (JDEBUG) {
-				$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COULD_NOT_UPDATE_VOTE_CACHE', $db->getErrorMsg()));
-			} else {
-				$this->setError(JText::_('COM_COMMENTS_ERROR_COULD_NOT_STORE_VOTE'));
-			}
-			return false;
+		if ($vote === 0) {
+			$vote = -1;
+		}
+		if (!$user->guest && $voted !== null) {
+			$vote *= 2;
 		}
 
 		return true;
@@ -579,10 +569,16 @@ class sliCommentsModelComments extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.'.$field.' END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.id, a.rating, a.user_id, a.created');
+		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.'.$field.' END as name'
+			. ', CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email'
+			. ', a.text, a.id, a.user_id, a.created'
+			. ', SUM(CASE WHEN r.vote THEN 1 ELSE 0 END) as likes'
+			. ', SUM(CASE WHEN r.vote = 0 THEN 1 ELSE 0 END) as dislikes'
+			. ', COUNT(r.vote) as votes');
 		$query->from('#__slicomments AS a');
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
+		$query->leftjoin('#__slicomments_ratings AS r ON r.comment_id = a.id');
 
 		$avatar = $this->params->get('avatar', 'gravatar');
 		switch ($avatar)
@@ -614,6 +610,8 @@ class sliCommentsModelComments extends JModelList
 			$query->where('a.id <> '.implode(' AND a.id <> ', $exclude));
 		}
 
+		$query->group('a.id');
+
 		// Add the list ordering clause.
 		$query->order('a.created '.$this->getState('list.order_dir', 'DESC'));
 
@@ -630,8 +628,8 @@ class sliCommentsModelComments extends JModelList
 		$db = $this->_db;
 		$query = $this->getListQuery()
 			->clear('order')
-			->where('a.rating > 2')
-			->order('a.rating DESC, a.created '.$this->getState('list.order_dir', 'DESC'));
+			->having('likes > 2')
+			->order('likes DESC, a.created '.$this->getState('list.order_dir', 'DESC'));
 
 		$db->setQuery($query, 0, $limit);
 		$comments = $db->loadObjectList();
@@ -648,8 +646,10 @@ class sliCommentsModelComments extends JModelList
 
 	public function getComments()
 	{
+		JDEBUG && $GLOBALS['_PROFILER']->mark('beforeGetComments');
+		$comments = $this->getItems();
 		JDEBUG && $GLOBALS['_PROFILER']->mark('beforePreProcessComments');
-		$comments = $this->preProcess($this->getItems());
+		$comments = $this->preProcess($comments);
 		JDEBUG && $GLOBALS['_PROFILER']->mark('afterPreProcessComments');
 		return $comments;
 	}
@@ -793,9 +793,11 @@ class sliCommentsModelComments extends JModelList
 	protected function _getListCount($query)
 	{
 		$query = clone $query;
-		$query->clear('select');
-		$query->clear('order');
-		$query->select('count(*)');
+		$query->clear('select')
+			->clear('join')
+			->clear('group')
+			->clear('order')
+			->select('count(*)');
 		$this->_db->setQuery($query);
 		$this->_db->query();
 
