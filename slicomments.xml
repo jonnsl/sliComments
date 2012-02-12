@@ -45,6 +45,7 @@
 		<language tag="it-IT">it-IT/it-IT.com_slicomments.ini</language>
 		<language tag="ru-RU">ru-RU/ru-RU.com_slicomments.ini</language>
 		<language tag="uk-UA">uk-UA/uk-UA.com_slicomments.ini</language>
+		<language tag="fr-FR">fr-FR/fr-FR.com_slicomments.ini</language>
 	</languages>
 
 	<media destination="slicomments" folder="media/slicomments">
@@ -97,6 +98,9 @@
 			<language tag="uk-UA">uk-UA/uk-UA.com_slicomments.ini</language>
 			<language tag="uk-UA">uk-UA/uk-UA.com_slicomments.sys.ini</language>
 			<language tag="uk-UA">uk-UA/uk-UA.lib_decoda.ini</language>
+			<language tag="fr-FR">fr-FR/fr-FR.com_slicomments.ini</language>
+			<language tag="fr-FR">fr-FR/fr-FR.com_slicomments.sys.ini</language>
+			<language tag="fr-FR">fr-FR/fr-FR.lib_decoda.ini</language>
 		</languages>
 	</administration>
 

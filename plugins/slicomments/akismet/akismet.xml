@@ -33,6 +33,8 @@
 		<language tag="ru-RU">ru-RU/ru-RU.plg_slicomments_akismet.sys.ini</language>
 		<language tag="uk-UA">uk-UA/uk-UA.plg_slicomments_akismet.ini</language>
 		<language tag="uk-UA">uk-UA/uk-UA.plg_slicomments_akismet.sys.ini</language>
+		<language tag="fr-FR">fr-FR/fr-FR.plg_slicomments_akismet.ini</language>
+		<language tag="fr-FR">fr-FR/fr-FR.plg_slicomments_akismet.sys.ini</language>
 	</languages>
 
 	<config>
