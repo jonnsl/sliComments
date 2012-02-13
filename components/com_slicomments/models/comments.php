@@ -580,6 +580,9 @@ class sliCommentsModelComments extends JModelList
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
 		$query->leftjoin('#__slicomments_ratings AS r ON r.comment_id = a.id');
 
+		$query->select('COUNT(f.user_id) as flagged');
+		$query->leftjoin('#__slicomments_flags AS f ON f.comment_id = a.id');
+
 		$avatar = $this->params->get('avatar', 'gravatar');
 		switch ($avatar)
 		{

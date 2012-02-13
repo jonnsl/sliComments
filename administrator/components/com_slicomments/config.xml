@@ -358,6 +358,30 @@
 				<option value="com_kunena">COM_COMMENTS_OPTION_KUNENA</option>
 				<option value="com_k2">COM_COMMENTS_OPTION_K2</option>
 		</field>
+
+		<field
+			name="hide_low_rated"
+			type="integer"
+			label="COM_COMMENTS_HIDE_LOW_RATED_LABEL"
+			description="COM_COMMENTS_HIDE_LOW_RATED_DESC"
+			default="0"
+			first="1"
+			last="20"
+			step="1">
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="hide_flagged"
+			type="integer"
+			label="COM_COMMENTS_HIDE_FLAGGED_LABEL"
+			description="COM_COMMENTS_HIDE_FLAGGED_DESC"
+			default="0"
+			first="1"
+			last="20"
+			step="1">
+				<option value="0">JNO</option>
+		</field>
 	</fieldset>
 
 	<fieldset

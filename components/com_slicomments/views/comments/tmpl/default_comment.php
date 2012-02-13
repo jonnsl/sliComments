@@ -63,7 +63,16 @@ $rating = $likes - $dislikes;
 			<?php endif; ?>
 		</div>
 		<div class="content">
-			<?php echo $text; ?>
+			<?php
+			if ($this->params->get('hide_flagged', 0) > 0 && $flagged >= $this->params->get('hide_flagged')) {
+				$this->partial('comment_hidden', array('text' => $text, 'legend' => JText::_('COM_COMMENTS_FLAGGED')));
+			}
+			else if ($this->params->get('hide_low_rated', 0) > 0 && $dislikes >= $this->params->get('hide_low_rated')) {
+				$this->partial('comment_hidden', array('text' => $text, 'legend' => JText::_('COM_COMMENTS_LOW_RATED')));
+			} else {
+				echo $text;
+			}
+			?>
 		</div>
 	</div>
 </div>
