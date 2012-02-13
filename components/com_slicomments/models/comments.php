@@ -320,10 +320,14 @@ class sliCommentsModelComments extends JModelList
 			return false;
 		}
 
-		if (!$table->store($data)) {
+		$stored = $table->store($data);
+		$dispatcher->trigger('onAfterSaveComment', array($table, $stored ? null : $table->getError()));
+
+		if (!$stored) {
 			$this->setError($table->getError());
 			return false;
 		}
+
 		$user = JFactory::getUser();
 		$data['id'] = $table->id;
 		$data['likes'] = $data['dislikes'] = 0;
