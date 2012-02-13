@@ -434,7 +434,7 @@ class sliCommentsModelComments extends JModelList
 				$query = $db->getQuery(true)
 					->delete('#__slicomments_ratings')
 					->where('user_id = 0')
-					->where('date < '. $yesterday);
+					->where('created < '. $yesterday);
 				$db->setQuery($query)->query();
 			}
 			$query = $db->getQuery(true)
@@ -442,7 +442,7 @@ class sliCommentsModelComments extends JModelList
 				->from('#__slicomments_ratings')
 				->where('user_id = 0')
 				->where('ip = '. $db->quote($_SERVER['REMOTE_ADDR']))
-				->where('date > '. $yesterday)
+				->where('created > '. $yesterday)
 				->where('comment_id = '.(int) $comment_id);
 			$db->setQuery($query);
 			$voted = $db->loadResult();
@@ -457,7 +457,7 @@ class sliCommentsModelComments extends JModelList
 				'vote'		=> (int) $vote,
 				'comment_id'=> (int) $comment_id,
 				'ip'		=> $_SERVER['REMOTE_ADDR'],
-				'date'		=> JFactory::getDate()->toMysql()
+				'created'	=> JFactory::getDate()->toMysql()
 			);
 			$stored = $db->insertObject('#__slicomments_ratings', $data);
 		}
