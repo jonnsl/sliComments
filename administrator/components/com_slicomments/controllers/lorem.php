@@ -39,7 +39,6 @@ class sliCommentsControllerLorem extends JController
 			$data->text = $filter['text'];
 			$data->created = $this->getRandDate();
 			$data->article_id = $article_ids[array_rand($article_ids)];
-			$data->rating = 0;
 			$data->status = $this->getRandStatus();
 
 			$db->insertObject('#__slicomments', $data, 'id');
@@ -48,7 +47,7 @@ class sliCommentsControllerLorem extends JController
 		$this->setRedirect('index.php?option=com_slicomments', 'Successfully created ' . $n . ' new comments.');
 	}
 
-	public function getArticleIds()
+	protected function getArticleIds()
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
@@ -58,7 +57,7 @@ class sliCommentsControllerLorem extends JController
 		return $db->loadResultArray();
 	}
 
-	public function getUsersId()
+	protected function getUsersId()
 	{
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true)
@@ -68,14 +67,14 @@ class sliCommentsControllerLorem extends JController
 		return $db->loadResultArray();
 	}
 
-	public function getRandDate()
+	protected function getRandDate()
 	{
 		$seconds = strtotime('today') - strtotime('today - 6 months');
 		$n = rand(0, $seconds);
 		return date('Y-m-d H:i:s', strtotime("today - $n seconds"));
 	}
 
-	public function getRandStatus()
+	protected function getRandStatus()
 	{
 		$rand = rand(0, 100);
 		if ($rand < 75) return 1;
