@@ -79,6 +79,15 @@ class Com_sliCommentsInstallerScript
 		$result = $installer->install($src.'/plugins/slicomments/akismet');
 		$status->plugins[] = array('name' => 'sliComments - Akismet','group' => 'slicomments', 'result' => $result);
 
+		// sliComments - Jomsocial
+		$result = false;
+		if ($this->componentIsEnabled('com_community'))
+		{
+			$installer = new JInstaller;
+			$result = $installer->install($src.'/plugins/slicomments/jomsocial');
+		}
+		$status->plugins[] = array('name' => 'sliComments - Jomsocial','group' => 'slicomments', 'result' => $result);
+
 		return $status;
 	}
 
@@ -113,5 +122,18 @@ class Com_sliCommentsInstallerScript
 		$asset->rules = (string) $rules;
 		$asset->check();
 		$asset->store();
+	}
+
+	protected function componentIsEnabled($option)
+	{
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+		$query->select('enabled')
+			->from('#__extensions')
+			->where($query->qn('type').' = '.$db->quote('component'))
+			->where($query->qn('element').' = '.$db->quote($option));
+		$db->setQuery($query);
+
+		return (bool) $db->loadResult();
 	}
 }

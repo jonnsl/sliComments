@@ -181,4 +181,30 @@
 
 		<targetplatform name="joomla" version="2.5" />
 	</update>
+
+	<update>
+		<name>sliComments - Jomsocial</name>
+		<version>1.0.0</version>
+		<element>plg_slicomments_jomsocial</element>
+		<type>plugin</type>
+		<client>0</client>
+		<folder>slicomments</folder>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/downloads/jonnsl/sliComments/plg_slicomments_jomsocial_1.0.0.zip</downloadurl>
+		</downloads>
+		<targetplatform name="joomla" version="1.7"/>
+	</update>
+
+	<update>
+		<name>sliComments - Jomsocial</name>
+		<version>1.0.0</version>
+		<element>plg_slicomments_jomsocial</element>
+		<type>plugin</type>
+		<client>0</client>
+		<folder>slicomments</folder>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/downloads/jonnsl/sliComments/plg_slicomments_jomsocial_1.0.0.zip</downloadurl>
+		</downloads>
+		<targetplatform name="joomla" version="2.5"/>
+	</update>
 </updates>
