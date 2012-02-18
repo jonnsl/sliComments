@@ -44,6 +44,9 @@ class sliCommentsViewComments extends JView
 		if ($status == 0 || $status == '*') {
 			JToolBarHelper::custom('comments.approve', 'approve', null, 'COM_COMMENTS_ACTION_APPROVE');
 		}
+		if ($status == -3) {
+			JToolBarHelper::custom('comments.unflag', 'approve', null, 'COM_COMMENTS_ACTION_UNFLAG');
+		}
 		if ($status == 1 || $status == '*' || $status == -3) {
 			JToolBarHelper::custom('comments.unapprove', 'unapprove', null, 'COM_COMMENTS_ACTION_UNAPPROVE');
 		}

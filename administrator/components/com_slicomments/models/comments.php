@@ -215,6 +215,19 @@ class sliCommentsModelComments extends JModelList
 		return true;
 	}
 
+	public function unflag($pks)
+	{
+		$db = $this->_db;
+		$query = $db->getQuery(true);
+		$query->delete()
+			->from('#__slicomments_flags')
+			->where('comment_id = ' . implode(' OR comment_id = ', array_map(array($query, 'quote'), (array) $pks)));
+		$db->setQuery($query);
+		$db->query();
+
+		return true;
+	}
+
 	public function filter($data)
 	{
 		$filter['raw'] = $data['text'];

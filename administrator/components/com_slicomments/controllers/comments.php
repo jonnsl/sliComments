@@ -21,6 +21,7 @@ class sliCommentsControllerComments extends JController
 		$this->registerTask('trash', 'status');
 		$this->registerTask('spam', 'status');
 		$this->registerTask('delete', 'status');
+		$this->registerTask('unflag', 'status');
 	}
 
 	/**
@@ -61,6 +62,13 @@ class sliCommentsControllerComments extends JController
 						}
 						$model->delete($cid);
 						$message = 'COM_COMMENTS_N_COMMENTS_DELETED';
+						break;
+					case 'unflag':
+						if (!$user->authorise('manage', 'com_slicomments')){
+							throw new JException(JText::_('COM_COMMENTS_NO_AUTH'), 403, E_WARNING);
+						}
+						$model->unflag($cid);
+						$message = 'COM_COMMENTS_N_COMMENTS_UNFLAGGED';
 						break;
 					case 'approve':
 					case 'unapprove':
