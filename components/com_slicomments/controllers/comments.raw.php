@@ -39,6 +39,7 @@ class sliCommentsControllerComments extends JController
 			if ($model->validate($data) && $model->save($data))
 			{
 				$view = $this->getView('comments', 'html');
+				$view->addTemplatePath(JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate() . '/html/com_content/comments');
 				require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/comments.php';
 				$view->params = $model->params;
 				$view->partial('comment', $data);
