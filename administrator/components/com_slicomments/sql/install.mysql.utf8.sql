@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS `#__slicomments` (
   `text` text NOT NULL default '',
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
   `article_id` integer unsigned NOT NULL,
-  `rating` integer NOT NULL default '0',
   `status` smallint default '1',
   PRIMARY KEY (`id`),
   INDEX `idx_article_id` (`article_id`),
@@ -17,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `#__slicomments` (
 CREATE TABLE IF NOT EXISTS `#__slicomments_ratings` (
   `comment_id` integer unsigned NOT NULL,
   `user_id` integer unsigned NOT NULL,
-  `vote` integer NOT NULL,
+  `vote` boolean NOT NULL,
   `ip` varchar(100) NOT NULL default '',
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
   INDEX `idx_comment_id` (`comment_id`),
