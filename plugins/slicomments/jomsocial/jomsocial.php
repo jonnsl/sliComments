@@ -47,6 +47,24 @@ class plgSlicommentsJomsocial extends JPlugin
 		CActivityStream::add($act);
 	}
 
+	public function onVote($comment_id, $vote)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select('user_id')
+			->from('#__slicomments')
+			->where('id = '. (int) $comment_id);
+		$db->setQuery($query);
+		$user_id = $db->loadResult();
+
+		if (!$user_id) {
+			return;
+		}
+
+		require_once JPATH_SITE . '/components/com_community/libraries/userpoints.php';
+		CuserPoints::assignPoint('slicomments.' . ($vote == 1) ? 'like' : 'dislike', $user_id);
+	}
+
 	private function getArticleLink($article_id, $comment_id)
 	{
 		$db = JFactory::getDbo();
