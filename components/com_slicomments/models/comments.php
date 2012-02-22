@@ -330,7 +330,7 @@ class sliCommentsModelComments extends JModelList
 
 		$user = JFactory::getUser();
 		$data['id'] = $table->id;
-		$data['likes'] = $data['dislikes'] = 0;
+		$data['likes'] = $data['dislikes'] = $data['flagged'] = 0;
 		$data['avatar'] = $this->getAvatar();
 		$data['link'] = $this->getLink();
 		if (!$user->guest) {
