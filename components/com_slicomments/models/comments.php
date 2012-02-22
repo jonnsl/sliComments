@@ -465,6 +465,11 @@ class sliCommentsModelComments extends JModelList
 			$stored = $db->insertObject('#__slicomments_ratings', $data);
 		}
 
+		// Fire onVote event
+		$dispatcher = JDispatcher::getInstance();
+		JPluginHelper::importPlugin('slicomments');
+		$dispatcher->trigger('onVote', array($comment_id, $vote));
+
 		if (!$stored){
 			if (JDEBUG) {
 				$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COULD_NOT_STORE_VOTE_DEBUG', $db->getErrorMsg()));
