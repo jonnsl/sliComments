@@ -31,6 +31,8 @@
 		<language tag="uk-UA">uk-UA/uk-UA.plg_content_slicomments.sys.ini</language>
 		<language tag="fr-FR">fr-FR/fr-FR.plg_content_slicomments.ini</language>
 		<language tag="fr-FR">fr-FR/fr-FR.plg_content_slicomments.sys.ini</language>
+		<language tag="es-ES">es-ES/es-ES.plg_content_slicomments.ini</language>
+		<language tag="es-ES">es-ES/es-ES.plg_content_slicomments.sys.ini</language>
 	</languages>
 
 	<config>
