@@ -502,7 +502,7 @@ class sliCommentsModelComments extends JModelList
 		$limit = $this->params->get('limit', 20);
 		$this->setState('list.limit', $limit);
 
-		$value = JRequest::getInt('slicommentslimitstart', 0, 'GET');
+		$value = JRequest::getInt('limitstart', 0, 'GET');
 		$limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
 		$this->setState('list.start', $limitstart);
 
@@ -775,7 +775,7 @@ class sliCommentsModelComments extends JModelList
 	{
 		if ($this->getState('list.limit', 20) == 0) return;
 		$pagination = parent::getPagination();
-		$pagination->prefix = 'slicomments';
+		$pagination->prefix = '';
 		$url = ContentHelperRoute::getArticleRoute($this->getState('article.slug'), $this->getState('article.catid'));
 		$uri = new JUri($url);
 		$query = $uri->getQuery(true);
