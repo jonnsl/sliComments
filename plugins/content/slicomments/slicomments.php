@@ -58,7 +58,7 @@ class plgContentSlicomments extends JPlugin
 				return;
 			}
 			$model->setState('article.id', $row->id);
-			$model->setState('article.slug', $row->slug);
+			$model->setState('article.link', ContentHelperRoute::getArticleRoute($row->slug, $row->catid));
 			$model->setState('article.catid', $row->catid);
 			$model->setState('article.params', $row->params);
 			ob_start();

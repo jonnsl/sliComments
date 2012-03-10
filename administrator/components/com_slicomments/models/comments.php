@@ -128,14 +128,25 @@ class sliCommentsModelComments extends JModelList
 		$user = JFactory::getUser();
 		$table = $this->getTable();
 
+                JPluginHelper::importPlugin('slicomments');
+                $dispatcher = JDispatcher::getInstance();
+                
+                $query = 'SELECT id, itemid, extension_name FROM #__slicomments WHERE id IN ('.implode(',', $pks).')';
+                $db = $this->_db->setQuery($query);
+                $comments = $this->_db->loadObjectList('id');
+                $deleted = array();
+                
 		// Iterate the items to delete each one.
 		foreach ($pks as $i => $pk)
 		{
 			if (!$table->delete($pk)) {
+                                $dispatcher->trigger('onDeleteComments', array($deleted));
 				throw new JException($table->getError()->get('message'), 500, E_WARNING);
 			}
 		}
 
+                $dispatcher->trigger('onDeleteComments', array($deleted));
+                
 		return true;
 	}
 
@@ -167,19 +178,24 @@ class sliCommentsModelComments extends JModelList
 			$pks = array($pks);
 		}
 
+                JPluginHelper::importPlugin('slicomments');
+                $dispatcher = JDispatcher::getInstance();
+                
 		foreach ($pks as $pk)
 		{
 			if (!$table->load($pk)) {
 				throw new JException($table->getError()->get('message'), 500, E_WARNING);
 			}
 
-			JPluginHelper::importPlugin('slicomments');
-			$dispatcher = JDispatcher::getInstance()
-				->trigger('onBeforeChangeCommentState', array($table, $value));
+                        $dispatcher->trigger('onBeforeChangeCommentState', array($table, $value));
+                        
+                        $status = $table->status;
 
 			if (!$table->status($value)) {
 				throw new JException($table->getError()->get('message'), 500, E_WARNING);
 			}
+                        
+                        $dispatcher->trigger('onAfterChangeCommentState', array($table, $status));
 		}
 
 		return true;
