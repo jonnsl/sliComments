@@ -12,13 +12,6 @@ jimport('joomla.application.component.controller');
 
 class sliCommentsControllerComments extends JController
 {
-	public function display()
-	{
-		if (JRequest::getCmd('option') != 'com_content' && JRequest::getCmd('view') != 'article') {
-			JError::raiseError(403, 'Direct access to this component is unauthorized.');
-		}
-		return parent::display();
-	}
 	public function post()
 	{
 		// Check for request forgeries.

@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS `#__slicomments` (
   `article_id` integer unsigned NOT NULL,
   `rating` integer NOT NULL default '0',
   `status` smallint default '1',
+  `extension_name` varchar(100) NOT NULL default 'com_content',
   PRIMARY KEY (`id`),
   INDEX `idx_article_id` (`article_id`),
   INDEX `idx_status` (`status`)
