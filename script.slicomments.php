@@ -91,6 +91,48 @@ class Com_sliCommentsInstallerScript
 		return $status;
 	}
 
+	public function preflight($type, $adapter)
+	{
+		if ($type !== 'update') return true;
+
+		// "Fix" Joomla! bug
+		$row = JTable::getInstance('extension');
+		$eid = $row->find(array('element' => strtolower($adapter->get('element')), 'type' => 'component'));
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('version_id')
+			->from('#__schemas')
+			->where('extension_id = ' . $eid);
+		$db->setQuery($query);
+
+		if ($db->loadResult()) return true;
+
+		// Get the previous version
+		$old_manifest = null;
+		// Create a new installer because findManifest sets stuff
+		// Look in the administrator first
+		$tmpInstaller = new JInstaller;
+		$tmpInstaller->setPath('source', JPATH_ADMINISTRATOR . '/components/com_slicomments');
+
+		if (!$tmpInstaller->findManifest())
+		{
+			echo 'Could not find old manifest.';
+			return false;
+		}
+
+		$old_manifest = $tmpInstaller->getManifest();
+		$version = (string) $old_manifest->version;
+
+		// Store
+		$data = new stdClass;
+		$data->extension_id = $eid;
+		$data->version_id = $version;
+		$db->insertObject('#__schemas', $data);
+
+		return true;
+	}
+
 	public function postflight($type, $adapter)
 	{
 		if ($type !== 'install') return true;
