@@ -111,6 +111,7 @@
 	<tables>
 		<table>#__slicomments</table>
 		<table>#__slicomments_ratings</table>
+		<table>#__slicomments_flags</table>
 	</tables>
 
 	<updateservers>
