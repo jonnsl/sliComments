@@ -28,7 +28,7 @@ class plgContentSlicomments extends JPlugin
 	public function onContentAfterDisplay($context, &$row, &$params, $page = 0)
 	{
 		if (strtolower(JRequest::getWord('format', 'html')) !== 'html') return;
-		
+
 		$view = strtolower(JRequest::getCmd('view'));
 		if ($this->params->get('comments_count', false) && ($view == 'featured' || $view == 'category'))
 		{

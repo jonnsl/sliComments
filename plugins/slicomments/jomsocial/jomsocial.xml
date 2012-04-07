@@ -26,8 +26,4 @@
 			</fieldset>
 		</fields>
 	</config>
-
-	<updateservers>
-		<server type="extension" priority="1" name="plg_slicomments_jomsocial">https://raw.github.com/jonnsl/sliComments/master/update.xml</server>
-	</updateservers>
 </extension>

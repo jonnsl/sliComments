@@ -1,11 +1,28 @@
 # sliComments - Changelog #
 
+## 1.3.0 / 2012-03-25 ##
+
+  * Added fr-FR translation. Thanks Anthony MOËLLO
+  * Added es-ES translation. Thanks Emiliano Marini
+  * Added flag system.
+  * Added id to comments.
+  * Added option to hide low-rated/flagged comments.
+  * Added new event onAfterSaveComment.
+  * Added Jomsocial plugin.
+  * Added onVote event
+  * Fixed: Template overrides not working for ajax requests.
+  * Fixed: Guests were not able to rate comments.
+  * Fixed: wrong filename for Dutch translation
+  * Fixed: typo.
+  * Check for request forgeries in the vote action.
+  * Improved rating system.
+
 ## 1.2.2 / 2012-01-25 ##
-  
+
   * Fixed XSS security issue.
 
 ## 1.2.1 / 2012-01-24 ##
-  
+
   * Convert all the translation files to UTF-8 without BOM
   * Missing file for uk-UA translation
 
