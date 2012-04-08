@@ -131,8 +131,11 @@ class sliCommentsModelComments extends JModelList
 	protected function _getListCount($query)
 	{
 		$query = clone $query;
-		$query->clear('select');
-		$query->select('count(*)');
+		$query->clear('select')
+			->clear('join')
+			->clear('group')
+			->clear('order')
+			->select('count(*)');
 		$this->_db->setQuery($query);
 		$this->_db->query();
 
