@@ -1,5 +1,9 @@
 # sliComments - Changelog #
 
+## 1.3.1 / 2012-05-04 ##
+  
+  * Fixed pagination in the backend.
+
 ## 1.3.0 / 2012-03-25 ##
 
   * Added fr-FR translation. Thanks Anthony MOËLLO

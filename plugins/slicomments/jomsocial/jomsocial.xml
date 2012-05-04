@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="1.7" type="plugin" group="slicomments">
+<extension version="1.7" type="plugin" group="slicomments" method="upgrade">
 	<name>plg_slicomments_jomsocial</name>
 	<author>Jonnathan Soares Lima</author>
 	<creationDate>February 2012</creationDate>
 	<copyright>(C) 2011 Copyleft - all rights reversed</copyright>
 	<license>GNU General Public License version 3</license>
 	<authorEmail>jonnsl@hotmail.com</authorEmail>
-	<version>1.0.0</version>
+	<version>1.3</version>
 	<description>PLG_SLICOMMENTS_JOMSOCIAL_XML_DESCRIPTION</description>
 
 	<scriptfile>script.slicomments_jomsocial.php</scriptfile>
