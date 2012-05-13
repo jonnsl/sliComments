@@ -35,9 +35,7 @@ $this->state->get('filter.search')||
 $this->state->get('filter.category') ||
 $this->state->get('filter.article') ||
 $this->state->get('filter.author') ||
-array_diff($this->state->get('filter.status'), array(0,1)) != array() ||
-$listOrder != 'created' ||
-$listDirn != 'DESC';
+array_diff($this->state->get('filter.status'), array(0,1)) != array();
 
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_slicomments');?>" method="post" name="adminForm" id="adminForm" class="<?php if($hasFilters) echo 'hasFilters'; ?>">

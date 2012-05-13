@@ -145,7 +145,7 @@ window.addEvent('domready', function(){
 			// Clean the tracker
 			filterTracker = [];
 			// Reset values
-			['search', 'author', 'article', 'order', 'order_Dir'].each(function(name){
+			['search', 'author', 'article'].each(function(name){
 				form['filter_' + name].set('value', '');
 			});
 			// Special case for filter_category
@@ -258,16 +258,6 @@ window.addEvent('domready', function(){
 			form.filter_order_Dir.set('value', newValue);
 			this.getElement('.icon-sort').removeClass('sort-dir-asc|sort-dir-desc').addClass('sort-dir-' + newValue.toLowerCase());
 		}
-		if (form.filter_order_Dir.get('value') !== 'DESC'){
-			addFilter('filter_order_Dir')
-		} else {
-			removeFilter('filter_order_Dir')
-		}
-		if (form.filter_order.get('value') !== 'created'){
-			addFilter('filter_order')
-		} else {
-			removeFilter('filter_order')
-		}
 		update();
 	});
 
@@ -276,8 +266,6 @@ window.addEvent('domready', function(){
 		clear_filters.addEvent('click', function(e){
 			e.stop();
 			resetFilters();
-			form.getElements('.icon-sort').removeClass('sort-dir-asc|sort-dir-desc');
-			form.getElements('.sort-column').filter(function(a){return a.get('data-sort') == 'created';})[0].getElement('.icon-sort').addClass('sort-dir-desc');
 			update();
 		});
 	}
