@@ -26,15 +26,9 @@ class sliCommentsControllerComments extends sliController
 		$model = $this->getModel('comments');
 		$view = $this->getView('Comments', 'html');
 		$view->state = $model->getState();
-		$items = $model->getItems();
-
-		if (count($items)) {
-			foreach ($items as $i => $item) {
-				$view->partial('comment', array('i' => $i, 'token' => '&'.JUtility::getToken().'=1'), $item);
-			}
-		} else {
-			$view->partial('no_results');
-		}
+		$view->items = $model->getItems();
+		$view->pagination = $model->getPagination();
+		$view->partial('ajax');
 		//sleep(rand(2,5));
 		return $this;
 	}

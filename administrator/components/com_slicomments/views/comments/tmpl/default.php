@@ -78,13 +78,6 @@ $listDirn != 'DESC';
 				</th>
 			</tr>
 		</thead>
-		<tfoot>
-			<tr>
-				<td colspan="4">
-					<?php //echo $this->pagination->getListFooter(); ?>
-				</td>
-			</tr>
-		</tfoot>
 		<tbody id="comments">
 		<?php
 		if (count($this->items))
@@ -100,6 +93,13 @@ $listDirn != 'DESC';
 
 		?>
 		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan="4">
+					<?php echo $this->pagination->getListFooter(); ?>
+				</td>
+			</tr>
+		</tfoot>
 	</table>
 
 	<p class="copyright"><?php echo JText::_('COM_COMMENTS_COPYRIGHT'); ?></p>

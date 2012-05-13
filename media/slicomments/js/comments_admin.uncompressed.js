@@ -164,21 +164,34 @@ window.addEvent('domready', function(){
 		}
 
 	// Update function
-	var update = function(){
-		new Request.HTML({
+	var table = form.getElement('.adminlist');
+	var request = new Request({
 			method: 'get',
 			url: 'index.php?option=com_slicomments&task=comments.display',
 			format: 'raw',
-			data: form.toQueryString(),
-			update: comments,
-			onRequest: showSpinner,
-			onSuccess: hideSpinner,
+			headers: {
+				Accept: 'text/html, */*'
+			},
+			link: 'cancel',
+			onRequest: function(){
+				console.log('loading')
+			},
+			onSuccess: function(response){
+				console.log('loaded');
+				table.getElements('tbody,tfoot').destroy();
+				table.adopt(new Element('table').set('html', response).getChildren());
+			},
+			onCancel: function(){
+				console.log('canceled');
+			},
 			onFailure: function(xhr){
 				alert('error');
 				console.log(xhr);
 			}
-		}).send();
-	};
+		}),
+		update = function(){
+			request.send({data: form.toQueryString()});
+		};
 
 	// Search, Filter by article, Filter by author
 	var timeout,
@@ -268,5 +281,14 @@ window.addEvent('domready', function(){
 			update();
 		});
 	}
+
+	window.Joomla.submitform = function noop(){};
+
+	table.addEvent('click:relay(.pagination a)', function(e){
+		e.stop();
+		update();
+	});
+
+	table.addEvent('change:relay(#limit)', update)
 });
 })(document.id);

@@ -41,7 +41,7 @@ class sliCommentsModelComments extends JModelList
 
 		$filter_category = $this->getUserStateFromRequest($this->context.'.filter.category', 'filter_category', null, 'INT');
 		$this->setState('filter.category', $filter_category);
-		
+
 		$status = $this->getUserStateFromRequest($this->context.'.status', 'filter_status', array(), 'array');
 		$status = array_filter($status, 'is_numeric');
 		JArrayHelper::toInteger($status);
@@ -61,7 +61,7 @@ class sliCommentsModelComments extends JModelList
 	{
 		// Create a new query object.
 		$db = $this->_db;
-		
+
 		$query = $db->getQuery(true)
 			->select('DISTINCT CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END')
 			->from('#__slicomments as a')
@@ -83,7 +83,7 @@ class sliCommentsModelComments extends JModelList
 	{
 		// Create a new query object.
 		$db = $this->_db;
-		
+
 		$query = $db->getQuery(true)
 			->select('DISTINCT a.title')
 			->from('#__slicomments as c')
