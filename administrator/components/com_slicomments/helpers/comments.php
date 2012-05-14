@@ -80,4 +80,19 @@ class sliCommentsHelper
 
 		return $date;
 	}
+
+	public static function getClass($status)
+	{
+		switch ($status)
+		{
+			case '1':
+				return 'approved';
+			case '0':
+				return 'unapproved';
+			case '-1':
+				return 'spam';
+			case '-2':
+				return 'trashed';
+		}
+	}
 }

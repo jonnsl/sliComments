@@ -6,7 +6,7 @@
 		<?php echo $name != '' ? $this->escape($name) : JText::_('COM_COMMENTS_ANONYMOUS'); ?>
 		<div class="comment-email"><span title="<?php echo $this->escape($email); ?>"><?php echo $this->escape($email); ?></span></div>
 	</td>
-	<td class="comment">
+	<td class="comment <?php echo sliCommentsHelper::getClass($status); ?>">
 		<span class="submitted"><?php echo JText::sprintf('COM_COMMENTS_SUBMITTED', sliCommentsHelper::human_time_diff($created)); ?></span>
 		<?php
 		/*if ($flagged) :
@@ -26,26 +26,22 @@
 		}
 		?></span>
 		<ul class="actions">
-			<?php if ($status == 1): ?>
-				<li><a href="index.php?option=com_slicomments&amp;task=comments.unapprove&amp;id=<?php echo $id, $token; ?>" class="unapprove-comment"><?php echo JText::_('COM_COMMENTS_ACTION_UNAPPROVE'); ?></a></li>
-			<?php elseif ($status == 0) :?>
-				<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;id=<?php echo $id, $token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_APPROVE'); ?></a></li>
-			<?php elseif ($status == -1) :?>
-				<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;id=<?php echo $id, $token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_NOT_SPAM'); ?></a></li>
-			<?php elseif ($status == -2) :?>
-				<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;id=<?php echo $id, $token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_RESTORE'); ?></a></li>
-			<?php endif; ?>
-
-			<?php if ($status != -2) :?>
-				<li><a href="#" class="edit-comment"><?php echo JText::_('COM_COMMENTS_ACTION_EDIT'); ?></a></li>
-			<?php endif; ?>
-
-			<?php if ($status >= 0) :?>
-				<li><a href="index.php?option=com_slicomments&amp;task=comments.spam&amp;id=<?php echo $id, $token; ?>" class="spam-comment"><?php echo JText::_('COM_COMMENTS_ACTION_SPAM'); ?></a></li>
-				<li><a href="index.php?option=com_slicomments&amp;task=comments.trash&amp;id=<?php echo $id, $token; ?>" class="trash-comment"><?php echo JText::_('COM_COMMENTS_ACTION_TRASH'); ?></a></li>
-			<?php else: ?>
-				<li><a href="index.php?option=com_slicomments&amp;task=comments.delete&amp;id=<?php echo $id, $token; ?>" class="delete-comment"><?php echo JText::_('COM_COMMENTS_ACTION_DELETE_PERMANENTLY'); ?></a></li>
-			<?php endif; ?>
+			<li class="unapprove-comment">
+				<a href="index.php?option=com_slicomments&amp;task=comments.unapprove&amp;id=<?php echo $id, $token; ?>"><?php echo JText::_('COM_COMMENTS_ACTION_UNAPPROVE'); ?></a>
+			<li class="approve-comment">
+				<a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;id=<?php echo $id, $token; ?>"><?php echo JText::_('COM_COMMENTS_ACTION_APPROVE'); ?></a>
+			<li class="not-spam-comment">
+				<a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;id=<?php echo $id, $token; ?>"><?php echo JText::_('COM_COMMENTS_ACTION_NOT_SPAM'); ?></a>
+			<li class="restore-comment">
+				<a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;id=<?php echo $id, $token; ?>"><?php echo JText::_('COM_COMMENTS_ACTION_RESTORE'); ?></a>
+			<li class="edit-comment">
+				<a href="#"><?php echo JText::_('COM_COMMENTS_ACTION_EDIT'); ?></a>
+			<li class="spam-comment">
+				<a href="index.php?option=com_slicomments&amp;task=comments.spam&amp;id=<?php echo $id, $token; ?>"><?php echo JText::_('COM_COMMENTS_ACTION_SPAM'); ?></a>
+			<li class="trash-comment">
+				<a href="index.php?option=com_slicomments&amp;task=comments.trash&amp;id=<?php echo $id, $token; ?>"><?php echo JText::_('COM_COMMENTS_ACTION_TRASH'); ?></a>
+			<li class="delete-comment">
+				<a href="index.php?option=com_slicomments&amp;task=comments.delete&amp;id=<?php echo $id, $token; ?>"><?php echo JText::_('COM_COMMENTS_ACTION_DELETE_PERMANENTLY'); ?></a>
 		</ul>
 	</td>
 	<td>

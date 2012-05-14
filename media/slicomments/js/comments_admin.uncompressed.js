@@ -63,6 +63,44 @@ window.addEvent('domready', function(){
 		}).send();
 	});
 
+	form.addEvent('click:relay(.actions li:not(.delete-comment, .edit-comment) a)', function(e){
+		e.stop();
+		new Request({
+			url: this.get('href'),
+			format: 'raw',
+			onSuccess: function(){
+				var comment = this.getParent('.comment').removeClass('approved|unapproved|spam|trashed'),
+					action = this.getParent('li');
+				if (action.hasClass('approve-comment') || action.hasClass('not-spam-comment') || action.hasClass('restore-comment')){
+					comment.addClass('approved');
+				} else if (action.hasClass('unapprove-comment')) {
+					comment.addClass('unapproved');
+				} else if (action.hasClass('spam-comment')) {
+					comment.addClass('spam');
+				} else if (action.hasClass('trash-comment')) {
+					comment.addClass('trashed');
+				}
+			}.bind(this),
+			onFailure: function(xhr){
+				alert(xhr.responseText);
+			}
+		}).send();
+	});
+
+	form.addEvent('click:relay(.actions li.delete-comment a)', function(e){
+		e.stop();
+		new Request({
+			url: this.get('href'),
+			format: 'raw',
+			onSuccess: function(){
+				this.getParent('tr').nix(true);
+			}.bind(this),
+			onFailure: function(xhr){
+				alert(xhr.responseText);
+			}
+		}).send();
+	});
+
 	// Auto complete for filter_author and filter_article
 	['author', 'article'].each(function(a){
 		new Meio.Autocomplete(form['filter_' + a], 'index.php?option=com_slicomments&task=comments.get' + a.capitalize() + 's&format=raw', {
