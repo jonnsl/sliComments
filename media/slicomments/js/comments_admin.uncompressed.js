@@ -364,9 +364,13 @@ window.addEvent('domready', function(){
 
 	table.addEvent('click:relay(.pagination a)', function(e){
 		e.stop();
+		window.scrollTo(0, form.getPosition().y);
 		update();
 	});
 
-	table.addEvent('change:relay(#limit)', update)
+	table.addEvent('change:relay(#limit)', function(){
+		window.scrollTo(0, form.getPosition().y);
+		update();
+	});
 });
 })(document.id);
