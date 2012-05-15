@@ -98,30 +98,13 @@ class sliCommentsViewComments extends sliView
 	{
 		JToolBarHelper::title(JText::_('COM_COMMENTS_COMMENTS'), 'comments');
 
-		$status = $this->state->get('filter.status', array());
+		require_once __DIR__ . '/../../helpers/button_html5.php';
 
-		if (in_array(0, $status)) {
-			JToolBarHelper::custom('comments.approve', 'approve', null, 'COM_COMMENTS_ACTION_APPROVE');
-		}
-		if (in_array(-3, $status)) {
-			JToolBarHelper::custom('comments.unflag', 'approve', null, 'COM_COMMENTS_ACTION_UNFLAG');
-		}
-		if (in_array(1, $status) || in_array(-3, $status)) {
-			JToolBarHelper::custom('comments.unapprove', 'unapprove', null, 'COM_COMMENTS_ACTION_UNAPPROVE');
-		}
-		if (in_array(-1, $status)) {
-			JToolBarHelper::custom('comments.approve', 'approve', null, 'COM_COMMENTS_ACTION_NOT_SPAM');
-		}
-		if (in_array(-2, $status)) {
-			JToolBarHelper::custom('comments.approve', 'restore', null, 'COM_COMMENTS_ACTION_RESTORE');
-		}
-
-		if (in_array(0, $status) || in_array(1, $status) || in_array(-3, $status)) {
-			JToolBarHelper::custom('comments.spam', 'spam', null, 'COM_COMMENTS_ACTION_SPAM');
-			JToolBarHelper::custom('comments.trash', 'trash', null, 'JTOOLBAR_TRASH');
-		} else {
-			JToolBarHelper::custom('comments.delete', 'delete', null, 'JTOOLBAR_DELETE');
-		}
+		self::toolbar_add_button('comments.approve', 'approve', 'COM_COMMENTS_ACTION_APPROVE');
+		self::toolbar_add_button('comments.unapprove', 'unapprove', 'COM_COMMENTS_ACTION_UNAPPROVE');
+		self::toolbar_add_button('comments.spam', 'spam', 'COM_COMMENTS_ACTION_SPAM');
+		self::toolbar_add_button('comments.trash', 'trash', 'JTOOLBAR_TRASH');
+		self::toolbar_add_button('comments.delete', 'delete', 'JTOOLBAR_DELETE');
 
 		if (JFactory::getUser()->authorise('core.admin')) JToolBarHelper::preferences('com_slicomments');
 	}
@@ -133,5 +116,11 @@ class sliCommentsViewComments extends sliView
 			'a.article_id' => JText::_('COM_COMMENTS_HEADING_ARTICLE'),
 			'a.created' => JText::_('COM_COMMENTS_HEADING_SUBMITTED')
 		);
+	}
+
+	protected static function toolbar_add_button($task, $icon, $alt)
+	{
+		JToolBar::getInstance('toolbar')
+			->appendButton('html5', $icon, $alt, $task);
 	}
 }

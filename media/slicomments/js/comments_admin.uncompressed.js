@@ -1,6 +1,11 @@
 (function($){
 window.addEvent('domready', function(){
 	var form = $('adminForm');
+
+	var token = form.getElements('input[type=hidden]').filter(function(e){
+				return e.get('name').match(/[a-z0-9]{32}/i) && e.get('value') == '1';
+		})[0].get('name');
+
 	var editComment = function(event, clicked){
 		event.stop();
 		var td = this.get('tag') == 'td' ? this : this.getParent('td');
@@ -40,9 +45,6 @@ window.addEvent('domready', function(){
 			id: td.getParent('tr').getElement('input[type=checkbox]').get('value'),
 			text: textarea.get('value')
 		};
-		var token = form.getElements('input[type=hidden]').filter(function(e){
-				return e.get('name').match(/[a-z0-9]{32}/i) && e.get('value') == '1';
-		})[0].get('name');
 		data[token] = 1;
 		new Request({
 			url: 'index.php?option=com_slicomments&task=comments.edit',
@@ -95,6 +97,56 @@ window.addEvent('domready', function(){
 			onSuccess: function(){
 				this.getParent('tr').nix(true);
 			}.bind(this),
+			onFailure: function(xhr){
+				alert(xhr.responseText);
+			}
+		}).send();
+	});
+
+	var toolbar = $('toolbar');
+	toolbar.addEvent('click:relay(.toolbar, .btn)', function(e){
+		e.stop();
+		var ids = [],
+			comments = new Elements,
+			task = this.get('data-task');
+		form.getElements('input:[type=checkbox]').each(function(checkbox){
+			if(checkbox.get('name') == 'id[]' && checkbox.checked){
+				ids.push(checkbox.get('value'));
+				comments.push(checkbox.getParent().getNext('.comment'));
+			}
+		});
+		new Request({
+			url: 'index.php?option=com_slicomments&' + token + '=1',
+			data: {
+				id: ids,
+				task: task
+			},
+			format: 'raw',
+			onSuccess: function(){
+				if (task == 'comments.delete'){
+					comments.each(function(comment){
+						comment.getParent('tr').nix(true);
+					});
+					update.delay(250);
+				} else {
+					comments.removeClass('approved|unapproved|spam|trashed');
+					switch (task)
+					{
+						case 'comments.approve':
+							comments.addClass('approved');
+							break;
+						case 'comments.unapprove':
+							comments.addClass('unapproved');
+							break;
+						case 'comments.spam':
+							comments.addClass('spam');
+							break;
+						case 'comments.trash':
+							comments.addClass('trashed');
+							break;
+					}
+				}
+			},
 			onFailure: function(xhr){
 				alert(xhr.responseText);
 			}
