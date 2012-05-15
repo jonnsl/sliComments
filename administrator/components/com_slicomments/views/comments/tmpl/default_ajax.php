@@ -1,4 +1,13 @@
 <?php
+/**
+ * @package		sliComments
+ * @subpackage	Back end Component
+ * @license		GNU General Public License version 3; see LICENSE.txt
+ */
+
+// no direct access
+defined('_JEXEC') or die;
+
 $token = '&'.JSession::getFormToken().'=1';
 ?>
 <tbody id="comments">

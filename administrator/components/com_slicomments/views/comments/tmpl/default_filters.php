@@ -1,3 +1,13 @@
+<?php
+/**
+ * @package		sliComments
+ * @subpackage	Back end Component
+ * @license		GNU General Public License version 3; see LICENSE.txt
+ */
+
+// no direct access
+defined('_JEXEC') or die;
+?>
 <div class="filter-search fltlft pull-left">
 	<input type="text" class="filter-input" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" />
 </div>

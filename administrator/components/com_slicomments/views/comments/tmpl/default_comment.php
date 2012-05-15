@@ -1,3 +1,13 @@
+<?php
+/**
+ * @package		sliComments
+ * @subpackage	Back end Component
+ * @license		GNU General Public License version 3; see LICENSE.txt
+ */
+
+// no direct access
+defined('_JEXEC') or die;
+?>
 <tr class="row<?php echo $i % 2; ?>">
 	<td class="center">
 		<input type="checkbox" id="comment_<?php echo $id; ?>" name="id[]" value="<?php echo $id; ?>" />
