@@ -41,11 +41,16 @@ class sliCommentsViewComments extends sliView
 	 *
 	 * @return void
 	 */
-	public function partial($name, $vars)
+	public function partial($name)
 	{
 		try {
 			$_partial = $this->getPartial($name);
-			extract((array)$vars);
+
+			$vars = func_get_args();
+			array_shift($vars);
+			foreach ($vars as $var) {
+				extract((array) $var);
+			}
 
 			include $_partial;
 		}

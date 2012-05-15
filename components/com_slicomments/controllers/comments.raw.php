@@ -47,6 +47,25 @@ class sliCommentsControllerComments extends sliController
 		return $this;
 	}
 
+	public function display($cachable = false, $urlparams = false)
+	{
+		require_once JPATH_ADMINISTRATOR . '/components/com_slicomments/helpers/comments.php';
+		require_once JPATH_SITE . '/components/com_content/helpers/route.php';
+
+		$model = $this->getModel('comments');
+		$model->setState('article.id', JRequest::getInt('article_id'));
+		$view = $this->getView('Comments', 'html');
+		$view->params = $model->getParams();
+		$view->state = $model->getState();
+		$view->comments = $model->getComments();
+		$view->pagination = $model->getPagination();
+		
+		$view->partial('ajax');
+
+		//sleep(rand(2,5));
+		return $this;
+	}
+	
 	public function post()
 	{
 		try {

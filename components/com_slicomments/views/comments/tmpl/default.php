@@ -14,7 +14,7 @@ JHtml::_('behavior.framework', true);
 JHtml::_('stylesheet', 'slicomments/style.css', array(), true);
 $user = JFactory::getUser();
 $form_position = $this->params->get('form_position', 'before');
-JHtml::_('script', 'slicomments/slicomments.js', true, true);
+JHtml::_('script', 'slicomments/slicomments.uncompressed.js', true, true);
 ?>
 <div id="comments" class="no-js<?php if ($this->params->get('avatar', 'gravatar') === '0') echo ' no-avatar'; ?>">
 
@@ -50,11 +50,14 @@ JHtml::_('script', 'slicomments/slicomments.js', true, true);
 		echo $this->loadTemplate('form');
 	} ?>
 	<?php if ($this->params->get('limit', 20) > 0): ?>
-	<div id="pagination" class="clr">
+	<form id="comments_pagination" class="clr" action="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.display'); ?>" method="get">
 		<div class="pagination">
 			<?php echo $this->pagination->getPagesLinks(); ?>
 		</div>
-	</div>
+		<input type="hidden" name="article_id" value="<?php echo $this->state->get('article.id'); ?>" />
+		<input type="hidden" name="slicommentslimitstart" value="" />
+	</form>
 	<?php endif; ?>
+
 </div>
 <?php endif; ?>

@@ -57,7 +57,6 @@ window.addEvent('domready', function(){
 	var section = $('comments');
 	section.removeClass('no-js');
 	var comments_count = $('comments_counter');
-	var list = $('comments_list');
 
 	var req = function(onSuccess, onFailure){
 		return function(e)
@@ -113,7 +112,40 @@ window.addEvent('domready', function(){
 		}
 	});
 
-	var form = section.getElement('form');
+	// Pagination
+	var request_pagination = new Request({
+			method: 'get',
+			url: 'index.php?option=com_slicomments&task=comments.display',
+			format: 'raw',
+			headers: {
+				Accept: 'text/html, */*'
+			},
+			link: 'cancel',
+			onRequest: function(){
+				$('comments_list').destroy();
+				$('comments_pagination').destroy();
+				window.scrollTo(0, section.getPosition().y)
+				console.log('loading')
+			},
+			onSuccess: function(response){
+				console.log('loaded');
+				section.adopt(new Element('div').set('html', response).getChildren());
+			},
+			onFailure: function(xhr){
+				alert('error');
+				console.log(xhr);
+			}
+		});
+	section.addEvent('click:relay(#comments_pagination a)', function(e){
+		try {
+			var form = $('comments_pagination');
+			form.slicommentslimitstart.set('value', this.search.match(/[?&]slicommentslimitstart=([0-9]+)/)[1]);
+			request_pagination.send({data: form.toQueryString()});
+			e.stop();
+		} catch(e) {}
+	})
+
+	var form = section.getElement('.comments_form');
 	if (!form) return;
 
 	var textarea = form.getElement('textarea'),
@@ -193,7 +225,7 @@ window.addEvent('domready', function(){
 				method: 'post',
 				data: this.form,
 				onSuccess: function(responseTree){
-						responseTree[0].inject(list, this.form.get('data-position'));
+						responseTree[0].inject($('comments_list'), this.form.get('data-position'));
 						comments_count.set('text', comments_count.get('text').toInt() + 1);
 						if (this.form.hasClass('reply-form')){
 							this.form.destroy();
