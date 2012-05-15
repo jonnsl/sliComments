@@ -1,5 +1,11 @@
 # sliComments - Changelog #
 
+## 1.3.2 / 2012-05-15 ##
+  
+  * Fix flagged filter not working.
+  * Fix Strict Standards errors.
+  * Redirect after change status of a comment.
+
 ## 1.3.1 / 2012-05-04 ##
   
   * Fixed pagination in the backend.
