@@ -527,7 +527,7 @@ class sliCommentsModelComments extends JModelList
 	/**
 	 * Method to auto-populate the model state.
 	 */
-	protected function populateState()
+	protected function populateState($ordering = null, $direction = null)
 	{
 		$params = new JRegistry((string)$this->state->get('article.params'));
 		$this->params->set('enabled', $params->get('slicomments.enabled', true));
@@ -836,7 +836,7 @@ class sliCommentsModelComments extends JModelList
 		return $pagination;
 	}
 
-	public function getTable()
+	public function getTable($name = '', $prefix = 'Table', $options = array())
 	{
 		return parent::getTable('sliComment', 'JTable');
 	}

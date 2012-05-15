@@ -12,7 +12,7 @@ jimport('joomla.application.component.controller');
 
 class sliCommentsControllerComments extends JController
 {
-	public function display()
+	public function display($cachable = false, $urlparams = false)
 	{
 		if (JRequest::getCmd('option') != 'com_content' && JRequest::getCmd('view') != 'article') {
 			JError::raiseError(403, 'Direct access to this component is unauthorized.');
@@ -79,7 +79,7 @@ class sliCommentsControllerComments extends JController
 		$this->setRedirect($this->getReferrer('comments'));
 	}
 
-	public function getModel()
+	public function getModel($name = '', $prefix = '', $config = array())
 	{
 		static $model;
 		if ($model == null)
