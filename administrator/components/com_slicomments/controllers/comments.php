@@ -88,6 +88,6 @@ class sliCommentsControllerComments extends JController
 			}
 		}
 
-		$this->display();
+		$this->setRedirect('index.php?option=com_slicomments');
 	}
 }
