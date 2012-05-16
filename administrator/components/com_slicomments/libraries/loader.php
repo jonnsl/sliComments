@@ -1,4 +1,9 @@
 <?php
+/**
+ * @package		sliComments
+ * @subpackage	Back end Component
+ * @license		GNU General Public License version 3; see LICENSE.txt
+ */
 
 // No direct access
 defined('_JEXEC') or die;
@@ -12,10 +17,12 @@ function __sliAutoLoad($class)
 	{
 		case 'sliController':
 			return include __DIR__ . '/' . $version . '/controller.php';
-		case 'sliView':
+		case 'sliViewCompat':
 			return include __DIR__ . '/' . $version . '/view.php';
+		case 'sliView':
+			return include __DIR__ . '/component/view.php';
 		case 'sliModel':
-			return include __DIR__ . '/' . $version . '/model.php';
+			return include __DIR__ . '/component/model.php';
 	}
 
 	return false;

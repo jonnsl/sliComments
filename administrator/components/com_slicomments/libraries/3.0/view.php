@@ -5,6 +5,6 @@ defined('_JEXEC') or die;
 
 jimport('legacy.view.legacy');
 
-class sliView extends JViewLegacy
+class sliViewCompat extends JViewLegacy
 {
 }
