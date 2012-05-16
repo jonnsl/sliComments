@@ -149,7 +149,7 @@ class Com_sliCommentsInstallerScript
 			'delete.own' => array('6' => 1, '8' => 1),
 			'edit' => array('4' => 1, '8' => 1),
 			'delete' => array('8' => 1),
-			'manage' => array('8' => 1)
+			'core.manage' => array('8' => 1)
 		);
 		jimport('joomla.access.rules');
 		$rules	= new JAccessRules($defaultRules);

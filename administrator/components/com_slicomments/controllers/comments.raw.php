@@ -81,7 +81,7 @@ class sliCommentsControllerComments extends sliController
 					}
 					break;
 				case 'unflag':
-					if (!$user->authorise('manage', 'com_slicomments')){
+					if (!$user->authorise('core.manage', 'com_slicomments')){
 						throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
 					}
 					if (!$model->unflag($cid)){
@@ -92,7 +92,7 @@ class sliCommentsControllerComments extends sliController
 				case 'unapprove':
 				case 'trash':
 				case 'spam':
-					if (!$user->authorise('manage', 'com_slicomments')){
+					if (!$user->authorise('core.manage', 'com_slicomments')){
 						throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
 					}
 					if (!$model->status($id, $this->task)){

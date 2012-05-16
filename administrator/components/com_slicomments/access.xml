@@ -51,7 +51,7 @@
 			guest="false"/>
 
 		<action
-			name="manage"
+			name="core.manage"
 			title="COM_COMMENTS_ACCESS_MANAGE"
 			description="COM_COMMENTS_ACCESS_MANAGE_DESC"
 			guest="false"/>
