@@ -859,7 +859,7 @@ class sliCommentsModelComments extends JModelList
 		$ret['text'] = isset($data['text']) ? preg_replace('/<br \/>/', "\n", $data['text'], 10) : '';
 
 		// Reset the data
-		$session->set('com_slicomments.data', array('name' => $ret['name']));
+		$session->set('com_slicomments.data', array('name' => $ret['name'], 'email' => $ret['email']));
 
 		return $ret;
 	}

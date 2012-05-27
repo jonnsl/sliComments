@@ -34,7 +34,7 @@ class sliCommentsControllerComments extends JController
 			$data['status'] = $user->authorise('auto_publish', 'com_slicomments') ? 1 : 0;
 			$data = $model->filter($data);
 			if ($user->guest) {
-				$session->set('com_slicomments.data', array('name' => $data['name']));
+				$session->set('com_slicomments.data', array('name' => $data['name'], 'email' => $data['email']));
 			}
 			if ($model->validate($data) && $model->save($data))
 			{
