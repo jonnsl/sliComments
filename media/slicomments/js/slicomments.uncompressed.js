@@ -252,5 +252,16 @@ window.addEvent('domready', function(){
 		new charCount(textarea, replyForm.getElement('.chars-count'));
 		this.getParent().setStyle('display', 'none');
 	});
+
+	if (!logged) {
+		var avatar = form.getElement('.profile-image'),
+			src = avatar.get('src');
+		if (!!~src.indexOf('gravatar.com')){
+			src = src.toURI();
+			$('comments_form_email').addEvent('change', function(e){
+				avatar.set('src', src.set('file', MD5.digest_s(this.get('value')))+'');
+			});
+		}
+	}
 });
 })(document.id);

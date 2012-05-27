@@ -17,7 +17,7 @@ $maximum_chars = $this->params->get('maximum_chars', 500);
 	<?php echo JHtml::_('form.token'); ?>
 	<input type="hidden" name="article_id" value="<?php echo JRequest::getInt('id'); ?>"/>
 
-	<?php if (!$user->guest && $this->avatar) : ?>
+	<?php if ($this->avatar) : ?>
 		<div class="profile-image-container">
 			<img class="profile-image" src="<?php echo $this->escape($this->avatar); ?>" alt="<?php echo $this->escape($user->name); ?>">
 		</div>

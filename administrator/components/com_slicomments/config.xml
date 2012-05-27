@@ -359,6 +359,40 @@
 				<option value="com_k2">COM_COMMENTS_OPTION_K2</option>
 		</field>
 
+		<fields name="gravatar">
+			<field
+				name="rating"
+				type="list"
+				label="COM_COMMENTS_GRAVATAR_RATING_LABEL"
+				description="COM_COMMENTS_GRAVATAR_RATING_DESC"
+				default="g">
+					<option value="g">G</option>
+					<option value="pg">PG</option>
+					<option value="r">R</option>
+					<option value="x">X</option>
+			</field>
+
+			<field
+				name="default"
+				type="list"
+				label="COM_COMMENTS_GRAVATAR_DEFAULT_LABEL"
+				description="COM_COMMENTS_GRAVATAR_DEFAULT_DESC"
+				default="mm">
+					<option value="mm">Mystery-man</option>
+					<option value="identicon">Geometric pattern</option>
+					<option value="monsterid">Monster</option>
+					<option value="wavatar">Faces</option>
+					<option value="retro">8-bit arcade-style</option>
+			</field>
+		</fields>
+
+		<field
+			name="avatar_default"
+			type="media"
+			label="COM_COMMENTS_AVATAR_DEFAULT_LABEL"
+			description="COM_COMMENTS_AVATAR_DEFAULT_DESC"
+			default=""/>
+
 		<field
 			name="hide_low_rated"
 			type="integer"
