@@ -19,7 +19,7 @@ $maximum_chars = $this->params->get('maximum_chars', 500);
 
 	<?php if (!$user->guest && $this->avatar) : ?>
 		<div class="profile-image-container">
-			<img class="profile-image" src="<?php echo $this->avatar; ?>" alt="<?php echo $this->escape($user->name); ?>">
+			<img class="profile-image" src="<?php echo $this->escape($this->avatar); ?>" alt="<?php echo $this->escape($user->name); ?>">
 		</div>
 	<?php endif; ?>
 	<ul class="comments_form_inputs">
