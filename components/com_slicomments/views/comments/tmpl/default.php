@@ -29,7 +29,12 @@ JHtml::_('script', 'slicomments/slicomments.js', true, true);
 	</ul>
 	<?php endif; ?>
 
-	<h4><?php echo JText::sprintf('COM_COMMENTS_COMMENTS_COUNT', '<span id="comments_counter" >'.$this->total.'</span>'); ?></h4>
+	<h4>
+		<?php if ($this->params->get('show_rss_icon', false)): ?>
+		<a href="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.feed&format=raw&article_id=' . $this->state->get('article.id')); ?>">
+			<?php echo JHtml::image('media/slicomments/img/rss.png', 'RSS Icon'); ?></a>
+		<?php endif; ?>
+		<?php echo JText::sprintf('COM_COMMENTS_COMMENTS_COUNT', '<span id="comments_counter" >'.$this->total.'</span>'); ?></h4>
 	<?php if ($form_position == 'before' && $enabled) echo $this->loadTemplate('form'); ?>
 
 	<ul id="comments_list" class="comment-list">

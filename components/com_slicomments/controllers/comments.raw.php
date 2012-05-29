@@ -12,6 +12,41 @@ jimport('joomla.application.component.controller');
 
 class sliCommentsControllerComments extends JController
 {
+	public function feed()
+	{
+		$app = JFactory::getApplication();
+		$document = JFactory::getDocument();
+		$document->setMimeEncoding('application/rss+xml');
+		$article_id = JRequest::getInt('article_id');
+
+		// Get some info about the article
+		JModel::addIncludePath(JPATH_SITE . '/components/com_content/models');
+		$model = $this->getModel('Article', 'ContentModel', array('ignore_request' => true));
+		$model->setState('article.id', $article_id);
+		$model->setState('params', $app->getParams());
+		$model->setState('item.select', 'a.id, a.title, a.alias, a.catid, a.attribs, a.access, a.metadata, a.language');
+		$article = $model->getItem($article_id);
+
+		// Get the view
+		$view = $this->getView('comments', 'feed', '', array('layout' => 'rss'));
+
+		// Get/Create the model
+		$model = $this->getModel('comments', '', array('ignore_request' => true));
+		$model->setState('article.id', $article_id);
+		$model->setState('list.limit', $app->getCfg('feed_limit'));
+		$view->setModel($model, true);
+
+		// Send data to the view
+		$view->document = $document;
+		$view->comments = $model->getItems();
+		$view->article = $article;
+
+		// Display the view
+		$view->display();
+
+		return $this;
+	}
+
 	public function post()
 	{
 		try {

@@ -2,6 +2,7 @@
 #comments:after{clear:both}
 #comments{zoom:1}
 #comments h4{margin-bottom:10px}
+#comments h4 a:hover{background-color:transparent}
 .comment-list{clear:both;margin-top:10px!important;padding:0!important}
 .comment{position:relative;border-top:1px solid #fff;border-bottom:1px solid #E1E1E1;margin:0!important;padding:10px 0!important}
 .comment-list:first-child{border-top:none}
