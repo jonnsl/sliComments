@@ -50,7 +50,7 @@ $maximum_chars = $this->params->get('maximum_chars', 500);
 			data-maxlength="<?php echo $maximum_chars; ?>"><?php echo $this->escape($this->data['text']); ?></textarea>
 		</li>
 	</ul>
-	<?php if ($canComment): ?>
+	<?php if ($canComment && $this->params->get('show_character_counter', true)): ?>
 	<p class="comments-remaining">
 		<?php echo JText::sprintf('COM_COMMENTS_CHARACTERS_REMAINING', '<span class="chars-count">'.$maximum_chars.'</span>'); ?>
 	</p>

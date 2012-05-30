@@ -261,6 +261,16 @@
 			size="5"/>
 
 		<field
+			name="show_character_counter"
+			type="radio"
+			label="COM_COMMENTS_SHOW_CHARACTER_COUNTER_LABEL"
+			description="COM_COMMENTS_SHOW_CHARACTER_COUNTER_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
 			name="check_names"
 			type="radio"
 			label="COM_COMMENTS_CHECK_NAMES_LABEL"

@@ -115,8 +115,13 @@ window.addEvent('domready', function(){
 
 	var form = section.getElement('form');
 	if (!form) return;
-	var textarea = form.getElement('textarea');
-	new charCount(textarea, form.getElement('.chars-count'));
+
+	var textarea = form.getElement('textarea'),
+		counter = form.getElement('.chars-count');
+	if (counter) {
+		new charCount(textarea, counter);
+	}
+
 	var logged = form.get('data-logged') == 1 ? true : false;
 	var lang = document.getElement('html').get('lang');
 
@@ -226,7 +231,10 @@ window.addEvent('domready', function(){
 							this.form.destroy();
 						} else {
 							this.form.reset();
-							this.form.text.retrieve('charCount').update_counter();
+							var counter = this.form.text.retrieve('charCount');
+							if (counter) {
+								counter.update_counter();
+							}
 							this.form.text.fireEvent('blur');
 						}
 						OverText.update();
@@ -249,7 +257,10 @@ window.addEvent('domready', function(){
 		replyForm.inject(comment.getElement('.clr'), 'before');
 		var textarea = replyForm.getElement('textarea').addClass('init');
 		textarea.set('value', '@'+name+' ').setCaretPosition("end");
-		new charCount(textarea, replyForm.getElement('.chars-count'));
+		var counter = replyForm.getElement('.chars-count');
+		if (counter) {
+			new charCount(textarea, counter);
+		}
 		this.getParent().setStyle('display', 'none');
 	});
 
