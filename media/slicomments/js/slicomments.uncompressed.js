@@ -158,59 +158,25 @@ window.addEvent('domready', function(){
 	var placeholder_support = (function () {
 		var i = document.createElement('input');
 		return 'placeholder' in i;
-	})()
-	if (placeholder_support) {
-		// Hide the labels
-		if (!textarea.get('disabled')) $$('.comments_form_inputs li label').setStyle('display', 'none');
+	})();
+	if (!textarea.get('disabled') || !placeholder_support) {
+		$$('.comments_form_inputs li label').setStyle('display', 'none');
 	}
-	else {
-		// Use OverText to simulate placeholders
-		OverText.implement({
-			attach: function(){
-				var element = this.element,
-					options = this.options,
-					value = options.textOverride || element.get('placeholder') || element.get('alt') || element.get('title');
-
-				if (!value) return this;
-
-				var text = this.text = (element.getPrevious(options.element) || new Element(options.element).inject(element, 'after'))
-					.addClass(options.labelClass)
-					.setStyles({
-						lineHeight: 'normal',
-						position: 'absolute',
-						cursor: 'text'
-					})
-					.set('html', value)
-					.addEvent('click', this.hide.pass(options.element == 'label', this));
-
-				if (options.element == 'label'){
-					if (!element.get('id')) element.set('id', 'input_' + String.uniqueID());
-					text.set('for', element.get('id'));
-				}
-
-				if (options.wrap){
-					this.textHolder = new Element('div.overTxtWrapper', {
-						styles: {
-							lineHeight: 'normal',
-							position: 'relative'
-						}
-					}).grab(text).inject(element, 'before');
-				}
-
-				return this.enable();
-			}
-		});
+	if (!placeholder_support) {
+		var position = {offset: {x:7, y:4}};
 		new OverText(textarea, {
-			positionOptions: {
-				offset: {
-					x: 6,
-					y: 6
-				}
-			}
+			positionOptions: position,
+			textOverride: textarea.get('placeholder')
 		});
 		if (!logged) {
-			new OverText(form.name);
-			new OverText(form.email);
+			new OverText(form.name, {
+				positionOptions: position,
+				textOverride: form.name.get('placeholder')
+			});
+			new OverText(form.email, {
+				positionOptions: position,
+				textOverride: form.email.get('placeholder')
+			});
 		}
 	}
 
