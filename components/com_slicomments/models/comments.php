@@ -479,9 +479,7 @@ class sliCommentsModelComments extends sliModel
 		$limitstart = ($limit != 0 ? (floor($value / $limit) * $limit) : 0);
 		$this->setState('list.start', $limitstart);
 
-		$order = $this->params->get('ordering', 'DESC');
-		if (!in_array($order, array('ASC', 'DESC'))) $order = 'DESC';
-		$this->setState('list.order_dir', $order);
+		$this->setState('list.order_dir', 'DESC');
 	}
 
 	/**

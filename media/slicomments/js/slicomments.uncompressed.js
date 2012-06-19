@@ -241,7 +241,7 @@ window.addEvent('domready', function(){
 							this.form.destroy();
 							return;
 						}
-						tree[0].inject($('comments_list'), this.form.get('data-position'));
+						tree[0].inject($('comments_list'), 'top');
 						comments_count.set('text', comments_count.get('text').toInt() + 1);
 						if (this.form.hasClass('reply-form')){
 							this.form.destroy();

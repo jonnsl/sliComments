@@ -13,7 +13,6 @@ require_once JPATH_ADMINISTRATOR.'/components/com_slicomments/helpers/comments.p
 JHtml::_('behavior.framework', true);
 JHtml::_('stylesheet', 'slicomments/style.uncompressed.css', array(), true);
 $user = JFactory::getUser();
-$form_position = $this->params->get('form_position', 'before');
 JHtml::_('script', 'slicomments/slicomments.uncompressed.js', true, true);
 ?>
 <div id="comments" class="no-js<?php if ($this->params->get('avatar', 'gravatar') === '0') echo ' no-avatar'; ?>">
@@ -35,9 +34,7 @@ JHtml::_('script', 'slicomments/slicomments.uncompressed.js', true, true);
 			<?php echo JHtml::image('media/slicomments/img/rss.png', 'RSS Icon'); ?></a>
 		<?php endif; ?>
 		<?php echo JText::sprintf('COM_COMMENTS_COMMENTS_COUNT', '<span id="comments_counter" >'.$this->total.'</span>'); ?></h4>
-	<?php if ($form_position == 'before' && $enabled && ($user->authorise('post', 'com_slicomments') || $user->guest)) {
-		echo $this->loadTemplate('form');
-	} ?>
+	<?php if ($enabled && ($user->authorise('post', 'com_slicomments') || $user->guest)) echo $this->loadTemplate('form'); ?>
 
 	<ul id="comments_list" class="comment-list">
 	<?php
@@ -46,9 +43,7 @@ JHtml::_('script', 'slicomments/slicomments.uncompressed.js', true, true);
 	}
 	?>
 	</ul>
-	<?php if ($form_position == 'after' && $enabled && ($user->authorise('post', 'com_slicomments') || $user->guest)) {
-		echo $this->loadTemplate('form');
-	} ?>
+
 	<?php if ($this->params->get('limit', 20) > 0): ?>
 	<form id="comments_pagination" class="clr" action="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.display'); ?>" method="get">
 		<div class="pagination">

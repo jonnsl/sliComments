@@ -257,25 +257,6 @@
 
 	<fieldset name="LAYOUT">
 		<field
-			name="form_position"
-			type="list"
-			label="COM_COMMENTS_FORM_POSITION_LABEL"
-			description="COM_COMMENTS_FORM_POSITION_DESC"
-			default="before">
-				<option value="before">COM_COMMENTS_FORM_POSITION_OPTION_BEFORE</option>
-				<option value="after">COM_COMMENTS_FORM_POSITION_OPTION_AFTER</option>
-		</field>
-		<field
-			name="ordering"
-			type="list"
-			label="COM_COMMENTS_ORDERING_LABEL"
-			description="COM_COMMENTS_ORDERING_DESC"
-			default="DESC">
-				<option value="DESC">COM_COMMENTS_ORDERING_OPTION_DESC</option>
-				<option value="ASC">COM_COMMENTS_ORDERING_OPTION_ASC</option>
-		</field>
-
-		<field
 			name="limit"
 			type="integer"
 			label="COM_COMMENTS_LIMIT_LABEL"
