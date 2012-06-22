@@ -13,7 +13,7 @@ $rating = $likes - $dislikes;
 ?>
 <li id="comment-<?php echo $id;?>" class="comment">
 <div class="comment-body">
-	<?php if (isset($avatar)) : ?>
+	<?php if ($this->params->get('avatar', 'gravatar')) : ?>
 	<div class="profile-image-container">
 		<img class="profile-image" src="<?php echo $avatar; ?>" alt="<?php echo $this->escape($name); ?>">
 	</div>
