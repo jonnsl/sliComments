@@ -329,13 +329,17 @@ class sliCommentsModelComments extends JModelList
 		}
 
 		$user = JFactory::getUser();
+		
 		$data['id'] = $table->id;
 		$data['likes'] = $data['dislikes'] = $data['flagged'] = 0;
-		$data['avatar'] = $this->getAvatar();
-		$data['link'] = $this->getLink();
 		if (!$user->guest) {
+			$data['link'] = $this->getLink();
+			$data['avatar'] = $this->getAvatar();
 			$data['name'] = $user->name;
 			$data['email'] = $user->email;
+		} else {
+			$comment = $this->preProcess(array((object)$data));
+			$data = $comment[0];
 		}
 		return true;
 	}
@@ -683,7 +687,7 @@ class sliCommentsModelComments extends JModelList
 			switch ($avatar)
 			{
 				case 'gravatar':
-					$comments[$k]->avatar = '//www.gravatar.com/avatar/'.md5($comment->email);
+					$comments[$k]->avatar = '//www.gravatar.com/avatar/'. ($comment->email ? md5($comment->email) : '00000000000000000000000000000000');
 					break;
 				case 'com_kunena':
 					if ($comment->avatar) {
@@ -733,7 +737,7 @@ class sliCommentsModelComments extends JModelList
 		switch ($avatar)
 		{
 			case 'gravatar':
-				return '//www.gravatar.com/avatar/'.md5($user->email);
+				return '//www.gravatar.com/avatar/'. ($user->guest ? '00000000000000000000000000000000' : md5($user->email));
 			case 'com_kunena':
 				if ($user->guest) return 'media/kunena/avatars/resized/size72/s_nophoto.jpg';
 				$query = $this->_db->getQuery(true)
