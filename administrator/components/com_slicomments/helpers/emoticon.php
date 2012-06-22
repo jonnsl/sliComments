@@ -16,7 +16,11 @@ class sliCommentsEmoticon
 	{
 		foreach ($emoticons as $emoticon)
 		{
-			$this->_emoticons[trim($emoticon->emoticon)] = trim($emoticon->file);
+			$key = trim($emoticon->emoticon);
+			$value = trim($emoticon->file);
+			if (!empty($key) && !empty($value)) {
+				$this->_emoticons[$key] = $value;
+			}
 		}
 	}
 
