@@ -18,8 +18,8 @@ A powerful and slick comments component for Joomla!
 * Emoticons
 * ACL
 * hide low-rated/flagged comments
-* Avatar from Gravatar, Kunena, JomSocial or K2
-* Link usernames to profile from Kunena or Jomsocial
+* Avatar from Gravatar, Kunena, JomSocial, K2 or Community Builder
+* Link usernames to profile from Kunena, Jomsocial or Community Builder
 * Jomsocial integration: activity stream and user points
 * No powered by or hidden links
 * Easy updates through the Extension Manager

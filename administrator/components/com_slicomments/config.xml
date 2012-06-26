@@ -354,6 +354,7 @@
 				<option value="">JNO</option>
 				<option value="com_community">COM_COMMENTS_OPTION_JOMSOCIAL</option>
 				<option value="com_kunena">COM_COMMENTS_OPTION_KUNENA</option>
+				<option value="com_comprofiler">COM_COMMENTS_OPTION_COMPROFILER</option>
 		</field>
 
 		<field
@@ -367,6 +368,7 @@
 				<option value="com_community">COM_COMMENTS_OPTION_JOMSOCIAL</option>
 				<option value="com_kunena">COM_COMMENTS_OPTION_KUNENA</option>
 				<option value="com_k2">COM_COMMENTS_OPTION_K2</option>
+				<option value="com_comprofiler">COM_COMMENTS_OPTION_COMPROFILER</option>
 		</field>
 
 		<fields name="gravatar">

@@ -610,6 +610,10 @@ class sliCommentsModelComments extends JModelList
 				$query->leftjoin('#__k2_users AS k ON k.userID = a.user_id');
 				$query->select('k.image as avatar');
 				break;
+			case 'com_comprofiler':
+				$query->leftjoin('#__comprofiler AS c on c.user_id = a.user_id AND c.avatarapproved = 1');
+				$query->select('c.avatar as avatar');
+				break;
 		}
 
 		// Filter by article
@@ -680,6 +684,9 @@ class sliCommentsModelComments extends JModelList
 
 		if ($link == 'com_kunena') {
 			require_once JPATH_ADMINISTRATOR.'/components/com_kunena/libraries/factory.php';
+		} elseif ($link == 'com_comprofiler') {
+			include_once JPATH_ADMINISTRATOR.'/components/com_comprofiler/plugin.foundation.php';
+			cbimport('cb.database');
 		}
 
 		foreach ($comments as $k => $comment)
@@ -718,6 +725,15 @@ class sliCommentsModelComments extends JModelList
 						$comments[$k]->avatar = 'components/com_k2/images/placeholder/user.png';
 					}
 					break;
+				case 'com_comprofiler':
+					if ($comment->avatar) {
+						$comments[$k]->avatar = 'images/comprofiler/'.$comment->avatar;
+					} else if ($default) {
+						$comments[$k]->avatar = JURI::base().$default;
+					} else {
+						$comments[$k]->avatar = 'components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png';
+					}
+					break;
 			}
 			if ($comment->user_id == 0) {
 				if ($comment->name === '') $comments[$k]->name = JText::_('COM_COMMENTS_ANONYMOUS');
@@ -730,6 +746,9 @@ class sliCommentsModelComments extends JModelList
 					break;
 				case 'com_community':
 					$comments[$k]->link = JRoute::_('index.php?option=com_community&view=profile&userid='.$comment->user_id);
+					break;
+				case 'com_comprofiler':
+					$comments[$k]->link = $GLOBALS['_CB_framework']->userProfileUrl($comment->user_id); 
 					break;
 			}
 		}
@@ -800,6 +819,21 @@ class sliCommentsModelComments extends JModelList
 					return JURI::base().$default;
 				}
 				return 'media/k2/users/'.$avatar;
+			case 'com_comprofiler':
+				if (!$default) $default = 'components/com_comprofiler/plugin/templates/default/images/avatar/nophoto_n.png';
+				if ($user->guest) return JURI::base().$default;
+				$query = $this->_db->getQuery(true)
+					->select('avatar')
+					->from('#__comprofiler')
+					->where('avatarapproved = 1')
+					->where('user_id = '.(int)$user->id);
+				$this->_db->setQuery($query);
+				$avatar = $this->_db->loadResult();
+
+				if (!$avatar) {
+					return JURI::base().$default;
+				}
+				return 'images/comprofiler/'.$avatar;
 		}
 		return '';
 	}
@@ -819,6 +853,10 @@ class sliCommentsModelComments extends JModelList
 				return KunenaFactory::getProfile()->getProfileURL($user->id);
 			case 'com_community':
 				return JRoute::_('index.php?option=com_community&view=profile&userid='.$user->id);
+			case 'com_comprofiler':
+				include_once JPATH_ADMINISTRATOR.'/components/com_comprofiler/plugin.foundation.php';
+				cbimport('cb.database');
+				return $GLOBALS['_CB_framework']->userProfileUrl($user->id);
 		}
 	}
 
