@@ -20,17 +20,8 @@ license: MIT-style license
 provides: Chosen
 ...
 */
-Elements.implement({
-	chosen: function(options){
-		return this.each(function(el){
-			if (!el.hasClass("chzn-done")) {
-				return new Chosen(el, options);
-			}
-		});
-   	}
-});
 
-var Chosen = new Class({
+module.exports = new Class({
 
 	Implements: Options,
 
@@ -548,7 +539,7 @@ var Chosen = new Class({
 			var high = this.result_highlight,
 				high_id = high.id;
 			this.result_clear_highlight();
-			
+
 			if (this.is_multiple){
 				this.result_deactivate(high);
 			} else {

@@ -14,12 +14,7 @@ provides: [DynamicTextarea]
 ...
 */
 
-(function(){
-
-// Prevent the plugin from overwriting existing variables
-if (this.DynamicTextarea) return;
-
-var DynamicTextarea = this.DynamicTextarea = new Class({
+module.exports = new Class({
 
 	Implements: [Options, Events],
 
@@ -220,5 +215,3 @@ var DynamicTextarea = this.DynamicTextarea = new Class({
 		return this.fireEvent('enable');
 	}
 });
-
-})();

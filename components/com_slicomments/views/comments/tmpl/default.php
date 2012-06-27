@@ -13,7 +13,7 @@ require_once JPATH_ADMINISTRATOR.'/components/com_slicomments/helpers/comments.p
 JHtml::_('behavior.framework', true);
 JHtml::_('stylesheet', 'slicomments/style.uncompressed.css', array(), true);
 $user = JFactory::getUser();
-JHtml::_('script', 'slicomments/slicomments.uncompressed.js', true, true);
+JHtml::_('script', 'slicomments/slicomments.js', true, true);
 ?>
 <div id="comments" class="no-js<?php if ($this->params->get('avatar', 'gravatar') === '0') echo ' no-avatar'; ?>">
 
@@ -53,6 +53,5 @@ JHtml::_('script', 'slicomments/slicomments.uncompressed.js', true, true);
 		<input type="hidden" name="slicommentslimitstart" value="" />
 	</form>
 	<?php endif; ?>
-
 </div>
 <?php endif; ?>

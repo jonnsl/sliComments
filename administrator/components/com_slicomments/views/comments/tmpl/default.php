@@ -14,14 +14,7 @@ require_once JPATH_COMPONENT.'/helpers/comments.php';
 $Joomla3 = version_compare(JVERSION, "3.0", "ge");
 JHtml::_('behavior.framework', true);
 JHtml::_('behavior.tooltip');
-if (JDEBUG){
-	JHtml::_('script', 'slicomments/DynamicTextarea.js', true, true);
-	JHtml::_('script', 'slicomments/meio.autocomplete.js', true, true);
-	JHtml::_('script', 'slicomments/chosen.js', true, true);
-	JHtml::_('script', 'slicomments/comments_admin.uncompressed.js', true, true);
-} else {
-	JHtml::_('script', 'slicomments/comments_admin.js', true, true);
-}
+JHtml::_('script', 'slicomments/comments_admin.js', true, true);
 JHtml::_('stylesheet', 'slicomments/chosen.css', array(), true);
 JHtml::_('stylesheet', 'slicomments/admin.css', array(), true);
 

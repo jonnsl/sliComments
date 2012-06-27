@@ -27,4 +27,152 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  */
-MD5=window.MD5||{};MD5.digest=function(i){function f(a,b,c){return a&b|~a&c}function g(a,b,c){return a&c|b&~c}function h(a,b,c){return a^b^c}function j(a,b,c){return b^(a|~c)}function o(a){return[a&255,a>>>8&255,a>>>16&255,a>>>24&255]}function e(a,b,c,d,e,f,g,h){a[0]+=h(b[0],c[0],d[0])+p[e]+g;a[0]=a[0]<<f|a[0]>>>32-f;a[0]+=b[0]}var a,k,l,m,b,c,d,q,r,p,n;a=i.length;i.push(128);b=56-i.length&63;for(k=0;k<b;k++)i.push(0);o(8*a).forEach(function(a){i.push(a)});[0,0,0,0].forEach(function(a){i.push(a)});a=[1732584193];b=[4023233417];c=[2562383102];d=[271733878];for(k=0;k<i.length;k+=64){p=[];for(l=0;64>l;l+=4)m=k+l,p.push(i[m]|i[m+1]<<8|i[m+2]<<16|i[m+3]<<24);l=a[0];m=b[0];q=c[0];r=d[0];e(a,b,c,d,0,7,3614090360,f);e(d,a,b,c,1,12,3905402710,f);e(c,d,a,b,2,17,606105819,f);e(b,c,d,a,3,22,3250441966,f);e(a,b,c,d,4,7,4118548399,f);e(d,a,b,c,5,12,1200080426,f);e(c,d,a,b,6,17,2821735955,f);e(b,c,d,a,7,22,4249261313,f);e(a,b,c,d,8,7,1770035416,f);e(d,a,b,c,9,12,2336552879,f);e(c,d,a,b,10,17,4294925233,f);e(b,c,d,a,11,22,2304563134,f);e(a,b,c,d,12,7,1804603682,f);e(d,a,b,c,13,12,4254626195,f);e(c,d,a,b,14,17,2792965006,f);e(b,c,d,a,15,22,1236535329,f);e(a,b,c,d,1,5,4129170786,g);e(d,a,b,c,6,9,3225465664,g);e(c,d,a,b,11,14,643717713,g);e(b,c,d,a,0,20,3921069994,g);e(a,b,c,d,5,5,3593408605,g);e(d,a,b,c,10,9,38016083,g);e(c,d,a,b,15,14,3634488961,g);e(b,c,d,a,4,20,3889429448,g);e(a,b,c,d,9,5,568446438,g);e(d,a,b,c,14,9,3275163606,g);e(c,d,a,b,3,14,4107603335,g);e(b,c,d,a,8,20,1163531501,g);e(a,b,c,d,13,5,2850285829,g);e(d,a,b,c,2,9,4243563512,g);e(c,d,a,b,7,14,1735328473,g);e(b,c,d,a,12,20,2368359562,g);e(a,b,c,d,5,4,4294588738,h);e(d,a,b,c,8,11,2272392833,h);e(c,d,a,b,11,16,1839030562,h);e(b,c,d,a,14,23,4259657740,h);e(a,b,c,d,1,4,2763975236,h);e(d,a,b,c,4,11,1272893353,h);e(c,d,a,b,7,16,4139469664,h);e(b,c,d,a,10,23,3200236656,h);e(a,b,c,d,13,4,681279174,h);e(d,a,b,c,0,11,3936430074,h);e(c,d,a,b,3,16,3572445317,h);e(b,c,d,a,6,23,76029189,h);e(a,b,c,d,9,4,3654602809,h);e(d,a,b,c,12,11,3873151461,h);e(c,d,a,b,15,16,530742520,h);e(b,c,d,a,2,23,3299628645,h);e(a,b,c,d,0,6,4096336452,j);e(d,a,b,c,7,10,1126891415,j);e(c,d,a,b,14,15,2878612391,j);e(b,c,d,a,5,21,4237533241,j);e(a,b,c,d,12,6,1700485571,j);e(d,a,b,c,3,10,2399980690,j);e(c,d,a,b,10,15,4293915773,j);e(b,c,d,a,1,21,2240044497,j);e(a,b,c,d,8,6,1873313359,j);e(d,a,b,c,15,10,4264355552,j);e(c,d,a,b,6,15,2734768916,j);e(b,c,d,a,13,21,1309151649,j);e(a,b,c,d,4,6,4149444226,j);e(d,a,b,c,11,10,3174756917,j);e(c,d,a,b,2,15,718787259,j);e(b,c,d,a,9,21,3951481745,j);a[0]+=l;b[0]+=m;c[0]+=q;d[0]+=r}n=[];o(a[0]).forEach(function(a){n.push(a)});o(b[0]).forEach(function(a){n.push(a)});o(c[0]).forEach(function(a){n.push(a)});o(d[0]).forEach(function(a){n.push(a)});return n};MD5.digest_s=function(i){var f=[],g,h;for(g=0;g<i.length;g++)f.push(i.charCodeAt(g));f=MD5.digest(f);h="";f.forEach(function(f){for(i=f.toString(16);2>i.length;)i="0"+i;h+=i});return h};
+
+exports.digest = function (M) {
+	function F(x, y, z) { return (x & y) | (~x & z); }
+	function G(x, y, z) { return (x & z) | (y & ~z); }
+	function H(x, y, z) { return x ^ y ^ z;          }
+	function I(x, y, z) { return y ^ (x | ~z);       }
+
+	function to4bytes(n) {
+		return [n&0xff, (n>>>8)&0xff, (n>>>16)&0xff, (n>>>24)&0xff];
+	}
+
+	var originalLength = M.length; // for Step.2
+
+	// 3.1 Step 1. Append Padding Bits
+	M.push(0x80);
+	var l = (56 - M.length)&0x3f;
+	for (var i = 0; i < l; i++)
+		M.push(0);
+
+	// 3.2 Step 2. Append Length
+	to4bytes(8*originalLength).forEach(function (e) { M.push(e); });
+	[0, 0, 0, 0].forEach(function (e) { M.push(e); });
+
+	// 3.3 Step 3. Initialize MD Buffer
+	var A = [0x67452301];
+	var B = [0xefcdab89];
+	var C = [0x98badcfe];
+	var D = [0x10325476];
+	var AA, BB, CC, DD;
+
+	// 3.4 Step 4. Process Message in 16-Word Blocks
+	function rounds(a, b, c, d, k, s, t, f) {
+		a[0] += f(b[0], c[0], d[0]) + X[k] + t;
+		a[0] = ((a[0]<<s)|(a[0]>>>(32 - s)));
+		a[0] += b[0];
+	}
+	var X;
+	for (var i = 0; i < M.length; i += 64) {
+		X = [];
+		for (var j = 0; j < 64; j += 4) {
+			k = i + j;
+			X.push(M[k]|(M[k + 1]<<8)|(M[k + 2]<<16)|(M[k + 3]<<24));
+		}
+		AA = A[0];
+		BB = B[0];
+		CC = C[0];
+		DD = D[0];
+
+		// Round 1.
+		rounds(A, B, C, D,  0,  7, 0xd76aa478, F);
+		rounds(D, A, B, C,  1, 12, 0xe8c7b756, F);
+		rounds(C, D, A, B,  2, 17, 0x242070db, F);
+		rounds(B, C, D, A,  3, 22, 0xc1bdceee, F);
+		rounds(A, B, C, D,  4,  7, 0xf57c0faf, F);
+		rounds(D, A, B, C,  5, 12, 0x4787c62a, F);
+		rounds(C, D, A, B,  6, 17, 0xa8304613, F);
+		rounds(B, C, D, A,  7, 22, 0xfd469501, F);
+		rounds(A, B, C, D,  8,  7, 0x698098d8, F);
+		rounds(D, A, B, C,  9, 12, 0x8b44f7af, F);
+		rounds(C, D, A, B, 10, 17, 0xffff5bb1, F);
+		rounds(B, C, D, A, 11, 22, 0x895cd7be, F);
+		rounds(A, B, C, D, 12,  7, 0x6b901122, F);
+		rounds(D, A, B, C, 13, 12, 0xfd987193, F);
+		rounds(C, D, A, B, 14, 17, 0xa679438e, F);
+		rounds(B, C, D, A, 15, 22, 0x49b40821, F);
+
+		// Round 2.
+		rounds(A, B, C, D,  1,  5, 0xf61e2562, G);
+		rounds(D, A, B, C,  6,  9, 0xc040b340, G);
+		rounds(C, D, A, B, 11, 14, 0x265e5a51, G);
+		rounds(B, C, D, A,  0, 20, 0xe9b6c7aa, G);
+		rounds(A, B, C, D,  5,  5, 0xd62f105d, G);
+		rounds(D, A, B, C, 10,  9, 0x02441453, G);
+		rounds(C, D, A, B, 15, 14, 0xd8a1e681, G);
+		rounds(B, C, D, A,  4, 20, 0xe7d3fbc8, G);
+		rounds(A, B, C, D,  9,  5, 0x21e1cde6, G);
+		rounds(D, A, B, C, 14,  9, 0xc33707d6, G);
+		rounds(C, D, A, B,  3, 14, 0xf4d50d87, G);
+		rounds(B, C, D, A,  8, 20, 0x455a14ed, G);
+		rounds(A, B, C, D, 13,  5, 0xa9e3e905, G);
+		rounds(D, A, B, C,  2,  9, 0xfcefa3f8, G);
+		rounds(C, D, A, B,  7, 14, 0x676f02d9, G);
+		rounds(B, C, D, A, 12, 20, 0x8d2a4c8a, G);
+
+		// Round 3.
+		rounds(A, B, C, D,  5,  4, 0xfffa3942, H);
+		rounds(D, A, B, C,  8, 11, 0x8771f681, H);
+		rounds(C, D, A, B, 11, 16, 0x6d9d6122, H);
+		rounds(B, C, D, A, 14, 23, 0xfde5380c, H);
+		rounds(A, B, C, D,  1,  4, 0xa4beea44, H);
+		rounds(D, A, B, C,  4, 11, 0x4bdecfa9, H);
+		rounds(C, D, A, B,  7, 16, 0xf6bb4b60, H);
+		rounds(B, C, D, A, 10, 23, 0xbebfbc70, H);
+		rounds(A, B, C, D, 13,  4, 0x289b7ec6, H);
+		rounds(D, A, B, C,  0, 11, 0xeaa127fa, H);
+		rounds(C, D, A, B,  3, 16, 0xd4ef3085, H);
+		rounds(B, C, D, A,  6, 23, 0x04881d05, H);
+		rounds(A, B, C, D,  9,  4, 0xd9d4d039, H);
+		rounds(D, A, B, C, 12, 11, 0xe6db99e5, H);
+		rounds(C, D, A, B, 15, 16, 0x1fa27cf8, H);
+		rounds(B, C, D, A,  2, 23, 0xc4ac5665, H);
+
+		// Round 4.
+		rounds(A, B, C, D,  0,  6, 0xf4292244, I);
+		rounds(D, A, B, C,  7, 10, 0x432aff97, I);
+		rounds(C, D, A, B, 14, 15, 0xab9423a7, I);
+		rounds(B, C, D, A,  5, 21, 0xfc93a039, I);
+		rounds(A, B, C, D, 12,  6, 0x655b59c3, I);
+		rounds(D, A, B, C,  3, 10, 0x8f0ccc92, I);
+		rounds(C, D, A, B, 10, 15, 0xffeff47d, I);
+		rounds(B, C, D, A,  1, 21, 0x85845dd1, I);
+		rounds(A, B, C, D,  8,  6, 0x6fa87e4f, I);
+		rounds(D, A, B, C, 15, 10, 0xfe2ce6e0, I);
+		rounds(C, D, A, B,  6, 15, 0xa3014314, I);
+		rounds(B, C, D, A, 13, 21, 0x4e0811a1, I);
+		rounds(A, B, C, D,  4,  6, 0xf7537e82, I);
+		rounds(D, A, B, C, 11, 10, 0xbd3af235, I);
+		rounds(C, D, A, B,  2, 15, 0x2ad7d2bb, I);
+		rounds(B, C, D, A,  9, 21, 0xeb86d391, I);
+
+		A[0] += AA;
+		B[0] += BB;
+		C[0] += CC;
+		D[0] += DD;
+	}
+
+	var rval = [];
+	to4bytes(A[0]).forEach(function (e) { rval.push(e); });
+	to4bytes(B[0]).forEach(function (e) { rval.push(e); });
+	to4bytes(C[0]).forEach(function (e) { rval.push(e); });
+	to4bytes(D[0]).forEach(function (e) { rval.push(e); });
+	return rval;
+}
+
+exports.digest_s = function (s) {
+	var M = [];
+	for (var i = 0; i < s.length; i++)
+		M.push(s.charCodeAt(i));
+	var d = exports.digest(M);
+	var rstr = '';
+	d.forEach(function (e) {
+		var s = e.toString(16);
+		while (s.length < 2)
+			s = '0' + s;
+		rstr += s;
+	});
+	return rstr;
+}
+

@@ -1,4 +1,7 @@
-(function($){
+var Chosen = require('./chosen'),
+	DynamicTextarea = require('./DynamicTextarea'),
+	Meio = require('./meio.autocomplete');
+
 window.addEvent('domready', function(){
 	var form = $('adminForm');
 
@@ -379,15 +382,14 @@ Function.implement({
 			var obj = this, args = arguments;
 			function delayed() {
 				func.apply(obj, args);
-				timeout = null; 
+				timeout = null;
 			};
 
 			if (timeout) {
 				clearTimeout(timeout);
 			}
 
-			timeout = setTimeout(delayed, threshold || 500); 
+			timeout = setTimeout(delayed, threshold || 500);
 		};
 	}
 });
-})(document.id);
