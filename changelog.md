@@ -1,5 +1,20 @@
 # sliComments - Changelog #
 
+## 1.4.0 / 2012-07-07 ##
+
+  * Add integration wih Community Builder.
+  * RSS implemented.
+  * Add option to hide the character counter.
+  * Add option to set rating and default avatar for gravatar.
+  * Remember the guests' email.
+  * Reduce javascript size.
+  * Update de-DE language files. Thanks pixelstun.de
+  * Fix typo. (en-GB)
+  * Escape the avatar URI.
+  * Get the correct avatar for guests.
+  * Don't show blank image if the avatar is disabled.
+  * Prevent empty emoticons to be inserted.
+
 ## 1.3.2 / 2012-05-15 ##
   
   * Fix flagged filter not working.
