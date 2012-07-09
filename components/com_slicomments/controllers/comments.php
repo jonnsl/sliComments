@@ -116,7 +116,7 @@ class sliCommentsControllerComments extends JController
 		else
 		{
 			$model = $this->getModel();
-			$vote = JRequest::getInt('v');
+			$vote = (int) JRequest::getInt('v');
 			$comment_id = JRequest::getInt('id');
 			if ($model->vote($comment_id, $vote)) {
 				$this->setMessage(JText::_('COM_COMMENTS_SUCCESS_RATE'));

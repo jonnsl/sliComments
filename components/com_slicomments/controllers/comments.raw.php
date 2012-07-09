@@ -137,7 +137,7 @@ class sliCommentsControllerComments extends JController
 				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
 			}
 			$model = $this->getModel();
-			$vote = JRequest::getInt('v');
+			$vote = (int) JRequest::getInt('v');
 			$comment_id = JRequest::getInt('id');
 			if (!$model->vote($comment_id, $vote)) {
 				throw new Exception((string)$model->getError(), 500);
