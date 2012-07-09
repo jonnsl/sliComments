@@ -1,5 +1,9 @@
 # sliComments - Changelog #
 
+## 1.4.1 / 2012-07-09 ##
+
+  * Fix issue voting when magic_quotes is on.
+
 ## 1.4.0 / 2012-07-07 ##
 
   * Add integration wih Community Builder.
