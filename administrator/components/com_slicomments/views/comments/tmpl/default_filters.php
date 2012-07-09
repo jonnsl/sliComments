@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 ?>
 <div class="filter-search fltlft pull-left">
-	<input type="text" class="filter-input" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" />
+	<input type="search" class="filter-input" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" />
 </div>
 
 <!--div class="filter-select fltrt pull-right" title="Filter by extension">
@@ -71,7 +71,7 @@ defined('_JEXEC') or die;
 		<span class="arrow-down"></span>
 	</button>
 	<div class="filter-container">
-		<input type="text" id="filter-article" class="filter-input" name="filter_article" placeholder="Filter by article" value="<?php echo $this->escape($this->state->get('filter.article')); ?>"/>
+		<input type="search" id="filter-article" class="filter-input" name="filter_article" placeholder="Filter by article" value="<?php echo $this->escape($this->state->get('filter.article')); ?>"/>
 	</div>
 </div>
 
@@ -81,6 +81,6 @@ defined('_JEXEC') or die;
 		<span class="arrow-down"></span>
 	</button>
 	<div class="filter-container">
-		<input type="text" class="filter-input" id="filter-author" name="filter_author" placeholder="Filter by author" value="<?php echo $this->escape($this->state->get('filter.author')); ?>"/>
+		<input type="search" class="filter-input" id="filter-author" name="filter_author" placeholder="Filter by author" value="<?php echo $this->escape($this->state->get('filter.author')); ?>"/>
 	</div>
 </div>
