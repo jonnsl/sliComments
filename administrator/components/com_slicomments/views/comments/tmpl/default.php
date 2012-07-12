@@ -93,13 +93,13 @@ $listDirn	= $this->state->get('list.direction');
 					?></span>
 					<ul class="actions">
 						<?php if ($item->status == 1): ?>
-							<li><a href="index.php?option=com_slicomments&amp;task=comments.unapprove&amp;cid[]=<?php echo $item->id.$token; ?>" class="unapprove-comment"><?php echo JText::_('COM_COMMENTS_ACTION_UNAPPROVE'); ?></a></li>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.unapprove&amp;cid[]=<?php echo $item->id,$token; ?>" class="unapprove-comment"><?php echo JText::_('COM_COMMENTS_ACTION_UNAPPROVE'); ?></a></li>
 						<?php elseif ($item->status == 0) :?>
-							<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;cid[]=<?php echo $item->id.$token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_APPROVE'); ?></a></li>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;cid[]=<?php echo $item->id,$token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_APPROVE'); ?></a></li>
 						<?php elseif ($item->status == -1) :?>
-							<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;cid[]=<?php echo $item->id.$token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_NOT_SPAM'); ?></a></li>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;cid[]=<?php echo $item->id,$token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_NOT_SPAM'); ?></a></li>
 						<?php elseif ($item->status == -2) :?>
-							<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;cid[]=<?php echo $item->id.$token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_RESTORE'); ?></a></li>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.approve&amp;cid[]=<?php echo $item->id,$token; ?>" class="approve-comment"><?php echo JText::_('COM_COMMENTS_ACTION_RESTORE'); ?></a></li>
 						<?php endif; ?>
 
 						<?php if ($item->status != -2) :?>
@@ -107,10 +107,10 @@ $listDirn	= $this->state->get('list.direction');
 						<?php endif; ?>
 
 						<?php if ($item->status >= 0) :?>
-							<li><a href="index.php?option=com_slicomments&amp;task=comments.spam&amp;cid[]=<?php echo $item->id.$token; ?>" class="spam-comment"><?php echo JText::_('COM_COMMENTS_ACTION_SPAM'); ?></a></li>
-							<li><a href="index.php?option=com_slicomments&amp;task=comments.trash&amp;cid[]=<?php echo $item->id.$token; ?>" class="trash-comment"><?php echo JText::_('COM_COMMENTS_ACTION_TRASH'); ?></a></li>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.spam&amp;cid[]=<?php echo $item->id,$token; ?>" class="spam-comment"><?php echo JText::_('COM_COMMENTS_ACTION_SPAM'); ?></a></li>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.trash&amp;cid[]=<?php echo $item->id,$token; ?>" class="trash-comment"><?php echo JText::_('COM_COMMENTS_ACTION_TRASH'); ?></a></li>
 						<?php else: ?>
-							<li><a href="index.php?option=com_slicomments&amp;task=comments.delete&amp;cid[]=<?php echo $item->id.$token; ?>" class="delete-comment"><?php echo JText::_('COM_COMMENTS_ACTION_DELETE_PERMANENTLY'); ?></a></li>
+							<li><a href="index.php?option=com_slicomments&amp;task=comments.delete&amp;cid[]=<?php echo $item->id,$token; ?>" class="delete-comment"><?php echo JText::_('COM_COMMENTS_ACTION_DELETE_PERMANENTLY'); ?></a></li>
 						<?php endif; ?>
 					</ul>
 				</td>
