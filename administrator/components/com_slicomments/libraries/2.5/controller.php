@@ -5,6 +5,6 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class sliController extends JController
+class sliControllerCompat extends JController
 {
 }

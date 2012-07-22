@@ -9,6 +9,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.plugin.plugin');
+JLoader::register('sliComments', JPATH_SITE.'/components/com_slicomments/helper.php');
 
 /**
  * sliComments Content Plugin
@@ -19,53 +20,47 @@ jimport('joomla.plugin.plugin');
  */
 class plgContentSlicomments extends JPlugin
 {
-	public function __construct(&$subject, $config = array())
+	/**
+	 * Commentify com_k2.
+	 *
+	 * @param	object	The item object.
+	 * @param	object	The item params
+	 * @param	int		The page number
+	 */
+	public function onK2CommentsBlock($item, $params, $limitstart)
 	{
-		parent::__construct($subject, $config);
-		$this->loadLanguage('plg_content_slicomments.sys');
+		return '<span id="itemCommentsAnchor"></span>'.sliComments::commentify(compact('item', 'params'));
 	}
 
-	public function onContentAfterDisplay($context, &$row, &$params, $page = 0)
+	public function onK2CommentsCounter($item, $params, $limitstart)
 	{
-		if (strtolower(JRequest::getWord('format', 'html')) !== 'html') return;
+		$numOfComments = sliComments::getTotal(compact('item', 'params'));
 
-		// Include dependencies
-		require_once JPATH_ADMINISTRATOR . '/components/com_slicomments/libraries/loader.php';
-
-		$view = strtolower(JRequest::getCmd('view'));
-		if ($this->params->get('comments_count', false) && ($view == 'featured' || $view == 'category'))
-		{
-			$attribs = new JRegistry($row->attribs);
-			$model = $this->getModel();
-			$model->setState('article.id', $row->id);
-			$total = $model->getTotal();
-			if (($total > 0 || $attribs->get('slicomments.enabled', true)) && $model->isCategoryEnabled($row->catid)) {
-				return '<a href="'.JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catid)).'#comments">'.JText::sprintf('PLG_CONTENT_SLICOMMENTS_COMMENTS_COUNT', $total).'</a>';
-			}
+		// If comments are disabled for this article, show a "space" as the link.
+		if ($numOfComments !== false) {
+			$item->numOfComments = $numOfComments;
+		} else {
+			return '&#32;';
 		}
-		elseif ($view == 'article')
+	}
+
+	/**
+	 * Commentify com_content.
+	 *
+	 * @param	string	The context of the content being passed to the plugin.
+	 * @param	object	The item object.
+	 * @param	object	The item params
+	 * @param	int		The page number
+	 */
+	public function onContentAfterDisplay($context, $item, $params, $page = 0)
+	{
+		$contexts = array(
+			'com_content.article' => 1
+		);
+
+		if (isset($contexts[$context]))
 		{
-			$old_view = JRequest::getCmd('view');
-			$old_task = JRequest::getVar('task');
-			JRequest::setVar('view', 'comments');
-			JRequest::setVar('task', 'comments.display');
-			$config = array('base_path'=> JPATH_SITE.'/components/com_slicomments');
-			require_once $config['base_path'].'/controllers/comments.php';
-			JFactory::getLanguage()->load('com_slicomments', JPATH_BASE, null, false, false);
-			$controller = new sliCommentsControllerComments($config);
-			$model = $controller->getModel('comments');
-			if (!$model->isCategoryEnabled($row->catid)) {
-				return;
-			}
-			$model->setState('article.id', $row->id);
-			$model->setState('article.slug', $row->slug);
-			$model->setState('article.catid', $row->catid);
-			$model->setState('article.params', $row->params);
-			ob_start();
-			$controller->execute('display');
-			JRequest::setVar('view', $old_view);
-			JRequest::setVar('task', $old_task);
-			return ob_get_clean();
+			return sliComments::commentify(compact('item', 'params'));
 		}
 	}
 
@@ -93,16 +88,5 @@ class plgContentSlicomments extends JPlugin
 		// Load the custom form
 		$this->loadLanguage();
 		$form->loadFile(dirname(__FILE__).'/article.xml');
-	}
-
-	protected function getModel()
-	{
-		static $model;
-		if ($model === null)
-		{
-			require_once JPATH_SITE.'/components/com_slicomments/models/comments.php';
-			$model = new sliCommentsModelComments(array('ignore_request' => true));
-		}
-		return $model;
 	}
 }

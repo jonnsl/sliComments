@@ -8,6 +8,7 @@ A powerful and slick comments component for Joomla!
 
 ## Features ##
 
+* Support for Joomla and K2.
 * Ajax
 * Akismet plugin
 * Approval system

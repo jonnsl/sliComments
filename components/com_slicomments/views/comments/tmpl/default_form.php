@@ -16,7 +16,8 @@ $maximum_chars = $this->params->get('maximum_chars', 500);
 <form class="comments_form" action="<?php echo JRoute::_('index.php?option=com_slicomments'); ?>" method="post" data-logged="<?php echo (!$user->guest ? '1' : '0');?>">
 	<?php echo JHtml::_('form.token'); ?>
 	<input type="hidden" name="task" value="comments.post"/>
-	<input type="hidden" name="article_id" value="<?php echo JRequest::getInt('id'); ?>"/>
+	<input type="hidden" name="item_id" value="<?php echo $this->state->get('item.id'); ?>" />
+	<input type="hidden" name="extension" value="<?php echo $this->state->get('extension'); ?>" />
 
 	<?php if ($this->avatar) : ?>
 		<div class="profile-image-container">

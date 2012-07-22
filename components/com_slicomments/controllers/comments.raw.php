@@ -17,32 +17,32 @@ class sliCommentsControllerComments extends sliController
 		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/rss+xml');
-		$article_id = JRequest::getInt('article_id');
-
-		// Get some info about the article
-		JModel::addIncludePath(JPATH_SITE . '/components/com_content/models');
-		$model = $this->getModel('Article', 'ContentModel', array('ignore_request' => true));
-		$model->setState('article.id', $article_id);
-		$model->setState('params', $app->getParams());
-		$model->setState('item.select', 'a.id, a.title, a.alias, a.catid, a.attribs, a.access, a.metadata, a.language');
-		$article = $model->getItem($article_id);
+		$item_id = (int) JRequest::getInt('item_id');
+		$extension = JRequest::getCmd('extension');
 
 		// Get the view
 		$view = $this->getView('comments', 'feed', '', array('layout' => 'rss'));
 
 		// Get/Create the model
-		$model = $this->getModel('comments', '', array('ignore_request' => true));
-		$model->setState('article.id', $article_id);
+		$model = sliComments::getModel('comments', array('ignore_request' => true));
+		$model->setState('item.id', $item_id);
+		$model->setState('extension', $extension);
 		$model->setState('list.limit', $app->getCfg('feed_limit'));
 		$view->setModel($model, true);
+		$extension = $model->extension;
 
-		// Send data to the view
-		$view->document = $document;
-		$view->comments = $model->getItems();
-		$view->article = $article;
+		if ($extension->load($item_id) && $extension->isEnabled())
+		{
+			// Send data to the view
+			$view->document = $document;
+			$view->comments = $model->getItems();
+			$view->state = $model->getState();
+			$view->item = $extension->item;
+			$view->link = $extension->getSefLink(true, -1);
 
-		// Display the view
-		$view->display();
+			// Display the view
+			$view->display();
+		}
 
 		return $this;
 	}
@@ -50,22 +50,21 @@ class sliCommentsControllerComments extends sliController
 	public function display($cachable = false, $urlparams = false)
 	{
 		require_once JPATH_ADMINISTRATOR . '/components/com_slicomments/helpers/comments.php';
-		require_once JPATH_SITE . '/components/com_content/helpers/route.php';
 
-		$model = $this->getModel('comments');
-		$model->setState('article.id', JRequest::getInt('article_id'));
+		$model = sliComments::getModel('comments');
+		$model->setState('item.id', (int) JRequest::getInt('item_id'));
+		$model->setState('extension', JRequest::getCmd('extension'));
 		$view = $this->getView('Comments', 'html');
 		$view->params = $model->getParams();
 		$view->state = $model->getState();
 		$view->comments = $model->getComments();
 		$view->pagination = $model->getPagination();
-		
+
 		$view->partial('ajax');
 
-		//sleep(rand(2,5));
 		return $this;
 	}
-	
+
 	public function post()
 	{
 		try {
@@ -81,7 +80,7 @@ class sliCommentsControllerComments extends sliController
 			}
 
 			// Initialise variables
-			$model = $this->getModel();
+			$model = sliComments::getModel();
 			$user = JFactory::getUser();
 			$session = JFactory::getSession();
 			$data = JRequest::get('post', JREQUEST_ALLOWRAW);
@@ -93,7 +92,6 @@ class sliCommentsControllerComments extends sliController
 			if ($model->validate($data) && $model->save($data))
 			{
 				$view = $this->getView('comments', 'html');
-				$view->addTemplatePath(JPATH_THEMES . '/' . JFactory::getApplication()->getTemplate() . '/html/com_content/comments');
 				require_once JPATH_COMPONENT_ADMINISTRATOR.'/helpers/comments.php';
 				$view->params = $model->params;
 				$view->partial('comment', $data);
@@ -117,7 +115,7 @@ class sliCommentsControllerComments extends sliController
 				throw new Exception(JText::_('JINVALID_TOKEN'), 500);
 			}
 			$user = JFactory::getUser();
-			$model = $this->getModel();
+			$model = sliComments::getModel();
 			$table = $model->getTable();
 			$id = JRequest::getInt('id', null, 'get');
 
@@ -155,7 +153,7 @@ class sliCommentsControllerComments extends sliController
 			if (!JFactory::getUser()->authorise('vote', 'com_slicomments')){
 				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
 			}
-			$model = $this->getModel();
+			$model = sliComments::getModel();
 			$vote = (int) JRequest::getInt('v');
 			$comment_id = JRequest::getInt('id');
 			if (!$model->vote($comment_id, $vote)) {
@@ -179,7 +177,7 @@ class sliCommentsControllerComments extends sliController
 			if (!JFactory::getUser()->authorise('flag', 'com_slicomments')){
 				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
 			}
-			$model = $this->getModel();
+			$model = sliComments::getModel();
 			$comment_id = JRequest::getInt('id');
 			if (!$model->flag($comment_id)) {
 				throw new Exception((string)$model->getError(), 500);
@@ -199,7 +197,7 @@ class sliCommentsControllerComments extends sliController
 				throw new Exception(JText::_('COM_COMMENTS_ERROR_INVALID_ID'), 500);
 			}
 
-			$model = $this->getModel();
+			$model = sliComments::getModel();
 			$table = $model->getTable();
 			if (!$table->load($id)) {
 				throw new Exception(JText::_('COM_COMMENTS_ERROR_COMMENT_DONT_EXIST'), 500);
@@ -238,7 +236,7 @@ class sliCommentsControllerComments extends sliController
 				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
 			}
 
-			$model = $this->getModel();
+			$model = sliComments::getModel();
 			$table = $model->getTable();
 			if (!$table->load($id)) {
 				throw new Exception(JText::_('COM_COMMENTS_ERROR_COMMENT_DONT_EXIST'), 500);
@@ -248,7 +246,7 @@ class sliCommentsControllerComments extends sliController
 			$text = JRequest::getVar('text', '', 'post', 'string', JREQUEST_ALLOWHTML);
 			$data['raw'] = $text;
 			$data['text'] = $model->parse($text);
-			
+
 			if (!$model->validate($data) || !$model->save($data))
 			{
 				throw new Exception((string)$model->getError(), 500);

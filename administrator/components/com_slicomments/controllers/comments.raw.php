@@ -38,10 +38,10 @@ class sliCommentsControllerComments extends sliController
 		$model = $this->getModel('comments');
 		$view = $this->getView('Comments', 'html');
 		$view->state = $model->getState();
-		$view->items = $model->getItems();
+		$view->items = $model->getComments();
 		$view->pagination = $model->getPagination();
 		$view->partial('ajax');
-		//sleep(rand(2,5));
+
 		return $this;
 	}
 
@@ -147,11 +147,11 @@ class sliCommentsControllerComments extends sliController
 		echo json_encode($this->getModel('comments')->getAuthors());
 	}
 
-	public function getArticles()
+	public function getItems()
 	{
 		JFactory::getDocument()
 			->setMimeEncoding('application/json', false)
 			->setCharset('');
-		echo json_encode($this->getModel('comments')->getArticles());
+		echo json_encode($this->getModel('comments')->getItemsTitles());
 	}
 }

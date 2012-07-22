@@ -12,13 +12,56 @@ jimport('joomla.application.component.controller');
 
 class sliCommentsControllerComments extends sliController
 {
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct();
+
+		// Set a base path for use by the controller
+		if (isset($config['base_path'])) {
+			$this->basePath = $config['base_path'];
+		} else {
+			$this->basePath = JPATH_SITE . '/components/com_slicomments';
+		}
+
+		// Set the default model search path
+		if (isset($config['model_path'])) {
+			$this->addModelPath($config['model_path'], $this->model_prefix);
+		} else {
+			$this->addModelPath($this->basePath . '/models', $this->model_prefix);
+		}
+	}
+
 	public function display($cachable = false, $urlparams = false)
 	{
-		if (JRequest::getCmd('option') != 'com_content' && JRequest::getCmd('view') != 'article') {
-			JError::raiseError(403, 'Direct access to this component is unauthorized.');
+		// No direct access.
+		if (JRequest::getCmd('option') === 'com_slicomments'){
+			JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			return $this->setRedirect('index.php');
 		}
-		return parent::display();
+
+		$model = sliComments::getModel();
+		$extension = $model->extension;
+
+		if ($extension->isItemView()) {
+			$view = new sliCommentsViewComments(array('base_path' => $this->basePath));
+		} elseif ($extension->isListView()) {
+			$view = new sliCommentsViewLink(array('base_path' => $this->basePath));
+			$view->link = $extension->getSefLink();
+		} else {
+			return;
+		}
+
+		// Push the model into the view (as default)
+		$view->setModel($model, true);
+
+		return $view->display();
 	}
+
 	public function post()
 	{
 		// Check for request forgeries.
@@ -31,7 +74,7 @@ class sliCommentsControllerComments extends sliController
 		}
 		else
 		{
-			$model = $this->getModel();
+			$model = sliComments::getModel();
 			$session = JFactory::getSession();
 			$data['status'] = $user->authorise('auto_publish', 'com_slicomments') ? 1 : 0;
 			$data = $model->filter($data);
@@ -55,7 +98,7 @@ class sliCommentsControllerComments extends sliController
 
 		try {
 			$user = JFactory::getUser();
-			$model = $this->getModel();
+			$model = sliComments::getModel();
 			$table = $model->getTable();
 			$id = JRequest::getInt('id', null, 'get');
 
@@ -81,30 +124,6 @@ class sliCommentsControllerComments extends sliController
 		$this->setRedirect($this->getReferrer('comments'));
 	}
 
-	public function getModel($name = '', $prefix = '', $config = array())
-	{
-		static $model;
-		if ($model == null)
-		{
-			$model = $this->createModel('Comments', 'sliCommentsModel');
-			// Task is a reserved state
-			$model->setState('task', $this->task);
-
-			// Let's get the application object and set menu information if it's available
-			$app	= JFactory::getApplication();
-			$menu	= $app->getMenu();
-
-			if (is_object($menu)) {
-				if ($item = $menu->getActive()) {
-					$params	= $menu->getParams($item->id);
-					// Set default state data
-					$model->setState('parameters.menu', $params);
-				}
-			}
-		}
-		return $model;
-	}
-
 	public function vote()
 	{
 		// Check for request forgeries.
@@ -115,7 +134,7 @@ class sliCommentsControllerComments extends sliController
 		}
 		else
 		{
-			$model = $this->getModel();
+			$model = sliComments::getModel();
 			$vote = (int) JRequest::getInt('v');
 			$comment_id = JRequest::getInt('id');
 			if ($model->vote($comment_id, $vote)) {
@@ -138,7 +157,7 @@ class sliCommentsControllerComments extends sliController
 		}
 		else
 		{
-			$model = $this->getModel();
+			$model = sliComments::getModel();
 			$comment_id = JRequest::getInt('id');
 			if ($model->flag($comment_id)) {
 				$this->setMessage(JText::_('COM_COMMENTS_SUCCESS_FLAG'));

@@ -30,7 +30,8 @@ class sliCommentsModelComments extends sliModel
 		}
 		$filter['raw'] = $data['text'];
 		$filter['text'] = $this->parse($this->censureWords($data['text']));
-		$filter['article_id'] = (int)$data['article_id'];
+		$filter['item_id'] = (int)$data['item_id'];
+		$filter['extension'] = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $data['extension']);
 		$filter['created'] = JFactory::getDate()->toSql();
 		$filter['status'] = (int) $data['status'];
 
@@ -103,28 +104,23 @@ class sliCommentsModelComments extends sliModel
 
 	public function validate($data)
 	{
-		$db = $this->_db;
-		$query = $db->getQuery(true)
-			->select('catid, attribs')
-			->from('#__content')
-			->where('id = '. (int) $data['article_id']);
-		$db->setQuery($query);
+		$extension = $this->getHelper($data['extension']);
 
-		if (!($article = $db->loadAssoc())){
+		if (!$extension) {
+			$this->setError(JText::_('COM_COMMENTS_ERROR_EXTENSION_DONT_EXISTS'));
+			return false;
+		}
+
+		if (!$extension->load($data['item_id'])){
 			$this->setError(JText::_('COM_COMMENTS_ERROR_ARTICLE_DONT_EXISTS'));
 			return false;
 		}
 
-		$params = new JRegistry($article['attribs']);
-		if (!$params->get('slicomments.enabled', true)){
+		if (!$extension->isEnabled()){
 			$this->setError(JText::_('COM_COMMENTS_ERROR_COMMENTS_DISABLED'));
 			return false;
 		}
 
-		if (!$this->isCategoryEnabled($article['catid'])) {
-			$this->setError(JText::_('COM_COMMENTS_ERROR_CATEGORY_DISABLED'));
-			return false;
-		}
 		if ($data['user_id'] == 0)
 		{
 			if ($this->params->get('name', 1) == 1 && empty($data['name'])) {
@@ -198,46 +194,6 @@ class sliCommentsModelComments extends sliModel
 		return !$db->loadResult();
 	}
 
-	public function isCategoryEnabled($id)
-	{
-		$catids = $this->params->get('catid');
-		if ($catids[0])
-		{
-			if ($this->params->get('include_child'))
-			{
-				jimport('joomla.application.categories');
-				JModel::addIncludePath(JPATH_SITE.'/components/com_content/models', 'ContentModel');
-				// Get an instance of the generic categories model
-				$categories = JModel::getInstance('Categories', 'ContentModel', array('ignore_request' => true));
-				$categories->setState('params', JFactory::getApplication()->getParams());
-				$categories->setState('filter.get_children', 9999);
-				$categories->setState('filter.published', 1);
-				$additional_catids = array();
-
-				foreach($catids as $catid)
-				{
-					$categories->setState('filter.parentId', $catid);
-					$items = $categories->getItems(true);
-
-					if ($items)
-					{
-						foreach($items as $category)
-						{
-							$additional_catids[] = $category->id;
-						}
-					}
-				}
-
-				$catids = array_unique(array_merge($catids, $additional_catids));
-			}
-
-			if (!in_array($id, $catids)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	public function save(&$data)
 	{
 		$table = $this->getTable();
@@ -306,26 +262,15 @@ class sliCommentsModelComments extends sliModel
 
 		// Valid comment?
 		$query = $db->getQuery(true)
-			->select('article_id')
+			->select('COUNT(*)')
 			->from('#__slicomments')
 			->where('id = '. (int) $comment_id)
 			->where('status = 1');
 		$db->setQuery($query);
-		$article_id = $db->loadResult();
+		$comment = $db->loadResult();
 
-		if (!$article_id) {
+		if (!$comment) {
 			$this->setError(JText::_('COM_COMMENTS_ERROR_COMMENTS_DONT_EXISTS'));
-			return false;
-		}
-
-		$query = $db->getQuery(true)
-			->select('attribs')
-			->from('#__content')
-			->where('id = '. (int) $article_id);
-		$db->setQuery($query);
-		$params = new JRegistry($db->loadResult());
-		if (!$params->get('slicomments.ratings', true)){
-			$this->setError(JText::_('COM_COMMENTS_ERROR_RATINGS_DISABLED'));
 			return false;
 		}
 
@@ -467,9 +412,6 @@ class sliCommentsModelComments extends sliModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$params = new JRegistry((string)$this->state->get('article.params'));
-		$this->params->set('enabled', $params->get('slicomments.enabled', true));
-		$this->params->set('ratings', $params->get('slicomments.ratings', true) && $this->params->get('ratings', true));
 		$this->setState('params', $this->params);
 
 		$limit = $this->params->get('limit', 20);
@@ -491,7 +433,8 @@ class sliCommentsModelComments extends sliModel
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id	.= ':'.$this->getState('article.id');
+		$id	.= ':'.$this->getState('extension');
+		$id	.= ':'.$this->getState('item.id');
 		$id	.= ':'.$this->getState('list.start');
 		$id	.= ':'.$this->getState('list.order_dir');
 		$id	.= ':'.implode(':', $this->getState('exclude.id', array()));
@@ -549,8 +492,9 @@ class sliCommentsModelComments extends sliModel
 				break;
 		}
 
-		// Filter by article
-		$query->where('a.article_id = '.(int) $this->getState('article.id'));
+		// Filter by extension/item
+		$query->where('a.extension = '. $db->quote($this->getState('extension')));
+		$query->where('a.item_id = '.(int) $this->getState('item.id'));
 
 		// Show only approved comments
 		$query->where('a.status = 1');
@@ -824,13 +768,6 @@ class sliCommentsModelComments extends sliModel
 		if ($this->getState('list.limit', 20) == 0) return;
 		$pagination = parent::getPagination();
 		$pagination->prefix = 'slicomments';
-		$url = ContentHelperRoute::getArticleRoute($this->getState('article.slug'), $this->getState('article.catid'));
-		$uri = new JUri($url);
-		$query = $uri->getQuery(true);
-		foreach ($query as $key => $value)
-		{
-			$pagination->setAdditionalUrlParam($key, $value);
-		}
 		return $pagination;
 	}
 

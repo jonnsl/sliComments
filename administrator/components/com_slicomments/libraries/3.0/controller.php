@@ -5,6 +5,6 @@ defined('_JEXEC') or die;
 
 jimport('legacy.controller.legacy');
 
-class sliController extends JControllerLegacy
+class sliControllerCompat extends JControllerLegacy
 {
 }

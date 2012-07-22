@@ -70,4 +70,38 @@ class sliView extends sliViewCompat
 
 		return $this->_partials[$name] = $partial;
 	}
+
+	/**
+	 * Sets an entire array of search paths for templates or resources.
+	 *
+	 * @param   string  $type  The type of path to set, typically 'template'.
+	 * @param   mixed   $path  The new search path, or an array of search paths.  If null or false, resets to the current directory only.
+	 *
+	 * @return  void
+	 *
+	 * @since   11.1
+	 */
+	protected function _setPath($type, $path)
+	{
+		$app = JFactory::getApplication();
+
+		// Clear out the prior search dirs
+		$this->_path[$type] = array();
+
+		// Actually add the user-specified directories
+		$this->_addPath($type, $path);
+
+		// Always add the fallback directories as last resort
+		switch (strtolower($type))
+		{
+			case 'template':
+				// Set the alternative template search dir
+				if (isset($app))
+				{
+					$fallback = JPATH_THEMES . '/' . $app->getTemplate() . '/html/com_slicomments/' . $this->getName();
+					$this->_addPath('template', $fallback);
+				}
+				break;
+		}
+	}
 }

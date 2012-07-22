@@ -16,7 +16,7 @@ class sliCommentsModelComments extends sliModel
 	{
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'name', 'article_id', 'created'
+				'name', 'item_id', 'created'
 			);
 		}
 		$this->params = JComponentHelper::getParams('com_slicomments');
@@ -29,14 +29,25 @@ class sliCommentsModelComments extends sliModel
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
+		$app = JFactory::getApplication();
+
+		$old_state = $app->getUserState($this->context.'filter.extension');
+		$extension = $this->getUserStateFromRequest($this->context.'filter.extension', 'filter_extension', null, 'CMD');
+		$this->setState('extension', $extension);
+		// If the extension filter change, reset the filters
+		if ($old_state != $extension)
+		{
+			$this->resetFilters();
+		}
+
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
 		$filter_author = $this->getUserStateFromRequest($this->context.'.filter.author', 'filter_author');
 		$this->setState('filter.author', $filter_author);
 
-		$filter_article = $this->getUserStateFromRequest($this->context.'.filter.article', 'filter_article');
-		$this->setState('filter.article', $filter_article);
+		$filter_item = $this->getUserStateFromRequest($this->context.'.filter.item', 'filter_item');
+		$this->setState('filter.item', $filter_item);
 
 		$filter_category = $this->getUserStateFromRequest($this->context.'.filter.category', 'filter_category', null, 'INT');
 		$this->setState('filter.category', $filter_category);
@@ -54,6 +65,27 @@ class sliCommentsModelComments extends sliModel
 
 		// List state information.
 		parent::populateState('created', 'DESC');
+	}
+
+	private function resetFilters()
+	{
+		$app = JFactory::getApplication();
+
+		$filters = array(
+			'filter.search' => 'filter_search',
+			'filter.author' => 'filter_author',
+			'filter.item' => 'filter_item',
+			'filter.category' => 'filter_category',
+			'status' => 'filter_status',
+			'ordercol' => 'filter_order',
+			'orderdirn' => 'filter_order_Dir'
+		);
+
+		foreach ($filters as $key => $filter)
+		{
+			$app->setUserState($this->context.'.'.$key, null);
+			JRequest::setVar($filter, null);
+		}
 	}
 
 	public function getAuthors()
@@ -78,26 +110,35 @@ class sliCommentsModelComments extends sliModel
 		return $this->_db->loadColumn();
 	}
 
-	public function getArticles()
+	public function getItemsTitles()
 	{
 		// Create a new query object.
 		$db = $this->_db;
+		$query = $db->getQuery(true);
 
-		$query = $db->getQuery(true)
-			->select('DISTINCT a.title')
-			->from('#__slicomments as c')
-			->leftjoin('#__content AS a ON a.id = c.article_id')
-			->order('title ASC');
+		$extension = $this->getHelper();
+		$extension->getItemsTitles($query);
 
 		$q = $this->getState('filter.q', false);
 		if ($q)
 		{
 			$search = $db->Quote($db->escape($q, true) . '%', false);
-			$query->where('a.title LIKE ' . $search);
+			$extension->filterItem($query, $search);
 		}
 
 		$this->_db->setQuery($query, 0, $this->getState('list.limit', 20));
 		return $this->_db->loadColumn();
+	}
+
+	public function getExtensionHelpers()
+	{
+		$extensions = JFolder::folders(JPATH_SITE . '/components/com_slicomments/plugins');
+		foreach ($extensions as $extension)
+		{
+			$helpers[$extension] = $this->getHelper($extension);
+		}
+
+		return $helpers;
 	}
 
 	/**
@@ -105,18 +146,20 @@ class sliCommentsModelComments extends sliModel
 	 *
 	 * @return	string
 	 */
-	function getListQuery()
+	public function getListQuery()
 	{
 		// Create a new query object.
 		$db = $this->_db;
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
-		$query->select('a.id, CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name, CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email, a.text, a.created, a.status, c.id as article_id, c.alias, c.title, c.catid, a.raw');
+		$query
+			->select('a.id, CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name,'
+					.'CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email,'
+					.'a.created, a.status, a.raw, a.extension, a.item_id');
 		$query->from('#__slicomments AS a');
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
-		$query->leftjoin('#__content AS c ON c.id = a.article_id');
 
 		/*$query->select('COUNT(f.user_id) as flagged');
 		$query->leftjoin('#__slicomments_flags AS f ON f.comment_id = a.id');*/
@@ -126,6 +169,36 @@ class sliCommentsModelComments extends sliModel
 		if (!empty($status))
 		{
 			$query->where('(a.status = ' . implode(' OR a.status = ', $status) . ')');
+		}
+
+		// Filter by extension
+		$extension = $this->getState('extension');
+		if (!empty($extension))
+		{
+			$this->extension->queryHook($query);
+			$query->where('a.extension = '. $db->Quote($extension));
+
+			// Search item
+			$item = $this->getState('filter.item');
+			if (!empty($item))
+			{
+				$item = $db->Quote($db->getEscaped($item, true) . '%');
+				$this->extension->filterItem($query, $item);
+			}
+
+			// Filter by article category
+			$category = (int) $this->getState('filter.category');
+			if (!empty($category))
+			{
+				$this->extension->filterCategory($query, $category);
+			}
+		}
+		else
+		{
+			foreach ($this->getExtensionHelpers() as $helper)
+			{
+				$helper->queryHook($query);
+			}
 		}
 
 		// Search comment
@@ -144,21 +217,6 @@ class sliCommentsModelComments extends sliModel
 			$query->where('(a.name LIKE ' . $author . ' OR u.name LIKE ' . $author . ')');
 		}
 
-		// Search article
-		$article = $this->getState('filter.article');
-		if (!empty($article))
-		{
-			$article = $db->Quote($db->escape($article, true) . '%');
-			$query->where('c.title LIKE ' . $article);
-		}
-
-		// Filter by article category
-		$category = $this->getState('filter.category');
-		if (!empty($category))
-		{
-			$query->where('c.catid = ' . (int) $category);
-		}
-
 		$query->group('a.id');
 
 		// Add the list ordering clause.
@@ -166,6 +224,30 @@ class sliCommentsModelComments extends sliModel
 
 		// echo nl2br(str_replace('#__', 'yhb1y_', $query));
 		return $query;
+	}
+
+	public function getComments()
+	{
+		JDEBUG && $GLOBALS['_PROFILER']->mark('beforeGetComments');
+		$comments = $this->getItems();
+		JDEBUG && $GLOBALS['_PROFILER']->mark('beforePreProcessComments');
+		$comments = $this->preProcess($comments);
+		JDEBUG && $GLOBALS['_PROFILER']->mark('afterPreProcessComments');
+		return $comments;
+	}
+
+	/**
+	 * Pre process the comments adding the avatar URI if any and the profile URL if any
+	 */
+	public function preProcess($comments)
+	{
+		$extensions = $this->getExtensionHelpers();
+		foreach ($comments as $comment)
+		{
+			$comment->link = $extensions[$comment->extension]->getLink($comment);
+			$comment->title = $extensions[$comment->extension]->getTitle($comment);
+		}
+		return $comments;
 	}
 
 	public function getFlags()

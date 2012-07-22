@@ -8,7 +8,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-require_once JPATH_SITE.'/components/com_content/helpers/route.php';
 require_once JPATH_COMPONENT.'/helpers/comments.php';
 
 $Joomla3 = version_compare(JVERSION, "3.0", "ge");
@@ -28,7 +27,7 @@ $this->state->get('filter.search')||
 $this->state->get('filter.category') ||
 $this->state->get('filter.article') ||
 $this->state->get('filter.author') ||
-array_diff($this->state->get('filter.status'), array(0,1)) != array();
+array_diff($this->state->get('filter.status',  array(0,1)), array(0,1)) != array();
 
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_slicomments');?>" method="post" name="adminForm" id="adminForm" class="<?php if($hasFilters) echo 'hasFilters'; ?>">
@@ -62,9 +61,9 @@ array_diff($this->state->get('filter.status'), array(0,1)) != array();
 					</a>
 				</th>
 				<th width="15%" class="nowrap">
-					<a href="#" class="sort-column" title="Click to sort by Article" data-sort="article_id">
-						<?php echo JText::_('COM_COMMENTS_HEADING_ARTICLE'); ?>
-						<i class="icon-sort<?php if($listOrder == 'article_id') echo ' sort-dir-', strtolower($listDirn); ?>"></i>
+					<a href="#" class="sort-column" title="<?php echo JText::_('COM_COMMENTS_HEADING_TITLE_'.$this->state->get('extension', 'ALL')); ?>" data-sort="item_id">
+						<?php echo JText::_('COM_COMMENTS_HEADING_RESPONSE_TO'); ?>
+						<i class="icon-sort<?php if($listOrder == 'item_id') echo ' sort-dir-', strtolower($listDirn); ?>"></i>
 					</a>
 				</th>
 			</tr>

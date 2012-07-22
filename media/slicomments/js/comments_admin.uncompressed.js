@@ -156,8 +156,9 @@ window.addEvent('domready', function(){
 		}).send();
 	});
 
-	// Auto complete for filter_author and filter_article
-	['author', 'article'].each(function(a){
+	// Auto complete for filter_author and filter_item
+	['author', 'item'].each(function(a){
+		if (!form['filter_' + a]) return;
 		new Meio.Autocomplete(form['filter_' + a], 'index.php?option=com_slicomments&task=comments.get' + a.capitalize() + 's&format=raw', {
 			filter: {
 				filter: function(text, data){return true;},
@@ -186,7 +187,10 @@ window.addEvent('domready', function(){
 	});
 
 	// Transform filter_category into 'chosen'
-	var chosen = new Chosen(form.filter_category, {allow_single_deselect: true});
+	if (form.filter_category) {
+		var chosen_category = new Chosen(form.filter_category, {allow_single_deselect: true});
+	}
+	var chosen_extension = new Chosen(form.filter_extension, {allow_single_deselect: true});
 
 	// Toogle check behaviour
 	$('toggle-check').addEvent('click', function(){
@@ -245,12 +249,12 @@ window.addEvent('domready', function(){
 			// Clean the tracker
 			filterTracker = [];
 			// Reset values
-			['search', 'author', 'article'].each(function(name){
-				form['filter_' + name].set('value', '');
+			['search', 'author', 'item'].each(function(name){
+				if (name = form['filter_' + name]) name.set('value', '');
 			});
 			// Special case for filter_category
-			if (form.filter_category.get('value') != '') {
-				chosen.results_reset();
+			if (form.filter_category && form.filter_category.get('value') != '') {
+				chosen_category.results_reset();
 			}
 			filter_status.getElements('input').each(function(e){
 				if (e.get('value') == 0 || e.get('value') == 1) {
@@ -294,7 +298,7 @@ window.addEvent('domready', function(){
 		},
 		updateDebounced = update.debounce();
 
-	// Search, Filter by article, Filter by author
+	// Search, Filter by item, Filter by author
 	filterBar.addEvent('input:relay(input)', function(){
 		if (this.get('value') != '') {
 			addFilter(this.get('name'));
@@ -305,14 +309,22 @@ window.addEvent('domready', function(){
 	});
 
 	// Filter by category
-	$('filter-category').addEvent('change', function(){
-		if (this.get('value') != '') {
-			addFilter('filter-category');
-		} else {
-			removeFilter('filter-category');
-		}
-		update();
-		closeFilters();
+	try
+	{
+		$('filter-category').addEvent('change', function(){
+			if (this.get('value') != '') {
+				addFilter('filter-category');
+			} else {
+				removeFilter('filter-category');
+			}
+			update();
+			closeFilters();
+		});
+	} catch(e){}
+
+	// Filter by extension
+	$('filter-extension').addEvent('change', function(){
+		form.submit();
 	});
 
 	// Filter by status

@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 
 // Include dependencies
-require_once JPATH_ADMINISTRATOR . '/components/com_slicomments/libraries/loader.php';
+require JPATH_COMPONENT . '/helper.php';
 
 $controller = sliController::getInstance('sliComments');
 $controller->execute(JRequest::getCmd('task'));

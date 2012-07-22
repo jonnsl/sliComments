@@ -14,10 +14,13 @@ class sliCommentsControllerLorem extends sliController
 	public function ipsum()
 	{
 		$n = JRequest::getInt('n');
+		$e = JRequest::getCmd('extension');
 		$generator = new LoremIpsumGenerator();
 		$db = JFactory::getDbo();
-		$model = $this->getModel('comments');
-		$article_ids = $this->getArticleIds();
+		$model = $this->getModel('comments', '', array('ignore_request'=>true));
+		$model->setState('extension', $e);
+		$extension = $model->extension;
+		$item_ids = $extension->getItemIds();
 		$users_ids = $this->getUsersId();
 
 		for ($i = 0; $i < $n; $i++)
@@ -38,23 +41,14 @@ class sliCommentsControllerLorem extends sliController
 			$data->raw = $filter['raw'];
 			$data->text = $filter['text'];
 			$data->created = $this->getRandDate();
-			$data->article_id = $article_ids[array_rand($article_ids)];
+			$data->item_id = $item_ids[array_rand($item_ids)];
 			$data->status = $this->getRandStatus();
+			$data->extension = $e;
 
 			$db->insertObject('#__slicomments', $data, 'id');
 		}
 
 		$this->setRedirect('index.php?option=com_slicomments', 'Successfully created ' . $n . ' new comments.');
-	}
-
-	protected function getArticleIds()
-	{
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true)
-			->select('id')
-			->from('#__content');
-		$db->setQuery($query);
-		return $db->loadColumn();
 	}
 
 	protected function getUsersId()

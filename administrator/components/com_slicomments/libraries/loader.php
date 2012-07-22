@@ -13,18 +13,36 @@ function __sliAutoLoad($class)
 	static $version;
 	if ($version === null) $version = preg_replace('/\.[0-9]+$/', "", JVERSION);
 
-	switch ($class)
+	if (strpos($class, 'sliCommentsModel') === 0)
 	{
-		case 'sliController':
-			return include __DIR__ . '/' . $version . '/controller.php';
-		case 'sliViewCompat':
-			return include __DIR__ . '/' . $version . '/view.php';
-		case 'sliView':
-			return include __DIR__ . '/component/view.php';
-		case 'sliModel':
-			return include __DIR__ . '/component/model.php';
+		$model = strtolower(substr($class, 16));
+		@include JPATH_BASE.'/components/com_slicomments/models/'.$model.'.php';
+	}
+	elseif (strpos($class, 'sliCommentsController') === 0)
+	{
+		$format = JRequest::getWord('format');
+		if ($format === 'html') {
+			$format = '';
+		}
+		$controller = strtolower(substr($class, 21));
+		@include JPATH_BASE.'/components/com_slicomments/controllers/'.$controller.$format.'.php';
+	}
+	elseif (strpos($class, 'sliCommentsView') === 0)
+	{
+		$format = JRequest::getWord('format', 'html');
+		$view = strtolower(substr($class, 15));
+		@include JPATH_BASE.'/components/com_slicomments/views/'.$view.'/view.'.$format.'.php';
+	}
+	elseif (strpos($class, 'sli') === 0)
+	{
+		if (substr($class, -6) == 'Compat'){
+			$file = strtolower(substr(substr($class, 3), 0, -6));
+			@include __DIR__ . '/' . $version . '/'.$file.'.php';
+		} else {
+			$file = strtolower(substr($class, 3));
+			@include __DIR__.'/'.$file.'.php';
+		}
 	}
 
-	return false;
 }
 spl_autoload_register('__sliAutoLoad');

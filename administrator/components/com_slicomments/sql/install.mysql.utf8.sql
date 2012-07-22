@@ -6,8 +6,9 @@ CREATE TABLE IF NOT EXISTS `#__slicomments` (
   `raw` text NOT NULL default '',
   `text` text NOT NULL default '',
   `created` datetime NOT NULL default '0000-00-00 00:00:00',
-  `article_id` integer unsigned NOT NULL,
+  `item_id` integer unsigned NOT NULL,
   `status` smallint default '1',
+  `extension` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `idx_article_id` (`article_id`),
   INDEX `idx_status` (`status`)

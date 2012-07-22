@@ -55,8 +55,11 @@ defined('_JEXEC') or die;
 		</ul>
 	</td>
 	<td>
-		<a href="../<?php echo ContentHelperRoute::getArticleRoute($alias ? ($article_id . ':' . $alias) : $article_id, $catid); ?>">
+		<a href="../<?php echo $this->escape($link); ?>#comments" target="_blank">
 			<?php echo $this->escape($title); ?>
 		</a>
+		<?php if (!$this->state->get('extension')): ?>
+			<div class="extension">(<?php echo JText::_('COM_COMMENTS_'.$extension); ?>)</div>
+		<?php endif; ?>
 	</td>
 </tr>

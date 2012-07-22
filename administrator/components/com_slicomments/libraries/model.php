@@ -12,6 +12,46 @@ jimport('joomla.application.component.modellist');
 
 class sliModel extends JModelList
 {
+	public function __get($name)
+	{
+		switch ($name) {
+			case 'extension':
+				return $this->getHelper();
+			default:
+				$trace = debug_backtrace();
+				trigger_error(
+					'Undefined property via __get(): ' . $name .
+					' in ' . $trace[0]['file'] .
+					' on line ' . $trace[0]['line'],
+					E_USER_NOTICE);
+				return null;
+		}
+	}
+
+	public function getHelper($component = '')
+	{
+		static $helpers;
+		if (empty($component)) $component = $this->getState('extension');
+		if (!isset($helpers[$component]))
+		{
+			$file = JPATH_SITE . '/components/com_slicomments/plugins/'.$component. '/'.$component.'.php';
+			if (file_exists($file)) {
+				require $file;
+			} else {
+				JError::raiseError(500, 'File "'.$file.'" not found.');
+			}
+
+			$class = 'sliComments' . substr($component, 4);
+			if (class_exists($class)){
+				$helpers[$component] = new $class($this->params);
+			} else {
+				JError::raiseError(500, 'Class "'.$class.'" not found.');
+			}
+		}
+
+		return $helpers[$component];
+	}
+
 	/**
 	 * Parse bbcode into safe HTML
 	 *

@@ -16,7 +16,7 @@ class sliCommentsViewComments extends sliView
 	public function display($tpl = null)
 	{
 		$this->state		= $this->get('State');
-		$this->items		= $this->get('Items');
+		$this->items		= $this->get('Comments');
 		//$this->flaggedBy	= $this->get('Flags');
 		$this->pagination	= $this->get('Pagination');
 
@@ -35,7 +35,12 @@ class sliCommentsViewComments extends sliView
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('COM_COMMENTS_COMMENTS'), 'comments');
+		if ($extension = $this->state->get('extension')) {
+			$title = JText::sprintf('COM_COMMENTS_COMMENTS', JText::_('COM_COMMENTS_'.$extension));
+		} else {
+			$title = JText::_('COM_COMMENTS');
+		}
+		JToolBarHelper::title($title, 'comments');
 
 		require_once __DIR__ . '/../../helpers/button_html5.php';
 
