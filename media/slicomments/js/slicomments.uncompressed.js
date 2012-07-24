@@ -80,14 +80,14 @@ window.addEvent('domready', function(){
 			},
 			link: 'cancel',
 			onRequest: function(){
-				$('comments_list').destroy();
-				$('comments_pagination').destroy();
-				window.scrollTo(0, section.getPosition().y)
 				console.log('loading')
 			},
 			onSuccess: function(response){
 				console.log('loaded');
+				$('comments_list').destroy();
+				$('comments_pagination').destroy();
 				section.adopt(new Element('div').set('html', response).getChildren());
+				window.scrollTo(0, section.getPosition().y)
 			},
 			onFailure: function(xhr){
 				alert('error');
