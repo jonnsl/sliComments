@@ -69,7 +69,7 @@ class sliCommentsModelComments extends JModelList
 		} else if ($status == -3) {
 			$query->where('f.user_id <> 0');
 		} else if ($status != '*') {
-			$query->where('status = '.$db->getEscaped($status));
+			$query->where('status = '.$db->escape($status));
 		}
 
 		// Filter by search in title.
@@ -79,11 +79,11 @@ class sliCommentsModelComments extends JModelList
 				$query->where('a.id = '.(int) substr($search, 3));
 			}
 			else if (stripos($search, 'author:') === 0) {
-				$search = $db->Quote('%'.$db->getEscaped(substr($search, 7), true).'%');
+				$search = $db->Quote('%'.$db->escape(substr($search, 7), true).'%');
 				$query->where('(a.name LIKE '.$search.' OR u.name LIKE '.$search.' OR u.username LIKE '.$search.')');
 			}
 			else {
-				$search = $db->Quote('%'.$db->getEscaped($search, true).'%');
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
 				$query->where('a.raw LIKE '.$search);
 			}
 		}
@@ -91,7 +91,7 @@ class sliCommentsModelComments extends JModelList
 		$query->group('a.id');
 
 		// Add the list ordering clause.
-		$query->order($db->getEscaped($this->getState('list.ordering', 'a.created')).' '.$db->getEscaped($this->getState('list.direction', 'DESC')));
+		$query->order($db->escape($this->getState('list.ordering', 'a.created')).' '.$db->escape($this->getState('list.direction', 'DESC')));
 
 		//echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
@@ -114,7 +114,7 @@ class sliCommentsModelComments extends JModelList
 				->leftjoin('#__users as u ON u.id = a.user_id')
 				->where('a.comment_id = ' . (int) $comment->id);
 			$db->setQuery($query, 0, 5);
-			$flags[$comment->id] = $db->loadResultArray();
+			$flags[$comment->id] = $db->loadColumn();
 		}
 
 		return $flags;

@@ -54,7 +54,7 @@ class sliCommentsControllerLorem extends JController
 			->select('id')
 			->from('#__content');
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 
 	protected function getUsersId()
@@ -64,7 +64,7 @@ class sliCommentsControllerLorem extends JController
 			->select('id')
 			->from('#__users');
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		return $db->loadColumn();
 	}
 
 	protected function getRandDate()
