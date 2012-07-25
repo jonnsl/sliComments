@@ -57,6 +57,22 @@
 	float: right;
 	margin: 5px 5px 0 0;
 }
+.comment-email span {
+	display:inline-block;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	max-width:125px;
+	padding-left:4px;
+	padding-right:1px
+	}
+.comment-email::before {
+	content:"(";
+	position:absolute
+}
+.comment-email::after {
+	content:")";
+	position:absolute
+}
 td:hover .actions {
 	visibility: visible
 }

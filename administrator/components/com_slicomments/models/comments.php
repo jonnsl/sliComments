@@ -82,6 +82,10 @@ class sliCommentsModelComments extends JModelList
 				$search = $db->Quote('%'.$db->escape(substr($search, 7), true).'%');
 				$query->where('(a.name LIKE '.$search.' OR u.name LIKE '.$search.' OR u.username LIKE '.$search.')');
 			}
+			else if (stripos($search, 'email:') === 0) {
+				$search = $db->Quote('%'.$db->escape(substr($search, 6), true).'%');
+				$query->where('(a.email LIKE '.$search.' OR u.email LIKE '.$search.')');
+			}
 			else {
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
 				$query->where('a.raw LIKE '.$search);
