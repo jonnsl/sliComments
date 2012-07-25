@@ -31,7 +31,7 @@ class sliCommentsModelComments extends JModelList
 			$filter['email'] = $this->params->get('email', 1) != -1 ? strtolower($data['email']) : '';
 		}
 		$filter['raw'] = $data['text'];
-		$filter['text'] = $this->_parse($data['text']);
+		$filter['text'] = $this->_parse($this->censureWords($data['text']));
 		$filter['article_id'] = (int)$data['article_id'];
 		$filter['created'] = JFactory::getDate()->toMysql();
 		$filter['status'] = (int) $data['status'];
@@ -192,6 +192,70 @@ class sliCommentsModelComments extends JModelList
 		}
 
 		return $text;
+	}
+
+	/**
+	 * Parse the content by censoring blacklisted words.
+	 * Borrowed from php-decoda.
+	 *
+	 * @param	string	$content
+	 * @return	string
+	 */
+	public function censureWords($content)
+	{
+		$censored = $this->params->get('censored_words', '');
+		$censored = array_filter(array_map(array('JString', 'trim'), explode(',', $censored)));
+
+		foreach ($censored as $word)
+		{
+			$letters = JString::str_split($word);
+			$regex = '';
+
+			foreach ($letters as $letter) {
+				$regex .= preg_quote($letter, '/') . '{1,}';
+			}
+
+			$content = preg_replace_callback('/(^|\s|\n)?' . $regex . '(\s|\n|$)?/is', array($this, '_censorCallback'), $content);
+		}
+
+
+		return $content;
+	}
+
+	/**
+	 * Censor a word if its only by itself.
+	 * Borrowed from php-decoda.
+	 *
+	 * @param	array	$matches
+	 * @return	string
+	 */
+	protected function _censorCallback($matches)
+	{
+		if (count($matches) === 1) {
+			return $matches[0];
+		}
+
+		$length = JString::strlen(JString::trim($matches[0]));
+		$censored = '';
+		$symbols = str_shuffle('*@#$*&%');
+		$l = isset($matches[1]) ? $matches[1] : '';
+		$r = isset($matches[2]) ? $matches[2] : '';
+		$i = 0;
+		$s = 0;
+
+		while ($i < $length)
+		{
+			$censored .= $symbols[$s];
+
+			$i++;
+			$s++;
+
+			if ($s > 6) {
+				$s = 0;
+			}
+		}
+
+		return $l . $censored . $r;
 	}
 
 	public function validate($data)

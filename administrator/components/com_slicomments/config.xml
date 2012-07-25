@@ -450,6 +450,15 @@
 			description="COM_COMMENTS_BLOCKED_EMAILS_DESC"
 			default=""/>
 
+		<field
+			name="censored_words"
+			type="textarea"
+			cols="35"
+			rows="4"
+			label="COM_COMMENTS_CENSORED_WORDS_LABEL"
+			description="COM_COMMENTS_CENSORED_WORDS_DESC"
+			default=""/>
+
 	</fieldset>
 
 	<fieldset
