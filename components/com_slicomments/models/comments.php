@@ -28,7 +28,7 @@ class sliCommentsModelComments extends JModelList
 		} else {
 			$filter['user_id'] = 0;
 			$filter['name'] = $this->params->get('name', 1) != -1 ? trim($data['name']) : '';
-			$filter['email'] = $this->params->get('email', 1) != -1 ? $data['email'] : '';
+			$filter['email'] = $this->params->get('email', 1) != -1 ? strtolower($data['email']) : '';
 		}
 		$filter['raw'] = $data['text'];
 		$filter['text'] = $this->_parse($data['text']);
@@ -232,6 +232,10 @@ class sliCommentsModelComments extends JModelList
 				$this->setError(JText::_('COM_COMMENTS_ERROR_EMAIL_REQUIRED'));
 				return false;
 			}
+			if (!$this->validateEmail($data['email'])) {
+				$this->setError(JText::_('COM_COMMENTS_ERROR_INVALID_EMAIL'));
+				return false;
+			}
 		}
 		if (($n = JString::strlen($data['raw'])) < ($p = $this->params->get('minimum_chars', 5))) {
 			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MINLENGTH', $p, $n));
@@ -241,6 +245,37 @@ class sliCommentsModelComments extends JModelList
 			$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COMMENT_MAXLENGTH', $p, $n));
 			return false;
 		}
+		return true;
+	}
+
+	public function validateEmail($email)
+	{
+		if (strpos($email, '@') === false)
+		{
+			return false;
+		}
+
+		$forbidden = $this->params->get('blocked_emails', '');
+		$forbidden = array_filter(explode(',', $forbidden));
+
+		foreach ($forbidden as $blocked)
+		{
+			$blocked = trim($blocked);
+
+			if (strpos($blocked, '*') !== false)
+			{
+				$blocked = str_replace('\*', '.*?', preg_quote($blocked, '/'));
+				if (preg_match('/^'.$blocked.'$/i', $email))
+				{
+					return false;
+				}
+			}
+			else if ($email === $blocked)
+			{
+				return false;
+			}
+		}
+
 		return true;
 	}
 

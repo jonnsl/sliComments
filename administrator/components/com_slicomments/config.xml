@@ -269,25 +269,6 @@
 				<option value="1">JYES</option>
 				<option value="0">JNO</option>
 		</field>
-
-		<field
-			name="check_names"
-			type="radio"
-			label="COM_COMMENTS_CHECK_NAMES_LABEL"
-			description="COM_COMMENTS_CHECK_NAMES_DESC"
-			default="1">
-				<option value="1">JYES</option>
-				<option value="0">JNO</option>
-		</field>
-
-		<field
-			name="forbidden_names"
-			type="textarea"
-			cols="35"
-			rows="4"
-			label="COM_COMMENTS_FORBIDDEN_NAMES_LABEL"
-			description="COM_COMMENTS_FORBIDDEN_NAMES_DESC"
-			default="admin, administrator, moderator"/>
 	</fieldset>
 
 	<fieldset name="LAYOUT">
@@ -438,6 +419,37 @@
 				<option value="1">JYES</option>
 				<option value="0">JNO</option>
 		</field>
+	</fieldset>
+
+	<fieldset name="restrictions">
+		<field
+			name="check_names"
+			type="radio"
+			label="COM_COMMENTS_CHECK_NAMES_LABEL"
+			description="COM_COMMENTS_CHECK_NAMES_DESC"
+			default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+		</field>
+
+		<field
+			name="forbidden_names"
+			type="textarea"
+			cols="35"
+			rows="4"
+			label="COM_COMMENTS_FORBIDDEN_NAMES_LABEL"
+			description="COM_COMMENTS_FORBIDDEN_NAMES_DESC"
+			default="admin, administrator, moderator"/>
+
+		<field
+			name="blocked_emails"
+			type="textarea"
+			cols="35"
+			rows="4"
+			label="COM_COMMENTS_BLOCKED_EMAILS_LABEL"
+			description="COM_COMMENTS_BLOCKED_EMAILS_DESC"
+			default=""/>
+
 	</fieldset>
 
 	<fieldset
