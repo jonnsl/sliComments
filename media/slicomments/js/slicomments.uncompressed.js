@@ -126,9 +126,11 @@ window.addEvent('domready', function(){
 	var lang = document.getElement('html').get('lang');
 
 	// Make sure that the language is in the format xx-XX
+	try {
 	lang = lang.split('-');
 	lang[1] = lang[1].toUpperCase();
 	lang = lang.join('-');
+	} catch(e){}
 
 	if (Locale.list().contains(lang)) Locale.use(lang);
 
