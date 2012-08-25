@@ -232,9 +232,9 @@ window.addEvent('domready', function(){
 		this.getParent().setStyle('display', 'none');
 	});
 
-	if (!logged) {
-		var avatar = form.getElement('.profile-image'),
-			src = avatar.get('src');
+	var avatar;
+	if (!logged && (avatar = form.getElement('.profile-image'))) {
+		var src = avatar.get('src');
 		if (!!~src.indexOf('gravatar.com')){
 			src = src.toURI();
 			$('comments_form_email').addEvent('change', function(e){
