@@ -1,5 +1,14 @@
 # sliComments - Changelog #
 
+## 1.5.0 / 2012-08-27 ##
+
+  * Show "login to post" message only for guests.
+  * Remove use of deprecated API.
+  * Prevent error when avatar is disabled.
+  * Show users' email in the backend. Make users searchable by email.
+  * Add "Blocked emails" option.
+  * Add "censored words" option.
+
 ## 1.4.1 / 2012-07-09 ##
 
   * Fix issue voting when magic_quotes is on.
