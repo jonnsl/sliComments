@@ -71,7 +71,7 @@ $listDirn	= $this->state->get('list.direction');
 				</td>
 				<td>
 					<?php echo $item->name != '' ? $this->escape($item->name) : JText::_('COM_COMMENTS_ANONYMOUS'); ?>
-					<div class="comment-email"><span title="<?php echo $item->email; ?>"><?php echo $item->email; ?></span></div>
+					<div class="comment-email"><span title="<?php echo $this->escape($item->email); ?>"><?php echo $this->escape($item->email); ?></span></div>
 				</td>
 				<td class="comment">
 					<span class="submitted"><?php echo JText::sprintf('COM_COMMENTS_SUBMITTED', sliCommentsHelper::human_time_diff($item->created)); ?></span>
