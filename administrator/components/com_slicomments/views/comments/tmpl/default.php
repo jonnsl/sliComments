@@ -10,14 +10,14 @@ defined('_JEXEC') or die;
 
 require_once JPATH_SITE.'/components/com_content/helpers/route.php';
 require_once JPATH_COMPONENT.'/helpers/comments.php';
-JHtml::_('core');
+
 JHtml::_('behavior.framework', true);
 JHtml::_('behavior.tooltip');
 JHtml::_('script', 'slicomments/comments_admin.js', true, true);
 JHtml::_('script', 'slicomments/DynamicTextarea.js', true, true);
 JHtml::_('stylesheet', 'slicomments/admin.css', array(), true);
 $user		= JFactory::getUser();
-$token		= '&'.JUtility::getToken().'=1';
+$token		= '&'.JSession::getFormToken().'=1';
 $listOrder	= $this->state->get('list.ordering');
 $listDirn	= $this->state->get('list.direction');
 ?>

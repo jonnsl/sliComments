@@ -33,7 +33,7 @@ class sliCommentsModelComments extends JModelList
 		$filter['raw'] = $data['text'];
 		$filter['text'] = $this->_parse($this->censureWords($data['text']));
 		$filter['article_id'] = (int)$data['article_id'];
-		$filter['created'] = JFactory::getDate()->toMysql();
+		$filter['created'] = JFactory::getDate()->toSql();
 		$filter['status'] = (int) $data['status'];
 
 		return $filter;

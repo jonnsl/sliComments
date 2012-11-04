@@ -9,6 +9,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.form.formfield');
+jimport('joomla.filesystem.folder');
 
 class JFormFieldEmoticons extends JFormField
 {
@@ -87,7 +88,7 @@ class JFormFieldEmoticons extends JFormField
 				$name = pathinfo($file);
 				$name = preg_replace('/'.preg_quote('.'.$name['extension']).'$/', '', $name['filename']);
 				$file = preg_replace('/^'.preg_quote(JPATH_ROOT.'/', '/').'/i', '', $file);
-				$file = str_replace(DS, '/', $file);
+				$file = str_replace(DIRECTORY_SEPARATOR, '/', $file);
 				$options[] = JHtml::_('select.option', $file, $name);
 			}
 		}

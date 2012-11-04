@@ -86,7 +86,7 @@ class sliCommentsControllerComments extends JController
 		static $model;
 		if ($model == null)
 		{
-			$model = JModel::getInstance('Comments', 'sliCommentsModel');
+			$model = $this->createModel('Comments', 'sliCommentsModel');
 			// Task is a reserved state
 			$model->setState('task', $this->task);
 
