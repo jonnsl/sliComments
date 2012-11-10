@@ -9,8 +9,8 @@
 defined('_JEXEC') or die;
 
 // Include dependencies
-jimport('joomla.application.component.controller');
+require_once JPATH_ADMINISTRATOR . '/components/com_slicomments/libraries/loader.php';
 
-$controller = JController::getInstance('sliComments');
+$controller = sliController::getInstance('sliComments');
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();

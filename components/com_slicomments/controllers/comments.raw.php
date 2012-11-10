@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class sliCommentsControllerComments extends JController
+class sliCommentsControllerComments extends sliController
 {
 	public function feed()
 	{

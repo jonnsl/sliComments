@@ -43,7 +43,7 @@ class plgContentSlicomments extends JPlugin
 		elseif ($view == 'article')
 		{
 			// Include dependencies
-			jimport('application.component.controller');
+			require_once JPATH_ADMINISTRATOR . '/components/com_slicomments/libraries/loader.php';
 
 			$old_view = JRequest::getCmd('view');
 			$old_task = JRequest::getVar('task');

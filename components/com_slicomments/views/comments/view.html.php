@@ -8,9 +8,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
-
-class sliCommentsViewComments extends JView
+class sliCommentsViewComments extends sliView
 {
 	/**
 	 * Display the view

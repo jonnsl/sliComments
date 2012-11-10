@@ -8,9 +8,8 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
 require_once JPATH_SITE . '/components/com_content/helpers/route.php';
 
-class sliCommentsViewComments extends JView
+class sliCommentsViewComments extends sliView
 {
 }

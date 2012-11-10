@@ -8,7 +8,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-class sliCommentsControllerComments extends JController
+class sliCommentsControllerComments extends sliController
 {
 	public $default_view = 'comments';
 

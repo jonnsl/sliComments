@@ -14,8 +14,8 @@ if (!JFactory::getUser()->authorise('manage', 'com_slicomments')) {
 }
 
 // Include dependencies
-jimport('joomla.application.component.controller');
+require_once __DIR__ . '/libraries/loader.php';
 
-$controller = JController::getInstance('sliComments');
+$controller = sliController::getInstance('sliComments');
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
