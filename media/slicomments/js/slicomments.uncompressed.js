@@ -206,12 +206,26 @@ window.addEvent('domready', function(){
 							this.form.text.fireEvent('blur');
 						}
 						OverText.update();
-
+						if (timer){
+							clearInterval(timer);
+							button.set('disabled', null);
+							this.set('html', post);
+						}
 				}.bind(this),
 				onFailure: function(xhr){
 					alert(xhr.responseText);
 				}
 			}).send();
+			var button = this,
+				i = 1,
+				post = button.get('html'),
+				sending = button.get('data-sending') || 'Sending';
+			this.set('disabled', 'disabled');
+			this.set('html', sending);
+			var timer = (function (){
+				var ellipsis = new Array(i++%4 + 1).join('.');
+				button.set('html', sending + ellipsis)
+			}).periodical(1000/3);
 		}
 	});
 
