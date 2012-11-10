@@ -4,11 +4,22 @@
 .icon-32-approve {
 	background-image: url(../img/approve32.png)
 }
+.icon-approve::before {
+	content: "G";
+	color: #51A351
+}
 .icon-32-unapprove {
 	background-image: url(../img/unapprove32.png)
 }
+.icon-unapprove::before {
+	content: "J";
+	color: #BD362F
+}
 .icon-32-spam {
 	background-image: url(../img/spam32.png)
+}
+.icon-spam::before {
+	content: "5"
 }
 .icon-32-restore {
 	background-image: url(../img/restore32.png) !important
@@ -103,7 +114,7 @@ td:hover .actions {
 	margin-left: 5px
 }
 .text {
-	font-size: 1.1em;
+	font-size: 13px;
 	color: #333
 }
 .slicomments-quote {

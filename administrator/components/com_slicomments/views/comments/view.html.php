@@ -68,4 +68,13 @@ class sliCommentsViewComments extends sliView
 
 		if (JFactory::getUser()->authorise('core.admin')) JToolBarHelper::preferences('com_slicomments');
 	}
+
+	protected function getSortFields()
+	{
+		return array(
+			'a.name' => JText::_('COM_COMMENTS_HEADING_AUTHOR'),
+			'a.article_id' => JText::_('COM_COMMENTS_HEADING_ARTICLE'),
+			'a.created' => JText::_('COM_COMMENTS_HEADING_SUBMITTED')
+		);
+	}
 }
