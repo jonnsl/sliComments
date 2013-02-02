@@ -206,15 +206,17 @@ window.addEvent('domready', function(){
 							this.form.text.fireEvent('blur');
 						}
 						OverText.update();
-						if (timer){
-							clearInterval(timer);
-							button.set('disabled', null);
-							this.set('html', post);
-						}
 				}.bind(this),
 				onFailure: function(xhr){
 					alert(xhr.responseText);
-				}
+				},
+				onComplete: function(){
+					if (timer){
+						clearInterval(timer);
+						button.set('disabled', null);
+						this.set('html', post);
+					}
+				}.bind(this)
 			}).send();
 			var button = this,
 				i = 1,
