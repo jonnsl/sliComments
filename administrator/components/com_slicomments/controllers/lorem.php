@@ -9,7 +9,7 @@
 defined('_JEXEC') or die;
 require_once dirname(__FILE__) . '/../helpers/LoremIpsum.class.php';
 
-class sliCommentsControllerLorem extends JController
+class sliCommentsControllerLorem extends sliController
 {
 	public function ipsum()
 	{

@@ -14,6 +14,8 @@ function __sliAutoLoad($class)
 			return include __DIR__ . '/' . $version . '/controller.php';
 		case 'sliView':
 			return include __DIR__ . '/' . $version . '/view.php';
+		case 'sliModel':
+			return include __DIR__ . '/' . $version . '/model.php';
 	}
 
 	return false;

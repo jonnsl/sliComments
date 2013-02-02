@@ -151,7 +151,7 @@ class Com_sliCommentsInstallerScript
 			'manage' => array('8' => 1)
 		);
 		jimport('joomla.access.rules');
-		$rules	= new JRules($defaultRules);
+		$rules	= new JAccessRules($defaultRules);
 		$asset	= JTable::getInstance('asset');
 
 		if (!$asset->loadByName('com_slicomments')) {

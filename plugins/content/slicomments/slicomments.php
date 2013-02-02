@@ -29,6 +29,9 @@ class plgContentSlicomments extends JPlugin
 	{
 		if (strtolower(JRequest::getWord('format', 'html')) !== 'html') return;
 
+		// Include dependencies
+		require_once JPATH_ADMINISTRATOR . '/components/com_slicomments/libraries/loader.php';
+
 		$view = strtolower(JRequest::getCmd('view'));
 		if ($this->params->get('comments_count', false) && ($view == 'featured' || $view == 'category'))
 		{
@@ -42,9 +45,6 @@ class plgContentSlicomments extends JPlugin
 		}
 		elseif ($view == 'article')
 		{
-			// Include dependencies
-			require_once JPATH_ADMINISTRATOR . '/components/com_slicomments/libraries/loader.php';
-
 			$old_view = JRequest::getCmd('view');
 			$old_task = JRequest::getVar('task');
 			JRequest::setVar('view', 'comments');
@@ -100,8 +100,8 @@ class plgContentSlicomments extends JPlugin
 		static $model;
 		if ($model === null)
 		{
-			JModel::addIncludePath(JPATH_SITE.'/components/com_slicomments/models', 'sliCommentsModel');
-			$model = JModel::getInstance('Comments', 'sliCommentsModel', array('ignore_request' => true));
+			require_once JPATH_SITE.'/components/com_slicomments/models/comments.php';
+			$model = new sliCommentsModelComments(array('ignore_request' => true));
 		}
 		return $model;
 	}
