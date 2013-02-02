@@ -20,39 +20,40 @@ class Com_sliCommentsInstallerScript
 		$db->setQuery("UPDATE `#__extensions` SET enabled = 1 WHERE name = 'plg_content_slicomments'");
 		$result = $db->query();
 ?>
-		<table class="adminlist">
+		<table class="adminlist table-striped">
 			<thead>
 				<tr>
-					<th class="title" colspan="2"><?php echo JText::_('Extension'); ?></th>
+					<th class="title"><?php echo JText::_('Extension'); ?></th>
 					<th width="30%"><?php echo JText::_('Status'); ?></th>
 				</tr>
 			</thead>
-			<tfoot>
-				<tr>
-					<td colspan="3"></td>
-				</tr>
-			</tfoot>
 			<tbody>
 				<tr class="row0">
-					<td class="key" colspan="2">sliComments</td>
+					<td class="key">sliComments</td>
 					<td><strong><?php echo JText::_('Installed'); ?></strong></td>
 				</tr>
-				<?php if (count($status->plugins)) : ?>
-					<tr>
-						<th><?php echo JText::_('Plugin'); ?></th>
-						<th><?php echo JText::_('Group'); ?></th>
-						<th></th>
-					</tr>
-					<?php foreach ($status->plugins as $plugin) : ?>
-					<tr class="row<?php echo (++ $rows % 2); ?>">
-						<td class="key"><?php echo ucfirst($plugin['name']); ?></td>
-						<td class="key"><?php echo ucfirst($plugin['group']); ?></td>
-						<td><strong><?php echo ($plugin['result'])?JText::_('Installed'):'<span style="color:red;">'.JText::_('Not installed').'</span>'; ?></strong></td>
-					</tr>
-					<?php endforeach; ?>
-				<?php endif; ?>
 			</tbody>
 		</table>
+		<?php if (count($status->plugins)) : ?>
+		<table class="adminlist table-striped">
+			<thead>
+				<tr>
+					<th><?php echo JText::_('Plugin'); ?></th>
+					<th><?php echo JText::_('Group'); ?></th>
+					<th><?php echo JText::_('Status'); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($status->plugins as $plugin) : ?>
+				<tr class="row<?php echo (++ $rows % 2); ?>">
+					<td class="key"><?php echo ucfirst($plugin['name']); ?></td>
+					<td class="key"><?php echo ucfirst($plugin['group']); ?></td>
+					<td><strong><?php echo ($plugin['result'])?JText::_('Installed'):'<span style="color:red;">'.JText::_('Not installed').'</span>'; ?></strong></td>
+				</tr>
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+		<?php endif; ?>
 <?php
 		return true;
 	}
