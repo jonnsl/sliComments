@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 $user = JFactory::getUser();
 $canComment = $user->authorise('post', 'com_slicomments');
 $name = $this->params->get('name', 1);
-$email = $this->params->get('email', 0);
+$email = $this->params->get('email', 1);
 $maximum_chars = $this->params->get('maximum_chars', 500);
 ?>
 <form class="comments_form" action="<?php echo JRoute::_('index.php?option=com_slicomments&task=comments.post'); ?>" method="post" data-logged="<?php echo (!$user->guest ? '1' : '0');?>" data-position="<?php echo $this->state->get('list.order_dir', 'DESC') == 'DESC' ? 'top' : 'bottom'; ?>">
