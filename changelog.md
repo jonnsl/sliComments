@@ -1,5 +1,10 @@
 # sliComments - Changelog #
 
+## 1.6.0 / 2013-02-02 ##
+
+  * Compatible with Joomla! 3.0
+  * Disable the submit button while sending.
+
 ## 1.5.0 / 2012-08-27 ##
 
   * Show "login to post" message only for guests.
@@ -29,13 +34,13 @@
   * Prevent empty emoticons to be inserted.
 
 ## 1.3.2 / 2012-05-15 ##
-  
+
   * Fix flagged filter not working.
   * Fix Strict Standards errors.
   * Redirect after change status of a comment.
 
 ## 1.3.1 / 2012-05-04 ##
-  
+
   * Fixed pagination in the backend.
 
 ## 1.3.0 / 2012-03-25 ##
