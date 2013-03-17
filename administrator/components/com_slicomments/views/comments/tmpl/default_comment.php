@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 		<div class="comment-email"><span title="<?php echo $this->escape($email); ?>"><?php echo $this->escape($email); ?></span></div>
 	</td>
 	<td class="comment <?php echo sliCommentsHelper::getClass($status); ?>">
-		<span class="submitted"><?php echo JText::sprintf('COM_COMMENTS_SUBMITTED', sliCommentsHelper::human_time_diff($created)); ?></span>
+		<div class="submitted"><?php echo JText::sprintf('COM_COMMENTS_SUBMITTED', sliCommentsHelper::human_time_diff($created)); ?></div>
 		<?php
 		/*if ($flagged) :
 			$desc = implode('<br/>', array_map(array($this, 'escape'), $this->flaggedBy[$id]));
@@ -28,13 +28,13 @@ defined('_JEXEC') or die;
 
 			<img src="../media/slicomments/img/spam16.png" title="<?php echo JText::_('COM_COMMENTS_FLAGGED_BY'), '::', $desc; ?>" class="flagged hasTip"/>
 		<?php endif;*/ ?>
-		<span class="text"><?php
+		<div class="text"><?php
 		if ($search = $this->state->get('filter.search')){
 			echo sliCommentsHelper::highlight(nl2br($this->escape($raw)), $search);
 		} else {
 			echo nl2br($this->escape($raw));
 		}
-		?></span>
+		?></div>
 		<ul class="actions">
 			<li class="unapprove-comment">
 				<a href="index.php?option=com_slicomments&amp;task=comments.unapprove&amp;id=<?php echo $id, $token; ?>"><?php echo JText::_('COM_COMMENTS_ACTION_UNAPPROVE'); ?></a>

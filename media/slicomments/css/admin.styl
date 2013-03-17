@@ -58,15 +58,10 @@ image(path)
 	box-sizing border-box
 	padding 0
 
-.submitted
-	float left
-	width 100%
-	margin-bottom 5px
-
 .text
-	float left
 	font-size 13px
 	color #333
+	margin 5px 0
 
 .comment-email
 	span
@@ -91,28 +86,26 @@ td:hover .actions
 	visibility visible
 
 .actions
-	float left
-	clear both
-	margin 5px 5px 0 0
 	list-style-type none
 	padding 0
+	margin 0
 	visibility hidden
 	li
-		float left
+		display inline-block
 		margin 2px
 		border-right 1px solid #333
 		padding-right 4px
 		&:last-child
 			border 0
-	.approve-comment
-	.not-spam-comment
-	.restore-comment
+	.approve-comment a
+	.not-spam-comment a
+	.restore-comment a
 		color #006505
-	.unapprove-comment
+	.unapprove-comment a
 		color #D98500
-	.spam-comment
-	.trash-comment
-	.delete-comment
+	.spam-comment a
+	.trash-comment a
+	.delete-comment a
 		color #BC0B0B
 
 .approved, .unapproved

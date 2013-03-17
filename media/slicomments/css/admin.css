@@ -14,19 +14,18 @@
 .adminlist td{position:relative}
 .editing .actions{display:none !important}
 .edit{width:100%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:0}
-.submitted{float:left;width:100%;margin-bottom:5px}
-.text{float:left;font-size:13px;color:#333}
+.text{font-size:13px;color:#333;margin:5px 0}
 .comment-email span{display:inline-block;-o-text-overflow:ellipsis;text-overflow:ellipsis;overflow:hidden;max-width:125px;padding-left:4px;padding-right:1px}
 .comment-email::before{content:"(";position:absolute}
 .comment-email::after{content:")";position:absolute}
 .comments-post{float:right;margin:5px 5px 0 0}
 td:hover .actions{visibility:visible}
-.actions{float:left;clear:both;margin:5px 5px 0 0;list-style-type:none;padding:0;visibility:hidden;}
-.actions li{float:left;margin:2px;border-right:1px solid #333;padding-right:4px;}
+.actions{list-style-type:none;padding:0;margin:0;visibility:hidden;}
+.actions li{display:inline-block;margin:2px;border-right:1px solid #333;padding-right:4px;}
 .actions li:last-child{border:0}
-.actions .approve-comment,.actions .not-spam-comment,.actions .restore-comment{color:#006505}
-.actions .unapprove-comment{color:#d98500}
-.actions .spam-comment,.actions .trash-comment,.actions .delete-comment{color:#bc0b0b}
+.actions .approve-comment a,.actions .not-spam-comment a,.actions .restore-comment a{color:#006505}
+.actions .unapprove-comment a{color:#d98500}
+.actions .spam-comment a,.actions .trash-comment a,.actions .delete-comment a{color:#bc0b0b}
 .approved .not-spam-comment,.unapproved .not-spam-comment,.approved .restore-comment,.unapproved .restore-comment,.approved .delete-comment,.unapproved .delete-comment{display:none}
 .approved .trash-comment,.unapproved .trash-comment{border:0}
 .approved .approve-comment{display:none}

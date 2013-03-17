@@ -35,9 +35,10 @@ window.addEvent('domready', function(){
 		var td = this.getParent('td');
 		td.removeClass('editing');
 		td.getElement('.text').setStyle('display', 'block');
-		td.getElement('textarea').destroy();
+		var textarea = td.getElement('textarea');
+		textarea.getParent().destroy();
+		textarea.destroy();
 		td.getElement('.comments-post').destroy();
-		td.getElement('div').destroy();
 		event.stop();
 	});
 
@@ -190,7 +191,9 @@ window.addEvent('domready', function(){
 	if (form.filter_category) {
 		var chosen_category = new Chosen(form.filter_category, {allow_single_deselect: true});
 	}
-	var chosen_extension = new Chosen(form.filter_extension, {allow_single_deselect: true});
+	if (form.filter_extension) {
+		var chosen_extension = new Chosen(form.filter_extension, {allow_single_deselect: true});
+	}
 
 	// Toogle check behaviour
 	$('toggle-check').addEvent('click', function(){
@@ -323,9 +326,12 @@ window.addEvent('domready', function(){
 	} catch(e){}
 
 	// Filter by extension
-	$('filter-extension').addEvent('change', function(){
-		form.submit();
-	});
+	try
+	{
+		$('filter-extension').addEvent('change', function(){
+			form.submit();
+		});
+	} catch(e){}
 
 	// Filter by status
 	var filter_status = $('filter-status');
