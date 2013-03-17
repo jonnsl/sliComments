@@ -9,6 +9,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.utilities.arrayhelper');
+jimport('joomla.filesystem.folder');
 
 class sliCommentsModelComments extends sliModel
 {
