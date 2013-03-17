@@ -17,7 +17,7 @@ require_once __DIR__ . '/../../../helpers/html/extension.php';
 
 <div class="filter-select fltrt pull-right" title="<?php echo JText::_('COM_COMMENTS_FILTER_TITLE_EXTENSION'); ?>">
 	<button class="filter-button">
-		<img src="templates/bluestork/images/menu/icon-16-component.png" alt="Extension" class="filter-icon"/>
+		<?php echo JHtml::_('image', ($Joomla3?'slicomments':'menu').'/icon-16-component.png', 'Extension', array('class' => 'filter-icon'), true); ?>
 		<span class="arrow-down"></span>
 	</button>
 	<div class="filter-container">
