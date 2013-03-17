@@ -67,7 +67,7 @@ abstract class sliExtension
 				}
 			}
 		}
-		JError::raiseError(500, 'Call to undefined method '.__CLASS__.'::'.$func.'()');
+		JError::raiseError(500, 'Call to undefined method '.__CLASS__.'::'.$name.'()');
 	}
 
 	public function getItemsTitles($query)
@@ -77,7 +77,7 @@ abstract class sliExtension
 			->leftjoin("$this->table ON $this->table.$this->pk = a.item_id")
 			->order('title ASC');
 	}
-	
+
 	public function filterItem($query, $item)
 	{
 		$query->where('title LIKE ' . $item);
