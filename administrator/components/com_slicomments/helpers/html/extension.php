@@ -4,7 +4,7 @@ jimport('joomla.filesystem.folder');
 
 class JHtmlsliCommentsExtension
 {
-	public function options()
+	public static function options()
 	{
 		$options = array();
 		$files = JFolder::folders(JPATH_SITE . '/components/com_slicomments/plugins');
