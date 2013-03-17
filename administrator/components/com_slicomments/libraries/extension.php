@@ -114,6 +114,19 @@ abstract class sliExtension
 		return true;
 	}
 
+	public function isComponentEnabled()
+	{
+		$db		= JFactory::getDbo();
+		$query	= $db->getQuery(true);
+		$query->select('enabled')
+			->from('#__extensions')
+			->where($query->qn('type').' = '.$db->quote('component'))
+			->where($query->qn('element').' = '.$db->quote($this->option));
+		$db->setQuery($query);
+
+		return (bool) $db->loadResult();
+	}
+
 	abstract public function getCategoryOptions();
 
 	abstract public function getLink($item);

@@ -10,11 +10,14 @@ defined('_JEXEC') or die;
 
 $extension = $this->state->get('extension');
 require_once __DIR__ . '/../../../helpers/html/extension.php';
+
+$extensions = JHtml::_('JHtmlsliComments.extension.options');
 ?>
 <div class="filter-search fltlft pull-left">
 	<input type="search" class="filter-input" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" />
 </div>
 
+<?php if (count($extensions) > 1): ?>
 <div class="filter-select fltrt pull-right" title="<?php echo JText::_('COM_COMMENTS_FILTER_TITLE_EXTENSION'); ?>">
 	<button class="filter-button">
 		<?php echo JHtml::_('image', ($Joomla3?'slicomments':'menu').'/icon-16-component.png', 'Extension', array('class' => 'filter-icon'), true); ?>
@@ -27,6 +30,7 @@ require_once __DIR__ . '/../../../helpers/html/extension.php';
 		</select>
 	</div>
 </div>
+<?php endif; ?>
 
 <div class="filter-select fltrt pull-right" title="<?php echo JText::_('COM_COMMENTS_FILTER_TITLE_STATUS'); ?>">
 	<button class="filter-button">

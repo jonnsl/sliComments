@@ -32,6 +32,10 @@ class SlicommentsContent extends sliExtension
 
 	public function isEnabled()
 	{
+		if (!$this->isComponentEnabled()) {
+			return false;
+		}
+
 		$article = $this->item;
 		$params = new JRegistry($article->attribs);
 		$global = $this->params->get('enabled', true);

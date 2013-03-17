@@ -36,6 +36,10 @@ class SlicommentsK2 extends sliExtension
 
 	public function isEnabled()
 	{
+		if (!$this->isComponentEnabled()) {
+			return false;
+		}
+
 		$article = $this->item;
 		$global = $this->params->get('enabled', true);
 		if (!$article->params instanceof JRegistry) {

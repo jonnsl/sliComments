@@ -198,7 +198,9 @@ class sliCommentsModelComments extends sliModel
 		{
 			foreach ($this->getExtensionHelpers() as $helper)
 			{
-				$helper->queryHook($query);
+				if ($helper->isComponentEnabled()){
+					$helper->queryHook($query);
+				}
 			}
 		}
 
