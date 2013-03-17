@@ -10,6 +10,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.utilities.arrayhelper');
 jimport('joomla.filesystem.folder');
+require_once __DIR__ . '/../helpers/html/extension.php';
 
 class sliCommentsModelComments extends sliModel
 {
@@ -32,8 +33,14 @@ class sliCommentsModelComments extends sliModel
 	{
 		$app = JFactory::getApplication();
 
+		$default = null;
+		$extensions = JHtml::_('JHtmlsliComments.extension.options');
+		if (count($extensions) == 1) {
+			$default = $extensions[0]->value;
+		}
+
 		$old_state = $app->getUserState($this->context.'filter.extension');
-		$extension = $this->getUserStateFromRequest($this->context.'filter.extension', 'filter_extension', null, 'CMD');
+		$extension = $this->getUserStateFromRequest($this->context.'filter.extension', 'filter_extension', $default, 'CMD');
 		$this->setState('extension', $extension);
 		// If the extension filter change, reset the filters
 		if ($old_state != $extension)

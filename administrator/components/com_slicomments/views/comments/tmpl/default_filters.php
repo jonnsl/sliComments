@@ -9,8 +9,6 @@
 defined('_JEXEC') or die;
 
 $extension = $this->state->get('extension');
-require_once __DIR__ . '/../../../helpers/html/extension.php';
-
 $extensions = JHtml::_('JHtmlsliComments.extension.options');
 ?>
 <div class="filter-search fltlft pull-left">
@@ -26,7 +24,7 @@ $extensions = JHtml::_('JHtmlsliComments.extension.options');
 	<div class="filter-container">
 		<select name="filter_extension" id="filter-extension" class="chzn-select" data-placeholder="<?php echo JText::_('COM_COMMENTS_FILTER_PLACEHOLDER_EXTENSION'); ?>">
 			<option value=""></option>
-			<?php echo JHtml::_('select.options', JHtml::_('JHtmlsliComments.extension.options'), 'value', 'text', $this->state->get('extension'));?>
+			<?php echo JHtml::_('select.options', $extensions, 'value', 'text', $this->state->get('extension'));?>
 		</select>
 	</div>
 </div>
