@@ -1,23 +1,70 @@
 #add-emoticon {
-	background: url(../img/add16.png) no-repeat 2px 1px;
-	padding: 2px 5px 2px 22px
+	/*background: url(../img/add16.png) no-repeat 2px 1px;
+	padding: 2px 5px 2px 22px*/
 }
-#emoticons {
+#emoticons-list {
 	margin-top: 10px;
-	padding: 0
+	padding: 0;
+	margin: 0;
+	list-style-type: none
 }
-#emoticons li {
-	clear: both;
-	margin: 5px;
-	overflow: auto
+#emoticons-list .emoticon {
+	margin: 5px
 }
-#emoticons li .delete {
+#emoticons-list .emoticon select {
+	margin-bottom: 0
+}
+#emoticons-list .emoticon select, #emoticons-list .emoticon input {
+	float: none;
+	margin-right: 5px;
+}
+#emoticons-list .emoticon img {
+	margin-right: 5px
+}
+#emoticons-list li .delete {
 	cursor: pointer
-}
-#emoticons li * {
-	margin: 0 5px;
-	float: left
 }
 #filter-config select {
 	margin-bottom: 0
+}
+#add-all-emoticons {
+	margin-right: 8px
+}
+
+dl.tabs dt.disabled {
+	border-color: #eee;
+	color: #333;
+	background-color: #fbfbfb;
+	border-bottom-color: #ccc;
+	margin-bottom: 0px;
+	cursor: default !important;
+}
+dl.tabs dt.disabled a {
+	color: #999;
+	cursor: default !important;
+}
+
+/* Hacks for joomla 3 */
+#emoticons .control-group:nth-child(3) .controls {
+	margin-left: 0;
+}
+#emoticons .control-group:nth-child(3) .control-label {
+	display: none;
+}
+#emoticons .control-group:nth-child(2), #HTML_BBCODE .control-group:nth-child(4) {
+	height: 0;
+	border-top: 1px solid #ddd
+}
+.tab-pane .radio input[type="radio"] {
+	float: none;
+	margin-left: 12px
+}
+.tab-pane .radio label {
+	display: inline
+}
+.tab-pane .radio {
+	padding-left: 0
+}
+#EXTENSION_SPECIFIC > .control-group > .controls {
+	margin-left: 0;
 }

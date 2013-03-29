@@ -17,7 +17,6 @@
 			extension="com_content"
 			multiple="true"
 			size="10"
-			class="&quot; style=&quot;width:90%"
 			label="JCATEGORY"
 			description="COM_COMMENTS_CATEGORY_DESC">
 				<option value="">

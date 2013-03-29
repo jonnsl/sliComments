@@ -23,8 +23,8 @@ class JFormFieldEmoticons extends JFormField
 		JHtml::_('stylesheet', 'slicomments/emoticons.css', array(), true);
 		$emoticons = !empty($this->value) ? $this->value : $this->getDefault();
 
-		$html[] = '<button id="add-emoticon">'.JText::_('COM_COMMENTS_EMOTICONS_ADD').'</button><div class="clr"></div>';
-		$html[] = '<ul id="emoticons" data-root="'.htmlentities(JURI::root(true), ENT_QUOTES, 'UTF-8').'">';
+		$html[] = '<button id="add-emoticon" class="btn">'.JText::_('COM_COMMENTS_EMOTICONS_ADD').'</button>';
+		$html[] = '<ul id="emoticons-list" data-root="'.htmlentities(JURI::root(true), ENT_QUOTES, 'UTF-8').'">';
 		foreach ($emoticons as $i => $emoticon)
 		{
 			$emoticon = (object) $emoticon;
@@ -33,12 +33,12 @@ class JFormFieldEmoticons extends JFormField
 			$html[] = JHtml::_('image', 'media/slicomments/img/delete16.png', '', 'class="delete"', false);
 			$html[] = '<input type="text" name="'.$this->name.'['.$i.'][emoticon]" value="'.htmlspecialchars($emoticon->emoticon, ENT_QUOTES, 'UTF-8').'"/>';
 			$html[] = $this->getImageList($emoticon->file, $i);
-			$html[] = JHtml::_('image', $emoticon->file, $emoticon->emoticon, empty($emoticon->file) ? 'style="display:none"' : '');
+			$html[] = JHtml::_('image', $emoticon->file, $emoticon->emoticon, (empty($emoticon->file) ? 'style="display:none"' : '') . ' class="emoticon-preview"');
 			$html[] = '</li>';
 		}
-		$html[] = '</ul><div class="clr"></div>';
-		$html[] = '<button id="add-all-emoticons">'.JText::_('COM_COMMENTS_EMOTICONS_ADD_ALL').'</button>';
-		$html[] = '<button id="remove-all-emoticons">'.JText::_('COM_COMMENTS_EMOTICONS_REMOVE_ALL').'</button>';
+		$html[] = '</ul>';
+		$html[] = '<button id="add-all-emoticons" class="btn">'.JText::_('COM_COMMENTS_EMOTICONS_ADD_ALL').'</button>';
+		$html[] = '<button id="remove-all-emoticons" class="btn">'.JText::_('COM_COMMENTS_EMOTICONS_REMOVE_ALL').'</button>';
 
 		return implode($html);
 	}
@@ -56,7 +56,7 @@ class JFormFieldEmoticons extends JFormField
 
 	protected function getImageList($value, $i)
 	{
-		return JHtml::_('select.genericlist', $this->options, $this->name.'['.$i.'][file]', '', 'value', 'text', $value, $this->id);
+		return JHtml::_('select.genericlist', $this->options, $this->name.'['.$i.'][file]', '', 'value', 'text', $value, $this->id.'_'.$i);
 	}
 
 	protected function getOptions()

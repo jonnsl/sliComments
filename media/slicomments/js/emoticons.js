@@ -1,60 +1,89 @@
 (function($){
 window.addEvent('domready', function(){
-	var list = $('emoticons');
-	var n = $$('.emoticon').length - 1;
-	var root = list.get('data-root');
+	var list = $('emoticons-list'),
+		n = list.childNodes.length - 1,
+		root = list.get('data-root'),
+		joomla3 = (typeof(jQuery) !== 'undefined');
 
-	var update_preview = function(){
-		this.getNext('img')
-		.set('src', root+'/'+this.get('value'))
-		.setStyle('display', 'block')
-		.addEvent('error', function(){
-			this.setStyle('display', 'none');
-		});
-	},
-	add_emoticon = function(emoticon, li){
+	var template = list.getFirst().clone();
+	var input = template.getElement('input');
+	var select = template.getElement('select');
+	function Emoticon(emoticon){
 		n = ++n;
-		li = li || list.getFirst().clone();
-		var input = li.getElement('input').set('value', emoticon ? ':'+emoticon+':' : '').set('name', 'jform[emoticons]['+n+'][emoticon]');
-		var select = li.getElement('select');
-		if (typeOf(emoticon) === 'null') {
+
+		// Update names
+		input.set('name', 'jform[emoticons]['+n+'][emoticon]');
+		select.set('name', 'jform[emoticons]['+n+'][file]');
+
+		// Update selected value
+		if (typeof emoticon == 'undefined') {
 			select.options[0].selected = true;
 		} else {
-			Array.from(select.options).filter(function(option){
-				return option.get('text') == emoticon;
-			})[0].selected = true;
+			Array.from(select.options).some(function(option){
+				if (option.get('text') == emoticon) {
+					option.selected = true;
+					return true;
+				}
+			});
 		}
+		input.set('value', emoticon ? ':'+emoticon+':' : '')
 		update_preview.call(select);
-		select.fireEvent('onChange');
-		select.set('name', 'jform[emoticons]['+n+'][file]');
-		li.inject(list, 'top');
+
+		return template.clone();
+	}
+
+	function update_preview(){
+		var value = this.get('value');
+		var img = this.getNext('.emoticon-preview');
+		if (value) {
+			img
+				.set('src', root+'/'+value)
+				.setStyle('display', null)
+				.addEvent('error', function(){
+					this.setStyle('display', 'none')
+				});
+		} else {
+			img.setStyle('display', 'none');
+		}
 	}
 
 	$('add-emoticon').addEvent('click', function(e){
 		e.stop();
-		add_emoticon();
+		var item = new Emoticon();
+		list.grab(item, 'top');
+		if (joomla3) {
+			jQuery(item.getElement('select')).chosen({
+				disable_search_threshold : 10,
+				allow_single_deselect : true
+			}).change(update_preview);
+		}
 	});
 
 	$('add-all-emoticons').addEvent('click', function(e){
 		e.stop();
-		var emoticons = list.getFirst().getElement('select').getChildren().map(function(item){return item.get('text');});
+		var emoticons = select.getChildren().map(function(item){return item.get('text');});
 		var added = list.getElements('select').map(function(item){return item.getSelected()[0].get('text');});
+		var items = [];
 		added.diff(emoticons).each(function(emoticon){
-			add_emoticon(emoticon);
+			items.push(new Emoticon(emoticon));
 		});
+		list.adopt(items);
+		if (joomla3) {
+			jQuery(list.getElements('select')).chosen({
+				disable_search_threshold : 10,
+				allow_single_deselect : true
+			}).change(update_preview);
+		}
 	});
 
 	$('remove-all-emoticons').addEvent('click', function(e){
-		e.stop();
-		var li = list.getFirst().clone();
+		e.stop(); n = 0;
 		list.empty();
-		n = 0;
-		add_emoticon(null, li);
 	});
 
 	list.addEvent('change:relay(select)', update_preview);
 
-	list.addEvent('click:relay(.delete)', function(e){
+	list.addEvent('click:relay(.delete)', function(){
 		this.getParent().nix(true);
 	});
 
