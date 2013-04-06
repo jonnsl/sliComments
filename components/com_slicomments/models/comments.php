@@ -314,7 +314,7 @@ class sliCommentsModelComments extends sliModel
 		}
 		else
 		{
-			$yesterday = $db->quote(JFactory::getDate('yesterday')->toMysql());
+			$yesterday = $db->quote(JFactory::getDate('yesterday')->toSql());
 			// Guest already voted?
 			if (time() % 2) {
 				$query = $db->getQuery(true)
@@ -343,7 +343,7 @@ class sliCommentsModelComments extends sliModel
 				'vote'		=> (int) $vote,
 				'comment_id'=> (int) $comment_id,
 				'ip'		=> $_SERVER['REMOTE_ADDR'],
-				'created'	=> JFactory::getDate()->toMysql()
+				'created'	=> JFactory::getDate()->toSql()
 			);
 			$stored = $db->insertObject('#__slicomments_ratings', $data);
 		}
