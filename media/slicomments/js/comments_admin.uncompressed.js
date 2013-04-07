@@ -296,10 +296,27 @@ window.addEvent('domready', function(){
 				console.log(xhr);
 			}
 		}),
-		update = function(){
+		update = function(e){
+			if (e && e.onRequest) {
+				request.addEvent('request:once', e.onRequest);
+			}
+			if (e && e.onSuccess) {
+				request.addEvent('success:once', e.onSuccess);
+			}
 			request.send({data: form.toQueryString()});
 		},
 		updateDebounced = update.debounce();
+
+	var oldAddEvent = request.addEvent;
+	request.addEvent = function(type, fn){
+		if (type.indexOf(':once') == -1) return oldAddEvent.apply(this, arguments);
+		type = type.substr(0, type.indexOf(':'));
+		var newfn = function(){
+			fn.apply(this, arguments);
+			request.removeEvent(type, newfn);
+		}
+		oldAddEvent.call(this, type, newfn);
+	};
 
 	// Search, Filter by item, Filter by author
 	filterBar.addEvent('input:relay(input)', function(){
@@ -352,21 +369,29 @@ window.addEvent('domready', function(){
 		updateDebounced();
 	});
 
-	form.getElements('.sort-column').addEvent('click', function(e){
+	var sort_options = $$('#sort-by-options .sort-column');
+	form.getElement('.adminlist thead').addEvent('click:relay(.sort-column)', function(e){
 		e.stop();
-		var oldValue = form.filter_order.get('value');
-		if (oldValue != this.get('data-sort')) {
-			form.filter_order.set('value', this.get('data-sort'));
-			form.filter_order_Dir.set('value', 'DESC');
-			form.getElements('.icon-sort').removeClass('sort-dir-asc|sort-dir-desc')
-			this.getElement('.icon-sort').addClass('sort-dir-desc');
+		var self = this,
+			oldValue = form.filter_order.get('value'),
+			newValue = this.get('data-sort'),
+			newDir, oldDir;
+
+		if (oldValue != newValue) {
+			form.filter_order.set('value', newValue);
+			form.filter_order_Dir.set('value', 'desc');
+			newDir = 'desc';
 		} else {
-			oldValue = form.filter_order_Dir.get('value');
-			var newValue = oldValue == 'DESC' ? 'ASC' : 'DESC';
-			form.filter_order_Dir.set('value', newValue);
-			this.getElement('.icon-sort').removeClass('sort-dir-asc|sort-dir-desc').addClass('sort-dir-' + newValue.toLowerCase());
+			oldDir = form.filter_order_Dir.get('value');
+			newDir = oldDir == 'desc' ? 'asc' : 'desc';
+			form.filter_order_Dir.set('value', newDir);
 		}
-		update();
+		update({
+			onRequest: function() {
+				sort_options.removeClass('sort-dir-asc|sort-dir-desc');
+				self.addClass('sort-dir-'+newDir);
+			}
+		});
 	});
 
 	var clear_filters;

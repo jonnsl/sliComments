@@ -51,19 +51,22 @@ array_diff($this->state->get('filter.status',  array(0,1)), array(0,1)) != array
 				<th width="10%">
 					<a href="#" class="sort-column" title="Click to sort by Author" data-sort="name">
 						<?php echo JText::_('COM_COMMENTS_HEADING_AUTHOR'); ?>
-						<i class="icon-sort<?php if($listOrder == 'name') echo ' sort-dir-', strtolower($listDirn); ?>"></i>
 					</a>
 				</th>
 				<th>
-					<a href="#" class="sort-column" title="Click to sort by Submitted date" data-sort="created">
-						<?php echo JText::_('COM_COMMENTS_HEADING_COMMENT'); ?>
-						<i class="icon-sort<?php if($listOrder == 'created') echo ' sort-dir-', strtolower($listDirn); ?>"></i>
-					</a>
+					<?php echo JText::_('COM_COMMENTS_HEADING_COMMENT'); ?>
+					<div id="sort-by-options">
+						<?php echo JText::_('COM_COMMENTS_SORT_BY'); ?>
+						<a href="#" class="sort-column <?php if($listOrder == 'created') echo ' sort-dir-', strtolower($listDirn); ?>" title="<?php echo JText::_('COM_COMMENTS_SORT_BY_CREATED_TITLE'); ?>" data-sort="created"><?php echo JText::_('COM_COMMENTS_SORT_BY_CREATED'); ?></a>,
+						<a href="#" class="sort-column <?php if($listOrder == 'positive_votes') echo ' sort-dir-', strtolower($listDirn); ?>" title="<?php echo JText::_('COM_COMMENTS_SORT_BY_POSITIVE_VOTES_TITLE'); ?>" data-sort="positive_votes"><?php echo JText::_('COM_COMMENTS_SORT_BY_POSITIVE_VOTES'); ?></a>,
+						<a href="#" class="sort-column <?php if($listOrder == 'negative_votes') echo ' sort-dir-', strtolower($listDirn); ?>" title="<?php echo JText::_('COM_COMMENTS_SORT_BY_NEGATIVE_VOTES_TITLE'); ?>" data-sort="negative_votes"><?php echo JText::_('COM_COMMENTS_SORT_BY_NEGATIVE_VOTES'); ?></a>,
+						<a href="#" class="sort-column <?php if($listOrder == 'hot') echo ' sort-dir-', strtolower($listDirn); ?>" title="<?php echo JText::_('COM_COMMENTS_SORT_BY_HOT_TITLE'); ?>" data-sort="hot"><?php echo JText::_('COM_COMMENTS_SORT_BY_HOT'); ?></a>,
+						<a href="#" class="sort-column <?php if($listOrder == 'score') echo ' sort-dir-', strtolower($listDirn); ?>" title="<?php echo JText::_('COM_COMMENTS_SORT_BY_SCORE_TITLE'); ?>" data-sort="score"><?php echo JText::_('COM_COMMENTS_SORT_BY_SCORE'); ?></a>
+					</div>
 				</th>
 				<th width="15%" class="nowrap">
 					<a href="#" class="sort-column" title="<?php echo JText::_('COM_COMMENTS_HEADING_TITLE_'.$this->state->get('extension', 'ALL')); ?>" data-sort="item_id">
 						<?php echo JText::_('COM_COMMENTS_HEADING_RESPONSE_TO'); ?>
-						<i class="icon-sort<?php if($listOrder == 'item_id') echo ' sort-dir-', strtolower($listDirn); ?>"></i>
 					</a>
 				</th>
 			</tr>

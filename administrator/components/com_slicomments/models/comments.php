@@ -18,7 +18,7 @@ class sliCommentsModelComments extends sliModel
 	{
 		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'name', 'item_id', 'created'
+				'name', 'item_id', 'created', 'positive_votes', 'negative_votes', 'hot', 'score'
 			);
 		}
 		$this->params = JComponentHelper::getParams('com_slicomments');

@@ -50,6 +50,19 @@ image(path)
 .adminlist td
 	position relative
 
+.adminlist thead th
+	text-align left !important
+	padding-left 8px !important
+	&:first-child
+		text-align center !important
+		padding-left 4px !important
+
+#sort-by-options
+	display inline-block
+	float right
+	.sort-dir-desc, .sort-dir-asc
+		color #666
+
 .editing .actions
 	display none !important
 

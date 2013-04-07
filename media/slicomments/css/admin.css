@@ -12,6 +12,10 @@
 .icon-32-options{background-image:url(../img/options32.png) !important}
 #adminForm .copyright{text-align:center;margin:15px 0 0 0}
 .adminlist td{position:relative}
+.adminlist thead th{text-align:left !important;padding-left:8px !important;}
+.adminlist thead th:first-child{text-align:center !important;padding-left:4px !important}
+#sort-by-options{display:inline-block;float:right;}
+#sort-by-options .sort-dir-desc,#sort-by-options .sort-dir-asc{color:#666}
 .editing .actions{display:none !important}
 .edit{width:100%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:0}
 .text{font-size:13px;color:#333;margin:5px 0}
