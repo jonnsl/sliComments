@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 		<div class="comment-email"><span title="<?php echo $this->escape($email); ?>"><?php echo $this->escape($email); ?></span></div>
 	</td>
 	<td class="comment <?php echo sliCommentsHelper::getClass($status); ?>">
-		<div class="submitted"><?php echo JText::sprintf('COM_COMMENTS_SUBMITTED', sliCommentsHelper::human_time_diff($created)); ?></div>
+		<div class="submitted" title="<?php echo JHtml::_('date', $created, JText::_('DATE_FORMAT_LC2'))?>"><?php echo JText::sprintf('COM_COMMENTS_SUBMITTED', sliCommentsHelper::human_time_diff($created)); ?></div>
 		<?php
 		/*if ($flagged) :
 			$desc = implode('<br/>', array_map(array($this, 'escape'), $this->flaggedBy[$id]));

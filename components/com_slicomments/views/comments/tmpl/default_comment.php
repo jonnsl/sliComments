@@ -53,7 +53,7 @@ $token = '&'.JSession::getFormToken().'=1';
 				}
 				?>
 			</span>
-			<span class="created">
+			<span class="created" title="<?php echo JHtml::_('date', $created, JText::_('DATE_FORMAT_LC2'))?>">
 				<?php echo sliCommentsHelper::human_time_diff($created);?>
 			</span>
 			<?php if ($rating != 0) : ?>
