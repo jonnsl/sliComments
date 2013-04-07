@@ -288,13 +288,13 @@ class sliCommentsModelComments extends sliModel
 			$db->setQuery($query);
 			$voted = $db->loadResult();
 
-			if ($voted !== null && $voted == $vote){
-				$this->setError(JText::_('COM_COMMENTS_ERROR_ALREADY_VOTED'));
-				return false;
-			}
-
 			// Vote!
-			if ($voted !== null) {
+			if ($voted !== null)
+			{
+				if ($voted == $vote){
+					$this->setError(JText::_('COM_COMMENTS_ERROR_ALREADY_VOTED'));
+					return false;
+				}
 				$query = $db->getQuery(true)
 					->update('#__slicomments_ratings')
 					->set('vote = '.(int) $vote)
@@ -302,6 +302,7 @@ class sliCommentsModelComments extends sliModel
 					->where('comment_id = '.(int) $comment_id);
 				$db->setQuery($query);
 				$stored = $db->query();
+
 			}
 			else {
 				$data = (object) array(
@@ -360,6 +361,21 @@ class sliCommentsModelComments extends sliModel
 				$this->setError(JText::_('COM_COMMENTS_ERROR_COULD_NOT_STORE_VOTE'));
 			}
 		}
+
+		$query = $db->getQuery(true)
+			->update('#__slicomments')
+			->set('total_votes = total_votes + 1')
+			->where('id = '.(int) $comment_id);
+		if ($vote === 1) {
+			$query->set('positive_votes = positive_votes + 1');
+		} else {
+			$query->set('negative_votes = negative_votes + 1');
+		}
+		$query
+			->set('score = ((positive_votes + 1.9208) / total_votes - 1.96 * SQRT((positive_votes * negative_votes) / total_votes + 0.9604) / total_votes) / (1 + 3.8416 / total_votes)')
+			->set('hot = LOG10(ABS(positive_votes - negative_votes) + 1) * SIGN(positive_votes - negative_votes) + (UNIX_TIMESTAMP(created) / 300000)');
+		$db->setQuery($query);
+		$stored = $db->query();
 
 		if ($vote === 0) {
 			$vote = -1;
@@ -460,13 +476,10 @@ class sliCommentsModelComments extends sliModel
 		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.'.$field.' END as name'
 			. ', CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email'
 			. ', a.text, a.id, a.user_id, a.created'
-			. ', SUM(CASE WHEN r.vote THEN 1 ELSE 0 END) as likes'
-			. ', SUM(CASE WHEN r.vote = 0 THEN 1 ELSE 0 END) as dislikes'
-			. ', COUNT(r.vote) as votes');
+			. ', positive_votes - 1 as likes, negative_votes as dislikes, total_votes - 1 as votes');
 		$query->from('#__slicomments AS a');
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
-		$query->leftjoin('#__slicomments_ratings AS r ON r.comment_id = a.id');
 
 		$query->select('COUNT(f.user_id) as flagged');
 		$query->leftjoin('#__slicomments_flags AS f ON f.comment_id = a.id');
@@ -521,11 +534,26 @@ class sliCommentsModelComments extends sliModel
 			|| $this->getState('list.start', 0) > 0
 			|| $this->getTotal() < $limit + $this->getState('list.limit', 20)) return array();
 
+		$criteria = $this->params->get('top_comments_criteria', 'score');
+		if (!in_array($criteria, array('score', 'hot', 'positive_votes'))) {
+			$criteria = 'score';
+		}
+
+		$threshold = (int) $this->params->get('top_comments_threshold', 3);
+		switch ($criteria) {
+			case 'score':
+				$threshold = (($threshold + 1.9208) / $threshold - 1.9208 / $threshold) / (1 + 3.8416 / $threshold);
+				break;
+			case 'hot':
+				$threshold = log10($threshold) + (time() / 300000);
+				break;
+		}
+
 		$db = $this->_db;
 		$query = $this->getListQuery()
 			->clear('order')
-			->having('likes > 2')
-			->order('likes DESC, a.created '.$this->getState('list.order_dir', 'DESC'));
+			->where($criteria . ' > ' . $threshold)
+			->order($criteria . ' DESC, a.created DESC');
 
 		$db->setQuery($query, 0, $limit);
 		$comments = $db->loadObjectList();

@@ -259,6 +259,28 @@
 		</field>
 
 		<field
+			name="top_comments_criteria"
+			type="list"
+			label="COM_COMMENTS_TOP_COMMENTS_CRITERIA_LABEL"
+			description="COM_COMMENTS_TOP_COMMENTS_CRITERIA_DESC"
+			default="score"
+			validate="options">
+				<option value="score">COM_COMMENTS_OPTION_SCORE</option>
+				<option value="hot">COM_COMMENTS_OPTION_HOT</option>
+				<option value="positive_votes">COM_COMMENTS_OPTION_POSITIVE_VOTES</option>
+		</field>
+
+		<field
+			name="top_comments_threshold"
+			type="integer"
+			label="COM_COMMENTS_TOP_COMMENTS_THRESHOLD_LABEL"
+			description="COM_COMMENTS_TOP_COMMENTS_THRESHOLD_DESC"
+			default="3"
+			first="2"
+			last="20"
+			step="1" />
+
+		<field
 			name="field_name"
 			type="list"
 			label="COM_COMMENTS_FIELD_NAME_LABEL"

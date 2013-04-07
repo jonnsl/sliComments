@@ -9,9 +9,16 @@ CREATE TABLE IF NOT EXISTS `#__slicomments` (
   `item_id` integer unsigned NOT NULL,
   `status` smallint default '1',
   `extension` varchar(50) NOT NULL,
+  `positive_votes` int(11) NOT NULL default '1',
+  `negative_votes` int(11) NOT NULL,
+  `total_votes` int(11) NOT NULL default '1',
+  `score` double NOT NULL default '0.20654329147389294',
+  `hot` double NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `idx_article_id` (`article_id`),
-  INDEX `idx_status` (`status`)
+  INDEX `idx_status` (`status`),
+  INDEX `idx_score` (`score`),
+  INDEX `idx_hot` (`hot`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS `#__slicomments_ratings` (
