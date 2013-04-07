@@ -69,10 +69,10 @@ $token = '&'.JSession::getFormToken().'=1';
 		</div>
 		<div class="content">
 			<?php
-			if ($this->params->get('hide_flagged', 0) > 0 && $flagged >= $this->params->get('hide_flagged')) {
+			if ($spam) {
 				$this->partial('comment_hidden', array('text' => $text, 'legend' => JText::_('COM_COMMENTS_FLAGGED')));
 			}
-			else if ($this->params->get('hide_low_rated', 0) > 0 && $dislikes >= $this->params->get('hide_low_rated')) {
+			else if ($lowRated) {
 				$this->partial('comment_hidden', array('text' => $text, 'legend' => JText::_('COM_COMMENTS_LOW_RATED')));
 			} else {
 				echo $text;

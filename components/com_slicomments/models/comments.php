@@ -222,6 +222,7 @@ class sliCommentsModelComments extends sliModel
 
 		$data['id'] = $table->id;
 		$data['likes'] = $data['dislikes'] = $data['flagged'] = 0;
+		$data['spam'] = $data['lowRated'] = false;
 		if (!$user->guest) {
 			$data['link'] = $this->getLink();
 			$data['avatar'] = $this->getAvatar();
@@ -488,14 +489,11 @@ class sliCommentsModelComments extends sliModel
 		// Select the required fields from the table.
 		$query->select('CASE WHEN a.user_id = 0 THEN a.name ELSE u.'.$field.' END as name'
 			. ', CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email'
-			. ', a.text, a.id, a.user_id, a.created'
+			. ', a.text, a.id, a.user_id, a.created, a.score, a.spaminess'
 			. ', positive_votes - 1 as likes, negative_votes as dislikes, total_votes - 1 as votes');
 		$query->from('#__slicomments AS a');
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
-
-		$query->select('COUNT(f.user_id) as flagged');
-		$query->leftjoin('#__slicomments_flags AS f ON f.comment_id = a.id');
 
 		$avatar = $this->params->get('avatar', 'gravatar');
 		switch ($avatar)
@@ -571,6 +569,10 @@ class sliCommentsModelComments extends sliModel
 		$db->setQuery($query, 0, $limit);
 		$comments = $db->loadObjectList();
 
+		if (count($comments) == 0) {
+			return array();
+		}
+
 		$exclude = array();
 		foreach ($comments as $comment)
 		{
@@ -607,8 +609,22 @@ class sliCommentsModelComments extends sliModel
 			cbimport('cb.database');
 		}
 
+		$spam_threshold = (int) $this->params->get('hide_flagged', 0);
+		if ($spam_threshold > 0) {
+			$spam_threshold = (($spam_threshold + 1.9208) / $spam_threshold - 1.9208 / $spam_threshold) / (1 + 3.8416 / $spam_threshold);
+		}
+
+		$low_rated_threshold = (int) $this->params->get('hide_low_rated', 6);
+		if ($low_rated_threshold > 0) {
+			$total_votes = $low_rated_threshold + 1;
+			$low_rated_threshold = (2.9208 / $total_votes - 1.96 * sqrt($low_rated_threshold / $total_votes + 0.9604) / $total_votes) / (1 + 3.8416 / $total_votes);
+		}
+
 		foreach ($comments as $k => $comment)
 		{
+			$comment->spam = $spam_threshold && $comment->spaminess > $spam_threshold;
+			$comment->lowRated = $low_rated_threshold && $comment->score < $low_rated_threshold;
+
 			switch ($avatar)
 			{
 				case 'gravatar':
