@@ -59,6 +59,7 @@ class plgSlicommentsAkismet extends JPlugin
 		$akismet->setCommentAuthor($comment->user_id ? $user->name : $comment->name);
 		$akismet->setCommentAuthorEmail($comment->user_id ? $user->email : $comment->email);
 		$akismet->setCommentContent($comment->raw);
+		$akismet->setUserIP(isset($comment->ip) ? $comment->ip : '');
 		$akismet->setCommentType('comment');
 		return $akismet;
 	}
