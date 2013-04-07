@@ -21,3 +21,10 @@ total_votes = negative_votes + positive_votes;
 UPDATE `#__slicomments` SET
 score = ((positive_votes + 1.9208) / total_votes - 1.96 * SQRT((positive_votes * negative_votes) / total_votes + 0.9604) / total_votes) / (1 + 3.8416 / total_votes),
 hot = LOG10(ABS(positive_votes - negative_votes) + 1) * SIGN(positive_votes - negative_votes) + (UNIX_TIMESTAMP(created) / 300000);
+
+ALTER TABLE  `#__slicomments` ADD  `spam` INT NOT NULL ,
+ADD  `spaminess` DOUBLE NOT NULL;
+
+UPDATE `#__slicomments` SET
+spam = (SELECT count(*) FROM `#__slicomments_flags` WHERE comment_id = id),
+spaminess = ((spam + 1.9208) / spam - 1.9208 / spam) / (1 + 3.8416 / spam);

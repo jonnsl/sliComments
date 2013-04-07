@@ -413,6 +413,16 @@ class sliCommentsModelComments extends sliModel
 		);
 		$stored = $db->insertObject('#__slicomments_flags', $data);
 
+		if ($stored) {
+			$query = $db->getQuery(true)
+				->update('#__slicomments')
+				->set('spam = spam + 1')
+				->set('spaminess = ((spam + 1.9208) / spam - 1.9208 / spam) / (1 + 3.8416 / spam)')
+				->where('id = ' . (int) $comment_id);
+			$db->setQuery($query);
+			$stored = $db->query();
+		}
+
 		if (!$stored){
 			if (JDEBUG) {
 				$this->setError(JText::sprintf('COM_COMMENTS_ERROR_COULD_NOT_FLAG_DEBUG', $db->getErrorMsg()));
@@ -420,6 +430,9 @@ class sliCommentsModelComments extends sliModel
 				$this->setError(JText::_('COM_COMMENTS_ERROR_COULD_NOT_FLAG'));
 			}
 		}
+
+
+
 		return true;
 	}
 
