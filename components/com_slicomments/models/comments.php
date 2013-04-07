@@ -34,6 +34,7 @@ class sliCommentsModelComments extends sliModel
 		$filter['extension'] = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $data['extension']);
 		$filter['created'] = JFactory::getDate()->toSql();
 		$filter['status'] = (int) $data['status'];
+		$filter['ip'] = $_SERVER['REMOTE_ADDR'];
 
 		return $filter;
 	}
@@ -141,7 +142,21 @@ class sliCommentsModelComments extends sliModel
 			}
 		}
 
+		if ($this->params->get('blocked_ips', true) && !$this->validateIP($data['ip'])) {
+			$this->setError(JText::_('COM_COMMENTS_ERROR_INVALID_IP'));
+			return false;
+		}
+
 		return parent::validate($data);
+	}
+
+	public function validateIP($ip)
+	{
+		$forbidden = $this->params->get('blocked_ips', '');
+		$forbidden = array_filter(array_map('trim', explode(',', $forbidden)));
+		$forbidden = array_filter($forbidden, create_function('$var', 'return (bool) filter_var($var, FILTER_VALIDATE_IP);'));
+
+		return !in_array($ip, $forbidden);
 	}
 
 	public function validateEmail($email)

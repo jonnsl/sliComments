@@ -424,6 +424,15 @@
 			description="COM_COMMENTS_CENSORED_WORDS_DESC"
 			default=""/>
 
+		<field
+			name="blocked_ips"
+			type="textarea"
+			cols="35"
+			rows="4"
+			label="COM_COMMENTS_BLOCKED_IPS_LABEL"
+			description="COM_COMMENTS_BLOCKED_IPS_DESC"
+			default=""/>
+
 	</fieldset>
 
 	<fieldset

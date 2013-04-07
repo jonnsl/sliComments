@@ -16,15 +16,15 @@
 .adminlist thead th:first-child{text-align:center !important;padding-left:4px !important}
 #sort-by-options{display:inline-block;float:right;}
 #sort-by-options .sort-dir-desc,#sort-by-options .sort-dir-asc{color:#666}
-.editing .actions{display:none !important}
+.editing .actions,.editing .comment-ip{display:none !important}
 .edit{width:100%;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;padding:0}
 .text{font-size:13px;color:#333;margin:5px 0}
 .comment-email span{display:inline-block;-o-text-overflow:ellipsis;text-overflow:ellipsis;overflow:hidden;max-width:125px;padding-left:4px;padding-right:1px}
 .comment-email::before{content:"(";position:absolute}
 .comment-email::after{content:")";position:absolute}
 .comments-post{float:right;margin:5px 5px 0 0}
-td:hover .actions{visibility:visible}
-.actions{list-style-type:none;padding:0;margin:0;visibility:hidden;}
+td:hover .actions,td:hover .comment-ip{visibility:visible}
+.actions{list-style-type:none;padding:0;margin:0;visibility:hidden;float:left;}
 .actions li{display:inline-block;margin:2px;border-right:1px solid #333;padding-right:4px;}
 .actions li:last-child{border:0}
 .actions .approve-comment a,.actions .not-spam-comment a,.actions .restore-comment a{color:#006505}
@@ -37,6 +37,8 @@ td:hover .actions{visibility:visible}
 .spam .unapprove-comment,.trashed .unapprove-comment,.spam .approve-comment,.trashed .approve-comment,.spam .spam-comment,.trashed .spam-comment,.spam .trash-comment,.trashed .trash-comment{display:none}
 .spam .restore-comment{display:none}
 .trashed .not-spam-comment,.trashed .edit-comment{display:none}
+.comment-ip{float:right;visibility:hidden;margin:5px 0 0 5px;}
+.comment-ip.blocked-ip a{color:#f00}
 .slicomments-quote{border:1px solid #000;background:#ffc;padding:10px;margin:0 0 15px 15px;-webkit-border-radius:10px;border-radius:10px;}
 .slicomments-quote .slicomments-quoteDate{color:#999;font-size:.8em}
 .info-filters{color:#333;margin:0 0 5px 5px}

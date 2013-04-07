@@ -20,6 +20,7 @@ class sliCommentsControllerComments extends sliController
 		$this->registerTask('spam', 'status');
 		$this->registerTask('delete', 'status');
 		$this->registerTask('unflag', 'status');
+		$this->registerTask('unblockIp', 'blockIp');
 	}
 
 	/**
@@ -40,6 +41,8 @@ class sliCommentsControllerComments extends sliController
 		$view->state = $model->getState();
 		$view->items = $model->getComments();
 		$view->pagination = $model->getPagination();
+		$view->params = $model->params;
+		$view->blocked_ips = array_filter(array_map('trim', explode(',', $view->params->get('blocked_ips'))));
 		$view->partial('ajax');
 
 		return $this;
@@ -99,6 +102,43 @@ class sliCommentsControllerComments extends sliController
 						throw new Exception($model->getError(), 500);
 					}
 					break;
+			}
+		}
+		catch(Exception $e)
+		{
+			JResponse::setHeader('status', $e->getCode());
+			echo $e->getMessage();
+		}
+	}
+
+	public function blockIp()
+	{
+		try {
+			// Check for request forgeries.
+			if (!JRequest::checkToken('get')) {
+				throw new Exception(JText::_('JINVALID_TOKEN'), 500);
+			}
+
+			if (!$ip = JRequest::getCmd('ip', ''))
+			{
+				throw new Exception(JText::_('COM_COMMENTS_INVALID_IP'), 500);
+			}
+			elseif (!JFactory::getUser()->authorise('manage', 'com_slicomments'))
+			{
+				throw new Exception(JText::_('COM_COMMENTS_NO_AUTH'), 403);
+			}
+			else
+			{
+				// Get the model.
+				$model = $this->getModel('comments');
+				if ($this->task === 'blockIp'){
+					$model->blockIp($ip);
+					$message = JText::sprintf('COM_COMMENTS_IP_BLOCKED', $ip);
+				} else {
+					$model->unblockIp($ip);
+					$message = JText::sprintf('COM_COMMENTS_IP_UNBLOCKED', $ip);
+				}
+				echo $message;
 			}
 		}
 		catch(Exception $e)

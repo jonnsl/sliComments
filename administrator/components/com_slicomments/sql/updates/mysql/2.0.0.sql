@@ -28,3 +28,5 @@ ADD  `spaminess` DOUBLE NOT NULL;
 UPDATE `#__slicomments` SET
 spam = (SELECT count(*) FROM `#__slicomments_flags` WHERE comment_id = id),
 spaminess = ((spam + 1.9208) / spam - 1.9208 / spam) / (1 + 3.8416 / spam);
+
+ALTER TABLE  `#__slicomments` ADD  `ip` varchar(50) NOT NULL;

@@ -53,6 +53,19 @@ defined('_JEXEC') or die;
 			<li class="delete-comment">
 				<a href="index.php?option=com_slicomments&amp;task=comments.delete&amp;id=<?php echo $id, $token; ?>"><?php echo JText::_('COM_COMMENTS_ACTION_DELETE_PERMANENTLY'); ?></a>
 		</ul>
+		<?php if ($ip): ?>
+		<span class="comment-ip <?php echo in_array($ip, $this->blocked_ips) ? 'blocked-ip' : ''; ?>">
+			<?php if (in_array($ip, $this->blocked_ips)): ?>
+			<a href="index.php?option=com_slicomments&amp;task=comments.unblockIp&amp;ip=<?php echo $this->escape($ip), $token; ?>" title="Unblock IP">
+				IP: <?php echo $this->escape($ip); ?>
+			</a>
+			<?php else: ?>
+				<a href="index.php?option=com_slicomments&amp;task=comments.blockIp&amp;ip=<?php echo $this->escape($ip), $token; ?>" title="Block IP">
+					IP: <?php echo $this->escape($ip); ?>
+				</a>
+			<?php endif; ?>
+		</span>
+		<?php endif; ?>
 	</td>
 	<td>
 		<a href="../<?php echo $this->escape($link); ?>#comments" target="_blank">

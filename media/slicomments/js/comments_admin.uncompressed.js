@@ -107,6 +107,28 @@ window.addEvent('domready', function(){
 		}).send();
 	});
 
+	form.addEvent('click:relay(.comment-ip a)', function(e){
+		e.stop();
+		new Request({
+			url: this.get('href'),
+			format: 'raw',
+			onSuccess: function(res){
+				alert(res);
+				this.getParent().toggleClass('blocked-ip');
+				this.set('href', this.get('href').replace(/&task=comments\.((un)?blockIp)/i, function(m, g1){
+					if (g1 == 'blockIp') {
+						return '&task=comments.unblockIp';
+					} else {
+						return '&task=comments.blockIp';
+					}
+				}))
+			}.bind(this),
+			onFailure: function(xhr){
+				alert(xhr.responseText);
+			}
+		}).send();
+	});
+
 	var toolbar = $('toolbar');
 	toolbar.addEvent('click:relay(.toolbar, .btn)', function(e){
 		e.stop();

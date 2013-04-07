@@ -164,7 +164,7 @@ class sliCommentsModelComments extends sliModel
 		$query
 			->select('a.id, CASE WHEN a.user_id = 0 THEN a.name ELSE u.name END as name,'
 					.'CASE WHEN a.user_id = 0 THEN a.email ELSE u.email END as email,'
-					.'a.created, a.status, a.raw, a.extension, a.item_id');
+					.'a.created, a.status, a.raw, a.extension, a.item_id, a.ip');
 		$query->from('#__slicomments AS a');
 
 		$query->leftjoin('#__users AS u ON u.id = a.user_id');
@@ -391,6 +391,40 @@ class sliCommentsModelComments extends sliModel
 		$db->query();
 
 		return true;
+	}
+
+	public function blockIp($ip)
+	{
+		return $this->un_blockIp($ip, true);
+	}
+
+	public function unblockIp($ip)
+	{
+		return $this->un_blockIp($ip, false);
+	}
+
+	protected function un_blockIp($ip, $block)
+	{
+		$params = $this->params;
+		JModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_config/models', 'ConfigModel');
+		$model = JModel::getInstance('Component', 'ConfigModel');
+
+		$blocked_ips = $params->get('blocked_ips', '');
+		$blocked_ips = array_filter(array_map('trim', explode(',', $blocked_ips)));
+		$blocked_ips = array_filter($blocked_ips, create_function('$var', 'return (bool) filter_var($var, FILTER_VALIDATE_IP);'));
+		if ($block) {
+			array_push($blocked_ips, $ip);
+		} else {
+			array_splice($blocked_ips, array_search($ip, $blocked_ips, true), 1);
+		}
+
+		$params->set('blocked_ips', implode(', ', array_unique($blocked_ips)));
+
+		return $model->save(array(
+			'params'	=> $params->toArray(),
+			'id'		=> JComponentHelper::getComponent('com_slicomments')->id,
+			'option'	=> 'com_slicomments'
+		));
 	}
 
 	public function filter($data)

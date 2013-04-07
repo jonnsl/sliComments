@@ -63,7 +63,7 @@ image(path)
 	.sort-dir-desc, .sort-dir-asc
 		color #666
 
-.editing .actions
+.editing .actions, .editing .comment-ip
 	display none !important
 
 .edit
@@ -95,7 +95,7 @@ image(path)
 	float right
 	margin 5px 5px 0 0
 
-td:hover .actions
+td:hover .actions, td:hover .comment-ip
 	visibility visible
 
 .actions
@@ -103,6 +103,7 @@ td:hover .actions
 	padding 0
 	margin 0
 	visibility hidden
+	float left
 	li
 		display inline-block
 		margin 2px
@@ -152,6 +153,13 @@ td:hover .actions
 	.not-spam-comment
 	.edit-comment
 		display none
+
+.comment-ip
+	float right
+	visibility hidden
+	margin 5px 0 0 5px
+	&.blocked-ip a
+		color red
 
 .slicomments-quote
 	border 1px solid black

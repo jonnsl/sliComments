@@ -19,6 +19,8 @@ class sliCommentsViewComments extends sliView
 		$this->items		= $this->get('Comments');
 		//$this->flaggedBy	= $this->get('Flags');
 		$this->pagination	= $this->get('Pagination');
+		$this->params		= $this->getModel()->params;
+		$this->blocked_ips	= array_filter(array_map('trim', explode(',', $this->params->get('blocked_ips'))));
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
