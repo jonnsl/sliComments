@@ -5,4 +5,4 @@ UPDATE `#__slicomments` SET
 item_id = article_id,
 extension = "com_content";
 
-ALTER TABLE `jos_slicomments` DROP `article_id`;
+ALTER TABLE `#__slicomments` DROP `article_id`;
