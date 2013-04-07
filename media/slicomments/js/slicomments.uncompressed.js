@@ -262,9 +262,12 @@ window.addEvent('domready', function(){
 					.getElement('.content-container'),
 				editForm = form.clone()
 					.addClass('edit-form');
-			editForm.getElement('.profile-image-container').destroy();
+			var avatar = editForm.getElement('.profile-image-container');
+			if (avatar) {
+				avatar.destroy();
+			}
 			editForm.task.set('value', 'comments.save');
-			editForm.article_id.set('name', 'id').set('value', this.get('data-id'));
+			editForm.item_id.set('name', 'id').set('value', this.get('data-id'));
 			editForm.text.set('text', response).addClass('init');
 			new charCount(editForm.text, editForm.getElement('.chars-count'));
 			editForm.inject(container);
