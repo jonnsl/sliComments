@@ -39,7 +39,7 @@ class sliCommentsModelComments extends sliModel
 			$default = $extensions[0]->value;
 		}
 
-		$old_state = $app->getUserState($this->context.'filter.extension');
+		$old_state = $app->getUserState($this->context.'filter.extension', $default);
 		$extension = $this->getUserStateFromRequest($this->context.'filter.extension', 'filter_extension', $default, 'CMD');
 		$this->setState('extension', $extension);
 		// If the extension filter change, reset the filters
