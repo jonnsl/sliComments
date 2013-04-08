@@ -406,8 +406,8 @@ class sliCommentsModelComments extends sliModel
 	protected function un_blockIp($ip, $block)
 	{
 		$params = $this->params;
-		JModel::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_config/models', 'ConfigModel');
-		$model = JModel::getInstance('Component', 'ConfigModel');
+		require_once JPATH_ADMINISTRATOR . '/components/com_config/models/component.php';
+		$model = new ConfigModelComponent();
 
 		$blocked_ips = $params->get('blocked_ips', '');
 		$blocked_ips = array_filter(array_map('trim', explode(',', $blocked_ips)));
