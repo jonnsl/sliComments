@@ -14,6 +14,9 @@ CREATE TABLE IF NOT EXISTS `#__slicomments` (
   `total_votes` int(11) NOT NULL default '1',
   `score` double NOT NULL default '0.20654329147389294',
   `hot` double NOT NULL,
+  `spam` INT NOT NULL ,
+  `spaminess` DOUBLE NOT NULL,
+  `ip` varchar(50) NOT NULL
   PRIMARY KEY (`id`),
   INDEX `idx_article_id` (`article_id`),
   INDEX `idx_status` (`status`),
