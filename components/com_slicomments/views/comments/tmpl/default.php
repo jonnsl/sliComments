@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 require_once JPATH_ADMINISTRATOR.'/components/com_slicomments/helpers/comments.php';
 JHtml::_('behavior.framework', true);
-JHtml::_('stylesheet', 'slicomments/style.uncompressed.css', array(), true);
+JHtml::_('stylesheet', 'slicomments/style.css', array(), true);
 $user = JFactory::getUser();
 JHtml::_('script', 'slicomments/slicomments.js', true, true);
 if ($this->params->get('livecomments', false)) {
