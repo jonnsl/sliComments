@@ -389,4 +389,30 @@
 
 		<targetplatform name="joomla" version="3.0" />
 	</update>
+
+	<update>
+		<name>sliComments</name>
+		<element>com_slicomments</element>
+		<type>component</type>
+		<version>1.6.1</version>
+
+		<downloads>
+			<downloadurl type="full" format="zip">http://www.slicomments.com/files/slicomments_1.6.1.zip</downloadurl>
+		</downloads>
+
+		<targetplatform name="joomla" version="2.5" />
+	</update>
+
+	<update>
+		<name>sliComments</name>
+		<element>com_slicomments</element>
+		<type>component</type>
+		<version>1.6.1</version>
+
+		<downloads>
+			<downloadurl type="full" format="zip">http://www.slicomments.com/files/slicomments_1.6.1.zip</downloadurl>
+		</downloads>
+
+		<targetplatform name="joomla" version="3.0" />
+	</update>
 </updates>

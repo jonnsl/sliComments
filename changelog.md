@@ -1,5 +1,9 @@
 # sliComments - Changelog #
 
+## 1.6.1 / 2013-04-24 ##
+
+  * Fix compatibility issue with Joomla! 3.1
+
 ## 1.6.0 / 2013-02-02 ##
 
   * Compatible with Joomla! 3.0
