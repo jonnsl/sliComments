@@ -64,7 +64,7 @@ JFactory::getDocument()->addScriptDeclaration('
 	<div id="live-comments-disable"><a href="#"><?php echo JText::_('COM_COMMENTS_LIVE_COMMENTS_DISABLE'); ?></a></div>
 	<?php endif; ?>
 
-	<ul id="comments_list" class="comment-list<?php echo $classes; ?>">
+	<ul id="comments_list" class="comment-list" data-limit="<?php echo $this->params->get('limit', '20'); ?>">
 	<?php
 	foreach ($this->comments as $comment) {
 		$this->partial('comment', $comment);

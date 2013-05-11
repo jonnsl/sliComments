@@ -12,6 +12,8 @@ window.addEvent('domready', function(){
 		liveCommentsInfo = $('live-comments-info'),
 		latestComment = comments_list.getFirst(),
 		lastCommentTime = latestComment ? latestComment.getElement('.metadata .created').get('data-created') : 0,
+		currentComments = comments_list.getChildren().length,
+		maxComments = Math.floor(comments_list.get('data-limit') * 1.5) || 30,
 		queue = [],
 		_slice = [].slice,
 		_push = [].push,
@@ -107,7 +109,14 @@ window.addEvent('domready', function(){
 		comment.setStyle('opacity', 0)
 			.inject(comments_list, 'top')
 			.fade();
-		comments_list.getLast().nix(true);
+		if (currentComments >= maxComments) {
+			var toDestroy = comments_list.getChildren()[maxComments];
+			if (toDestroy) {
+				toDestroy.nix(true);
+			}
+		} else {
+			currentComments++;
+		}
 	};
 
 	/**
