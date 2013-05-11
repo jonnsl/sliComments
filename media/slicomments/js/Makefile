@@ -16,7 +16,7 @@ slicomments.js: slicomments.uncompressed.js md5.js charCount.js
 	rm tmp.js
 
 livecomments.js: tmpl_comment.ejs livecomments.uncompressed.js utils.js filters.js
-	ejs-compile tmpl_comment.ejs > tmpl_comment.js
+	ejs-compile --min tmpl_comment.ejs > tmpl_comment.js
 	wrup --require ./livecomments.uncompressed.js --source-map ./tmp.map > tmp.js
 	uglifyjs tmp.js -d DEV=false --compress --mangle --output ./livecomments.js --source-map livecomments.js.map --in-source-map tmp.map
 	rm tmp.map
