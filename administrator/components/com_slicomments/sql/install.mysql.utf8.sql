@@ -16,9 +16,9 @@ CREATE TABLE IF NOT EXISTS `#__slicomments` (
   `hot` double NOT NULL,
   `spam` INT NOT NULL ,
   `spaminess` DOUBLE NOT NULL,
-  `ip` varchar(50) NOT NULL
+  `ip` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `idx_article_id` (`article_id`),
+  INDEX `idx_item_id` (`item_id`),
   INDEX `idx_status` (`status`),
   INDEX `idx_score` (`score`),
   INDEX `idx_hot` (`hot`)
