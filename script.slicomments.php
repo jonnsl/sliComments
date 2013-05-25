@@ -80,15 +80,6 @@ class Com_sliCommentsInstallerScript
 		$result = $installer->install($src.'/plugins/slicomments/akismet');
 		$status->plugins[] = array('name' => 'sliComments - Akismet','group' => 'slicomments', 'result' => $result);
 
-		// sliComments - Jomsocial
-		$result = false;
-		if ($this->componentIsEnabled('com_community'))
-		{
-			$installer = new JInstaller;
-			$result = $installer->install($src.'/plugins/slicomments/jomsocial');
-		}
-		$status->plugins[] = array('name' => 'sliComments - Jomsocial','group' => 'slicomments', 'result' => $result);
-
 		return $status;
 	}
 
