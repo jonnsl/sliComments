@@ -16,6 +16,7 @@
 .comment .content{width:100%;text-align:justify}
 .comment-list,.comment{list-style-type:none !important}
 .comments_form_inputs{margin:0 0 0 55px !important;padding:0 !important;}
+.edit-form .comments_form_inputs{margin:0 !important}
 .comments_form_inputs .field{margin:8px 0 0 0;position:relative}
 .comments_form_inputs label{min-width:45px;display:block;float:left}
 .comments_form_inputs input{height:18px;padding:1px 5px;margin:0}
