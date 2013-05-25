@@ -8,7 +8,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-class sliCommentsModelComments extends sliModel
+class sliCommentsModelComments extends sliModelForm
 {
 	public function __construct($config = array())
 	{
@@ -33,7 +33,7 @@ class sliCommentsModelComments extends sliModel
 		$filter['item_id'] = (int)$data['item_id'];
 		$filter['extension'] = (string) preg_replace('/[^A-Z0-9_\.-]/i', '', $data['extension']);
 		$filter['created'] = JFactory::getDate()->toSql();
-		$filter['status'] = (int) $data['status'];
+		$filter['status'] = $user->authorise('auto_publish', 'com_slicomments') ? 1 : 0;
 		$filter['ip'] = $_SERVER['REMOTE_ADDR'];
 
 		return $filter;
@@ -144,6 +144,19 @@ class sliCommentsModelComments extends sliModel
 
 		if ($this->params->get('blocked_ips', true) && !$this->validateIP($data['ip'])) {
 			$this->setError(JText::_('COM_COMMENTS_ERROR_INVALID_IP'));
+			return false;
+		}
+
+		/**
+		 * although the main form don't use jform validation,
+		 * additional fields added by plugins may need this.
+		 */
+		$form = $this->getForm($data);
+		if (!$form->validate($data))
+		{
+			foreach ($form->getErrors() as $error) {
+				$this->setError($error);
+			}
 			return false;
 		}
 
@@ -738,7 +751,7 @@ class sliCommentsModelComments extends sliModel
 		{
 			case 'gravatar':
 				if ($user->guest) {
-					$data = $this->getData();
+					$data = $this->loadFormData();
 					$email = $data['email'];
 				} else {
 					$email = $user->email;
@@ -874,18 +887,93 @@ class sliCommentsModelComments extends sliModel
 		return $this->params;
 	}
 
-	public function getData()
+	/**
+	 * Method to get the data that should be injected in the form.
+	 *
+	 * @return  array    The default data is an empty array.
+	 */
+	protected function loadFormData()
 	{
-		$session = JFactory::getSession();
-		$data = $session->get('com_slicomments.data', array());
+		if (JFactory::getUser()->guest)
+		{
+			$session = JFactory::getSession();
+			$data = $session->get('com_slicomments.data', array());
 
-		$ret['name'] = isset($data['name']) ? $data['name'] : '';
-		$ret['email'] = isset($data['email']) ? $data['email'] : '';
-		$ret['text'] = isset($data['text']) ? preg_replace('/<br \/>/', "\n", $data['text'], 10) : '';
+			$ret['name'] = isset($data['name']) ? $data['name'] : '';
+			$ret['email'] = isset($data['email']) ? $data['email'] : '';
+			$ret['text'] = isset($data['text']) ? preg_replace('/<br \/>/', "\n", $data['text'], 10) : '';
 
-		// Reset the data
-		$session->set('com_slicomments.data', array('name' => $ret['name'], 'email' => $ret['email']));
+			// Reset the data
+			$session->set('com_slicomments.data', array('name' => $ret['name'], 'email' => $ret['email']));
+		}
+
+		$ret['item_id'] = $this->state->get('item.id');
+		$ret['extension'] = $this->state->get('extension');
 
 		return $ret;
+	}
+
+	/**
+	 * Get the form.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return  mixed  A JForm object on success, false on failure
+	 */
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = $this->loadForm('com_slicomments.comment', 'comment', array('load_data' => $loadData));
+		if (empty($form)) {
+			return false;
+		}
+		if (!empty($data)) {
+			$form->bind($data);
+		}
+
+		return $form;
+	}
+
+	protected function preprocessForm(JForm $form, $data, $group = 'slicomments')
+	{
+		$user = JFactory::getUser();
+		$canComment = $user->authorise('post', 'com_slicomments');
+		$name = $this->params->get('name', 1);
+		$email = $this->params->get('email', 1);
+
+		// Set the fields "name" and "email" as disabled if the user is logged in or can't comment
+		if (!$canComment || !$user->guest) {
+			$name = $email = -1;
+		}
+
+		// Remove these fields if they are disabled
+		if ($name == -1) {
+			$form->removeField('name');
+		}
+		if ($email == -1) {
+			$form->removeField('email');
+		}
+
+		// Set fields as required
+		if ($name == 1) {
+			$form->setFieldAttribute('name', 'required', 'true');
+		}
+		if ($email == 1) {
+			$form->setFieldAttribute('email', 'required', 'true');
+		}
+
+		$form->setFieldAttribute('text', 'class', 'minLength:' . $this->params->get('minimum_chars', 5));
+
+		if (!$canComment) {
+			$form->setFieldAttribute('text', 'disabled', 'true');
+			$form->setFieldAttribute('text', 'required', '');
+			$form->setFieldAttribute('text', 'labelclass', 'login-to-post');
+			$form->setFieldAttribute('text', 'label', preg_replace('/#([^#]*)#/i', '<a href="'.JRoute::_('index.php?option=com_users&view=login&return='.base64_encode(JFactory::getURI()->toString().'#comments')).'">$1</a>', JText::_('COM_COMMENTS_LOGIN_TO_POST_COMMENT'), 1));
+			$form->setFieldAttribute('text', 'placeholder', '');
+		}
+
+		$form->setFieldAttribute('text', 'maxlength', $this->params->get('maximum_chars', 500));
+
+		parent::preprocessForm($form, $data, $group);
 	}
 }

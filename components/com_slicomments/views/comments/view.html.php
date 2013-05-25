@@ -21,8 +21,8 @@ class sliCommentsViewComments extends sliView
 		$this->topComments	= $this->get('topComments');
 		$this->comments		= $this->get('Comments');
 		$this->pagination	= $this->get('Pagination');
-		$this->data			= $this->get('Data');
 		$this->avatar		= $this->get('Avatar');
+		$this->form			= $this->get('Form');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {

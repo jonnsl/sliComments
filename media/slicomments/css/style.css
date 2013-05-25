@@ -14,15 +14,15 @@
 .slicomments-quote .slicomments-quoteDate,.created{color:#999;font-size:.8em}
 .comment .edit-area{width:100%}
 .comment .content{width:100%;text-align:justify}
-.comments_form_inputs,.comments_form_inputs li,.comment-list,.comment{list-style-type:none !important}
-.comments_form_inputs{margin:0 0 0 55px !important;padding:0 !important}
-.comments_form_inputs li{margin:8px 0 0 0 !important;position:relative;background:none !important}
-.comments_form_inputs li label{min-width:45px;display:block;float:left}
-.comments_form_inputs li input{height:18px;padding:1px 5px;margin:0}
-.comments_form textarea{padding:5px;width:100%;height:40px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;*padding:0}
-.comments_form textarea,.comments_form input{font-family:arial,helvetica,sans-serif;border:1px solid #ccc;-webkit-transition:border .25s ease-in-out;-moz-transition:border .25s ease-in-out;-o-transition:border .25s ease-in-out;-ms-transition:border .25s ease-in-out;transition:border .25s ease-in-out}
-.no-js textarea{min-height:50px}
-.comments_form textarea:hover,.comments_form input:hover,.comments_form textarea:focus,.comments_form input:focus{outline:none;border:1px solid #999 !important}
+.comment-list,.comment{list-style-type:none !important}
+.comments_form_inputs{margin:0 0 0 55px !important;padding:0 !important;}
+.comments_form_inputs .field{margin:8px 0 0 0;position:relative}
+.comments_form_inputs label{min-width:45px;display:block;float:left}
+.comments_form_inputs input{height:18px;padding:1px 5px;margin:0}
+.comments_form_inputs textarea{padding:5px;width:100%;height:40px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;*padding:0}
+.no-js .comments_form_inputs{min-height:50px}
+.comments_form_inputs textarea,.comments_form_inputs input{font-family:arial,helvetica,sans-serif;border:1px solid #ccc;-webkit-transition:border .25s ease-in-out;-moz-transition:border .25s ease-in-out;-o-transition:border .25s ease-in-out;-ms-transition:border .25s ease-in-out;transition:border .25s ease-in-out;}
+.comments_form_inputs textarea:hover,.comments_form_inputs input:hover,.comments_form_inputs textarea:focus,.comments_form_inputs input:focus{outline:none;border:1px solid #999 !important}
 .comments-remaining{margin:8px 0 8px 55px;float:left}
 .no-js .comments-remaining{display:none}
 .comments-post-buttons{float:right}
@@ -42,10 +42,10 @@
 .slicomments-spoilerContent .slicomments-spoiler{margin-left:10px}
 .comments-post-buttons span{display:none}
 .reply-form .comments-post-buttons span,.edit-form  .comments-post-buttons span{display:inline}
-.edit-form .comments_form_inputs{margin:0 !important}
+.edit-form .comments_form{margin:0 !important}
 .edit-form .comments-remaining{margin-left:0}
 .reply-form textarea,.edit-form textarea{height:100px !important}
-.no-avatar .comments_form_inputs,.no-avatar .content-container,.no-avatar .comments-remaining{margin-left:0 !important}
+.no-avatar .comments_form,.no-avatar .content-container,.no-avatar .comments-remaining{margin-left:0 !important}
 .comment .pending{color:#f00;font-size:.9em;font-style:italic}
 #live-comments-info,#live-comments-disable{display:none;height:20px;line-height:20px;text-align:center;border:1px solid #999;clear:both}
 

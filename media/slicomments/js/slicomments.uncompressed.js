@@ -155,7 +155,7 @@ window.addEvent('domready', function(){
 		return 'placeholder' in i;
 	})();
 	if (!textarea.get('disabled') || !placeholder_support) {
-		form.getElements('.comments_form_inputs li label').setStyle('display', 'none');
+		form.getElements('label').setStyle('display', 'none');
 	}
 	if (!placeholder_support) {
 		var position = {offset: {x:7, y:4}};

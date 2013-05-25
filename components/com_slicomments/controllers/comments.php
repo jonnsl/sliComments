@@ -69,6 +69,7 @@ class sliCommentsControllerComments extends sliController
 
 		$user = JFactory::getUser();
 		$data = JRequest::get('post', JREQUEST_ALLOWRAW);
+		$hash = true;
 		if (!$user->authorise('post', 'com_slicomments')){
 			$this->setMessage(JText::_('COM_COMMENTS_NO_AUTH'), 'error');
 		}
@@ -76,19 +77,19 @@ class sliCommentsControllerComments extends sliController
 		{
 			$model = sliComments::getModel();
 			$session = JFactory::getSession();
-			$data['status'] = $user->authorise('auto_publish', 'com_slicomments') ? 1 : 0;
 			$data = $model->filter($data);
 			if ($user->guest) {
 				$session->set('com_slicomments.data', array('name' => $data['name'], 'email' => $data['email']));
 			}
 			if (!$model->validate($data) || !$model->save($data))
 			{
+				$hash = false;
 				$this->setMessage($model->getError(), 'error');
 				$session->set('com_slicomments.data', $data);
 			}
 		}
 
-		$this->setRedirect($this->getReferrer('comments'));
+		$this->setRedirect($this->getReferrer($hash ? 'comments' : null));
 	}
 
 	public function delete()

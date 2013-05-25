@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form addfieldpath="components/com_slicomments/models/forms/fields">
+	<fieldset>
+		<field
+			name="item_id"
+			type="hidden" />
+
+		<field
+			name="extension"
+			type="hidden" />
+
+		<field
+			name="name"
+			type="slitext"
+			id="comments_form_name"
+			label="COM_COMMENTS_LABEL_NAME"
+			placeholder="COM_COMMENTS_LABEL_NAME" />
+
+		<field
+			name="email"
+			type="slitext"
+			id="comments_form_email"
+			label="COM_COMMENTS_LABEL_EMAIL"
+			placeholder="COM_COMMENTS_LABEL_EMAIL" />
+
+		<field
+			name="text"
+			type="slitextarea"
+			id="comments_form_textarea"
+			required="true"
+			label="COM_COMMENTS_LABEL_TEXT"
+			placeholder="COM_COMMENTS_PLACEHOLDER_TEXT" />
+	</fieldset>
+</form>

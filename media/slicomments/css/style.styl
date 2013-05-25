@@ -63,8 +63,6 @@
 	width 100%
 	text-align justify
 
-.comments_form_inputs
-.comments_form_inputs li
 .comment-list
 .comment
 	list-style-type none !important
@@ -73,44 +71,38 @@
 	margin 0 0 0 55px !important
 	padding 0 !important
 
-.comments_form_inputs li
-	margin 8px 0 0 0 !important
-	position relative
-	background none !important
+	.field
+		margin 8px 0 0 0
+		position relative
 
-.comments_form_inputs li label
-	min-width 45px
-	display block
-	float left
+	label
+		min-width 45px
+		display block
+		float left
 
-.comments_form_inputs li input
-	height 18px
-	padding 1px 5px
-	margin 0
+	input
+		height 18px
+		padding 1px 5px
+		margin 0
 
-.comments_form textarea
-	padding 5px
-	width 100%
-	height 40px
-	box-sizing border-box
-	/* IE7 doesn't support box-sizing, so remove the padding*/
-	*padding 0px
+	textarea
+		padding 5px
+		width 100%
+		height 40px
+		box-sizing border-box
+		/* IE7 doesn't support box-sizing, so remove the padding*/
+		*padding 0px
+	.no-js &
+		min-height 50px
 
-.comments_form textarea
-.comments_form input
-	font-family arial, helvetica, sans-serif
-	border 1px solid #CCC
-	transition border 0.25s ease-in-out
-
-.no-js textarea
-	min-height 50px
-
-.comments_form textarea:hover
-.comments_form input:hover
-.comments_form textarea:focus
-.comments_form input:focus
-	outline none
-	border 1px solid #999 !important
+	textarea
+	input
+		font-family arial, helvetica, sans-serif
+		border 1px solid #CCC
+		transition border 0.25s ease-in-out
+		&:hover, &:focus
+			outline none
+			border 1px solid #999 !important
 
 .comments-remaining
 	margin 8px 0 8px 55px
@@ -190,7 +182,7 @@
 .edit-form  .comments-post-buttons span
 	display inline
 
-.edit-form .comments_form_inputs
+.edit-form .comments_form
 	margin 0 !important
 
 .edit-form .comments-remaining
@@ -200,7 +192,7 @@
 .edit-form textarea
 	height 100px !important
 
-.no-avatar .comments_form_inputs
+.no-avatar .comments_form
 .no-avatar .content-container
 .no-avatar .comments-remaining
 	margin-left 0 !important

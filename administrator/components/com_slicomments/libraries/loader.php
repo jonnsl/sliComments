@@ -35,11 +35,12 @@ function __sliAutoLoad($class)
 	}
 	elseif (strpos($class, 'sli') === 0)
 	{
-		if (substr($class, -6) == 'Compat'){
-			$file = strtolower(substr(substr($class, 3), 0, -6));
+		$class = strtolower(substr($class, 3));
+		if (substr($class, -6) == 'compat'){
+			$file = substr($class, 0, -6);
 			@include __DIR__ . '/' . $version . '/'.$file.'.php';
 		} else {
-			$file = strtolower(substr($class, 3));
+			$file = $class;
 			@include __DIR__.'/'.$file.'.php';
 		}
 	}
