@@ -55,7 +55,9 @@ class plgContentSlicomments extends JPlugin
 	public function onContentAfterDisplay($context, $item, $params, $page = 0)
 	{
 		$contexts = array(
-			'com_content.article' => 1
+			'com_content.article' => 1,
+			'com_content.category' => 1,
+			'com_content.featured' => 1
 		);
 
 		if (isset($contexts[$context]))
