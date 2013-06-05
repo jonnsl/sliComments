@@ -1,5 +1,9 @@
 # sliComments - Changelog #
 
+## 1.6.2 / 2013-06-05 ##
+
+  * Only validate email if it is required, or unrequire and it isn't empty.
+
 ## 1.6.1 / 2013-04-24 ##
 
   * Fix compatibility issue with Joomla! 3.1
