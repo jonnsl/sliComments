@@ -292,10 +292,13 @@ class sliCommentsModelComments extends JModelList
 				$this->setError(JText::_('COM_COMMENTS_ERROR_INVALID_NAME'));
 				return false;
 			}
-			if ($this->params->get('email', 0) == 1 && empty($data['email'])) {
+
+			$email = $this->params->get('email', 0);
+			if ($email == 1 && empty($data['email'])) {
 				$this->setError(JText::_('COM_COMMENTS_ERROR_EMAIL_REQUIRED'));
 				return false;
 			}
+			if ($email == 1 || ($email == 0 && !empty($data['email'])))
 			if (!$this->validateEmail($data['email'])) {
 				$this->setError(JText::_('COM_COMMENTS_ERROR_INVALID_EMAIL'));
 				return false;
@@ -427,7 +430,7 @@ class sliCommentsModelComments extends JModelList
 		}
 
 		$user = JFactory::getUser();
-		
+
 		$data['id'] = $table->id;
 		$data['likes'] = $data['dislikes'] = $data['flagged'] = 0;
 		if (!$user->guest) {
@@ -847,7 +850,7 @@ class sliCommentsModelComments extends JModelList
 					$comments[$k]->link = JRoute::_('index.php?option=com_community&view=profile&userid='.$comment->user_id);
 					break;
 				case 'com_comprofiler':
-					$comments[$k]->link = $GLOBALS['_CB_framework']->userProfileUrl($comment->user_id); 
+					$comments[$k]->link = $GLOBALS['_CB_framework']->userProfileUrl($comment->user_id);
 					break;
 			}
 		}
