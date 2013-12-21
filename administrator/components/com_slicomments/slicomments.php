@@ -14,7 +14,7 @@ if (!JFactory::getUser()->authorise('manage', 'com_slicomments')) {
 }
 
 // Include dependencies
-require_once __DIR__ . '/libraries/loader.php';
+require_once dirname(__FILE__) . '/libraries/loader.php';
 
 $controller = sliController::getInstance('sliComments');
 $controller->execute(JRequest::getCmd('task'));

@@ -13,11 +13,11 @@ function __sliAutoLoad($class)
 	switch ($class)
 	{
 		case 'sliController':
-			return include __DIR__ . '/' . $version . '/controller.php';
+			return include dirname(__FILE__) . '/' . $version . '/controller.php';
 		case 'sliView':
-			return include __DIR__ . '/' . $version . '/view.php';
+			return include dirname(__FILE__) . '/' . $version . '/view.php';
 		case 'sliModel':
-			return include __DIR__ . '/' . $version . '/model.php';
+			return include dirname(__FILE__) . '/' . $version . '/model.php';
 	}
 
 	return false;
