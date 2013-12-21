@@ -7,7 +7,7 @@ function __sliAutoLoad($class)
 {
 	static $version;
 	if ($version === null) {
-		$version = JVersion::isCompatible('3.0') ? '3.0' : '2.5';
+		$version = (new JVersion)->isCompatible('3.0') ? '3.0' : '2.5';
 	}
 
 	switch ($class)
