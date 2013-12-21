@@ -5,6 +5,7 @@ A powerful and slick comments component for Joomla!
 ## Requirements ##
 
 * Joomla! 2.5 or 3.0
+* Kunena 2.0 or 3.0 (Optional)
 
 ## Features ##
 

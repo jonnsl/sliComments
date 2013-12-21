@@ -785,7 +785,11 @@ class sliCommentsModelComments extends JModelList
 		$default = $this->params->get('avatar_default');
 
 		if ($link == 'com_kunena') {
-			require_once JPATH_ADMINISTRATOR.'/components/com_kunena/libraries/factory.php';
+			if (file_exists(JPATH_LIBRARIES.'/kunena/bootstrap.php')) {
+				require_once JPATH_LIBRARIES.'/kunena/bootstrap.php';
+			} else {
+				require_once JPATH_ADMINISTRATOR.'/components/com_kunena/libraries/factory.php';
+			}
 		} elseif ($link == 'com_comprofiler') {
 			include_once JPATH_ADMINISTRATOR.'/components/com_comprofiler/plugin.foundation.php';
 			cbimport('cb.database');
@@ -951,7 +955,11 @@ class sliCommentsModelComments extends JModelList
 		switch ($link)
 		{
 			case 'com_kunena':
-				require_once JPATH_ADMINISTRATOR.'/components/com_kunena/libraries/factory.php';
+				if (file_exists(JPATH_LIBRARIES.'/kunena/bootstrap.php')) {
+					require_once JPATH_LIBRARIES.'/kunena/bootstrap.php';
+				} else {
+					require_once JPATH_ADMINISTRATOR.'/components/com_kunena/libraries/factory.php';
+				}
 				return KunenaFactory::getProfile()->getProfileURL($user->id);
 			case 'com_community':
 				return JRoute::_('index.php?option=com_community&view=profile&userid='.$user->id);
