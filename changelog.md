@@ -1,5 +1,11 @@
 # sliComments - Changelog #
 
+## 1.6.3 / 2014-02-21 ##
+
+  * Add support for Kunena 3.0 Clarified in the readme which versions of kunena are supported.
+  * Remove use of __DIR__ as Joomla 2.5 still supports php 5.2
+  * Strict Standards: Non-static method JVersion::isCompatible() should not be called statically.
+
 ## 1.6.2 / 2013-06-05 ##
 
   * Only validate email if it is required, or unrequire and it isn't empty.
