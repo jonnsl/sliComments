@@ -2,6 +2,8 @@
 
 A powerful and slick comments component for Joomla!
 
+<img src="https://raw.githubusercontent.com/jonnsl/sliComments/master/media/screenshots/32977.png" alt="The comments section on an article page of a Joomla site" width="136" height="98" /><img src="https://raw.githubusercontent.com/jonnsl/sliComments/master/media/screenshots/32978.png" alt="The admin page showing all posted comments for moderation" width="136" height="98" /><img src="https://raw.githubusercontent.com/jonnsl/sliComments/master/media/screenshots/32979.png" alt="The permissions tab on the configuration area in the admin area" width="136" height="98" /><img src="https://raw.githubusercontent.com/jonnsl/sliComments/master/media/screenshots/32980.png" alt="The bbcode tab on the configuration area in the admin area" width="136" height="98" /><img src="https://raw.githubusercontent.com/jonnsl/sliComments/master/media/screenshots/32981.png" alt="The emoticons tab on the configuration area in the admin area" width="136" height="98" /><img src="https://raw.githubusercontent.com/jonnsl/sliComments/master/media/screenshots/Screenshot from 2013-11-06 12-48-17.png" alt="A capture of the Joomla extension directory page for slicomments. 2013-11-06" width="150" height="81" />
+
 ## Requirements ##
 
 * Joomla! 2.5 or 3.0
