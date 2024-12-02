@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.7" type="plugin" group="slicomments" method="upgrade">
+  <name>plg_slicomments_mailnew</name>
+  <creationDate>November 2013</creationDate>
+  <license>GNU General Public License version 3</license>
+  <version>0.1</version>
+  <description>PLG_SLICOMMENTS_MAILNEW_XML_DESCRIPTION</description>
+  <files>
+    <filename plugin="mailnew">mailnew.php</filename>
+    <filename>index.html</filename>
+  </files>
+  <languages folder="../../../administrator/language">
+    <language tag="en-GB">en-GB/en-GB.plg_slicomments_mailnew.ini</language>
+    <language tag="en-GB">en-GB/en-GB.plg_slicomments_mailnew.sys.ini</language>
+    <language tag="it-IT">it-IT/it-IT.plg_slicomments_mailnew.ini</language>
+    <language tag="it-IT">it-IT/it-IT.plg_slicomments_mailnew.sys.ini</language>
+  </languages>
+  <config>
+    <fields name="params">
+      <fieldset name="basic">
+        <field name="mailto"
+          type="email"
+          label="PLG_SLICOMMENTS_FIELD_MAIL_TO_EMAIL_LABEL"
+          description="PLG_SLICOMMENTS_FIELD_TO_EMAIL_DESC"
+          filter="string"
+          size="30"
+          validate="email"
+        />
+      </fieldset>
+    </fields>
+  </config>
+</extension>
+
